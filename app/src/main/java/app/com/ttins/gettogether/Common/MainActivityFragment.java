@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.Common;
+package app.com.ttins.gettogether.common;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

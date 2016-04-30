@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.GuestAdd;
+package app.com.ttins.gettogether.guestadd;
 
 
 public class GuestAddPresenter {

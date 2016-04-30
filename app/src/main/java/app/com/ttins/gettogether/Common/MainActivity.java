@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.Common;
+package app.com.ttins.gettogether.common;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

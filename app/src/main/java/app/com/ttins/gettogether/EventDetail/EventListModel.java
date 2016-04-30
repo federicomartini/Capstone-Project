@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.EventDetail;
+package app.com.ttins.gettogether.eventdetail;
 
 
 public class EventListModel {

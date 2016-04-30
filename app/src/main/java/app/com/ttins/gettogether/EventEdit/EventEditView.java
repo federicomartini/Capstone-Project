@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.EventEdit;
+package app.com.ttins.gettogether.eventedit;
 
 
 public class EventEditView {

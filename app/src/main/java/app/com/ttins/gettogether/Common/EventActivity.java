@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.Common;
+package app.com.ttins.gettogether.common;
 
 
 public class EventActivity {

@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.GuestSetMapLocation;
+package app.com.ttins.gettogether.guestsetmaplocation;
 
 
 public class GuestSetMapLocationModel {

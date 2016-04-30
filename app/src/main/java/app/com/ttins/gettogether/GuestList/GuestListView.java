@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.GuestList;
+package app.com.ttins.gettogether.guestlist;
 
 
 public class GuestListView {

@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.EventList;
+package app.com.ttins.gettogether.eventlist;
 
 
 public interface EventListMVP {

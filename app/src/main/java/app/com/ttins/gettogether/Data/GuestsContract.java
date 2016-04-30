@@ -1,5 +1,6 @@
-package app.com.ttins.gettogether.Data;
+package app.com.ttins.gettogether.data;
 
 
 public class GuestsContract {
+
 }
