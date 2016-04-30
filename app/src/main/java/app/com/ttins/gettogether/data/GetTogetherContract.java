@@ -71,44 +71,39 @@ public class GetTogetherContract {
         }
 
 
+    }
 
-        public static class Guests implements BaseColumns {
+    public static class Guests implements BaseColumns {
 
-            public static final String PATH_GUESTS = "guests";
-            public static final String TABLE_GUESTS = "guests";
-            public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GUESTS).build();
+        public static final String PATH_GUESTS = "guests";
+        public static final String TABLE_GUESTS = "guests";
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GUESTS).build();
 
-            public static final String PHOTO_PATH = "photo_path";
-            public static final String NAME = "name";
-            public static final String PHONE_NUMBER = "phone_number";
-            public static final String ADDRESS = "address";
-            public static final String GENDER  = "gender";
-
-
-            public static final String TABLE_CREATE = "CREATE TABLE (" +
-                    _ID + " integer primary key autoincrement, " +
-                    PHOTO_PATH + " text, " +
-                    NAME + " text non null, " +
-                    PHONE_NUMBER + " text, " +
-                    ADDRESS + " text, " +
-                    GENDER + " text);";
-
-            public static final String CONTENT_TYPE =
-                    ContentResolver.CURSOR_DIR_BASE_TYPE + CONTENT_URI + "/" + PATH_GUESTS;
-            public static final String CONTENT_ITEM_TYPE =
-                    ContentResolver.CURSOR_ITEM_BASE_TYPE + CONTENT_URI + "/" + PATH_GUESTS;
-
-            public static Uri buildGuestsUri(int id) {
-                return ContentUris.withAppendedId(CONTENT_URI, id);
-            }
+        public static final String PHOTO_PATH = "photo_path";
+        public static final String NAME = "name";
+        public static final String PHONE_NUMBER = "phone_number";
+        public static final String ADDRESS = "address";
+        public static final String GENDER = "gender";
 
 
+        public static final String TABLE_CREATE = "CREATE TABLE (" +
+                _ID + " integer primary key autoincrement, " +
+                PHOTO_PATH + " text, " +
+                NAME + " text non null, " +
+                PHONE_NUMBER + " text, " +
+                ADDRESS + " text, " +
+                GENDER + " text);";
 
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + CONTENT_URI + "/" + PATH_GUESTS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + CONTENT_URI + "/" + PATH_GUESTS;
+
+        public static Uri buildGuestsUri(int id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
 
-
     }
-
 
 }
