@@ -16,6 +16,7 @@ public class GetTogetherDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d(LOG_TAG, "Creating DB...");
         db.execSQL(GetTogetherContract.Events.TABLE_CREATE);
         db.execSQL(GetTogetherContract.Guests.TABLE_CREATE);
     }

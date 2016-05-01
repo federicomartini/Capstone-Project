@@ -66,7 +66,7 @@ public class GetTogetherContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + CONTENT_URI + "/" + PATH_EVENTS;
 
-        public static Uri buildEventsUri(int id) {
+        public static Uri buildEventsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
@@ -99,7 +99,7 @@ public class GetTogetherContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + CONTENT_URI + "/" + PATH_GUESTS;
 
-        public static Uri buildGuestsUri(int id) {
+        public static Uri buildGuestsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
