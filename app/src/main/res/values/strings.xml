@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">GetTogether</string>
     <string name="action_settings">Settings</string>
+
+    <string name="image_label_event_edit_view">Image</string>
+    <string name="event_title_label_event_edit_view">Event Title</string>
+    <string name="event_type_label_event_edit_view">Type</string>
+    <string name="location_label_event_edit_view">Location</string>
+    <string name="meeting_location_label_event_edit_view">Meeting Location</string>
+    <string name="start_time_label_event_edit_view">Start Time</string>
+    <string name="end_time_label_event_edit_view">End time</string>
+    <string name="phone_label_event_edit_view">Phone</string>
+    <string name="note_label_event_edit_view">Note</string>
+    <string name="empty_note_text_event_edit_view">No details</string>
 </resources>

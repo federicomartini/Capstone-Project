@@ -1,5 +1,5 @@
 package app.com.ttins.gettogether.eventdetail;
 
 
-public class EventListView {
+public class EventDetailView {
 }
