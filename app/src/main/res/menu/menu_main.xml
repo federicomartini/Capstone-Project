@@ -2,6 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".common.MainActivity">
+
+    <item
+    android:id="@+id/action_add_guest"
+    android:orderInCategory="1"
+    android:title="@string/action_add_guest"
+    app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_remove_guest"
+        android:orderInCategory="2"
+        android:title="@string/action_remove_guest"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

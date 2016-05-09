@@ -2,6 +2,11 @@
     <string name="app_name">GetTogether</string>
     <string name="action_settings">Settings</string>
 
+    <!-- ########## Event List Overflow Menu ########## -->
+    <string name="action_add_guest">Add Guest</string>
+    <string name="action_remove_guest">Remove Guest</string>
+
+    <!-- ########## Event Edit View Labels ########## -->
     <string name="image_label_event_edit_view">Image</string>
     <string name="event_title_label_event_edit_view">Event Title</string>
     <string name="event_type_label_event_edit_view">Type</string>

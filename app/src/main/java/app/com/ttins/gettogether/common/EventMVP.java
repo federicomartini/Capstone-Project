@@ -6,10 +6,12 @@ public interface EventMVP {
         void onAddEventFabClick();
         void eventListViewResume();
         void initFabStatus();
+        void onConfigurationChanged(EventMVP.RequestedViewOps view);
+        void onDestroy(boolean isChangingConfig);
     }
 
     interface ModelOps {
-
+        void onDestroy();
     }
 
     interface RequestedPresenterOps {

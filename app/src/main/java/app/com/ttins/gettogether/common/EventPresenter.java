@@ -1,5 +1,7 @@
 package app.com.ttins.gettogether.common;
 
+import android.util.Log;
+
 import java.lang.ref.WeakReference;
 
 public class EventPresenter implements EventMVP.PresenterOps, EventMVP.RequestedPresenterOps {
@@ -12,6 +14,8 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     private WeakReference<EventMVP.RequestedViewOps> view;
     private EventMVP.ModelOps model;
     private int fabStatus;
+    // Configuration change state
+    private boolean isChangingConfig;
 
     public EventPresenter(EventMVP.RequestedViewOps view){
         this.view = new WeakReference<>(view);
@@ -41,10 +45,35 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
             default:
                 break;
         }
+        Log.d(LOG_TAG, "fatStatus: " + fabStatus);
+    }
+
+    /**
+     * Sent from Activity after a configuration changes
+     * @param view  View reference
+     */
+    @Override
+    public void onConfigurationChanged(EventMVP.RequestedViewOps view) {
+        Log.d(LOG_TAG, "onConfigurationChanged");
+        this.view = new WeakReference<>(view);
+    }
+
+    /**
+     * Receives {@link MainActivity#onDestroy()} event
+     * @param isChangingConfig  Config change state
+     */
+    @Override
+    public void onDestroy(boolean isChangingConfig) {
+        this.view = null;
+        this.isChangingConfig = isChangingConfig;
+        if (!this.isChangingConfig) {
+            this.model.onDestroy();
+        }
     }
 
     @Override
     public void eventListViewResume() {
+        Log.d(LOG_TAG, "eventListView resumed");
         fabStatus = FAB_STATUS_ADD_EVENT;
         setFabStatus(fabStatus);
     }

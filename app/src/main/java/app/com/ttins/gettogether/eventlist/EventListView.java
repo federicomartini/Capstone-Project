@@ -41,8 +41,9 @@ public class EventListView extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        callback.onEventListViewResume();
-
+        if(this.isVisible()) {
+            callback.onEventListViewResume();
+        }
     }
 
     @Override

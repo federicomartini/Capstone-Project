@@ -8,4 +8,9 @@ public class EventModel implements EventMVP.ModelOps{
         this.presenter = presenter;
     }
 
+    @Override
+    public void onDestroy() {
+        // destroying actions
+    }
+
 }
