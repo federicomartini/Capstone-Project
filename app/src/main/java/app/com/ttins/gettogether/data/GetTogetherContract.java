@@ -66,6 +66,10 @@ public class GetTogetherContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + CONTENT_URI + "/" + PATH_EVENTS;
 
+        public static Uri buildEventsUri() {
+            return CONTENT_URI;
+        }
+
         public static Uri buildEventsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }

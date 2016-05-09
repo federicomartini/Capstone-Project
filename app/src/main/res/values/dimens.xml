@@ -12,4 +12,14 @@
     <dimen name="medium_margin_material_design">8dp</dimen>
     <dimen name="large_margin_material_design">16dp</dimen>
 
+    <integer name="event_title_shadow_dx">5</integer>
+    <integer name="event_title_shadow_dy">5</integer>
+    <integer name="event_title_shadow_radius">20</integer>
+    <integer name="event_title_max_lines">2</integer>
+
+    <dimen name="main_card_title_text_size">16sp</dimen>
+    <dimen name="main_card_subtitle_text_size">12sp</dimen>
+
+    <integer name="event_list_column_count">2</integer>
+
 </resources>

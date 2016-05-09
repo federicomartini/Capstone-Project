@@ -17,4 +17,9 @@
     <string name="phone_label_event_edit_view">Phone</string>
     <string name="note_label_event_edit_view">Note</string>
     <string name="empty_note_text_event_edit_view">No details</string>
+
+    <!-- ########## Transitions ########## -->
+    <string name="event_transition_image">Event Transition Image</string>
+    <string name="event_transition_text">Event Transition Text</string>
+
 </resources>
