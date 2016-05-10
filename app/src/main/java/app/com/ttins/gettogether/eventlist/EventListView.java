@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +24,17 @@ import app.com.ttins.gettogether.eventlist.loader.EventLoader;
 import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class EventListView extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    @BindView(R.id.recycler_view_event_list_view)
+    private static final String LOG_TAG = EventListView.class.getSimpleName();
+
+    @BindView(R.id.empty_view) TextView emptyView;
+    @BindView(R.id.recycler_view_event_list_view) RecyclerView recyclerView;
     @BindInt(R.integer.event_list_column_count) int columnCount;
-    RecyclerView recyclerView;
     Callback callback;
+    Unbinder unbinder;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -43,7 +48,6 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     }
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -67,7 +71,11 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.event_list_view, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
+        recyclerView = ButterKnife.findById(root, R.id.recycler_view_event_list_view);
+        emptyView = ButterKnife.findById(root, R.id.empty_view);
+
+        getLoaderManager().initLoader(0, null, this);
 
         return root;
     }
@@ -78,11 +86,23 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "onCreateLoader");
         return EventLoader.allEvents(getActivity());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(LOG_TAG, "onLoadFinished");
+
+        if (!cursor.moveToFirst()) {
+            Log.d(LOG_TAG, "RecyclerView is empty. Showing empty view");
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
+
         EventRecyclerViewAdapter eventRecyclerViewAdapter = new EventRecyclerViewAdapter(cursor);
         eventRecyclerViewAdapter.setHasStableIds(true);
         recyclerView.setAdapter(eventRecyclerViewAdapter);
@@ -90,12 +110,19 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
                 columnCount,
                 StaggeredGridLayoutManager.VERTICAL);
-
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        recyclerView.setAdapter(null);
+        if(recyclerView != null)
+            recyclerView.setAdapter(null);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

@@ -44,6 +44,7 @@
 
         <EditText
             android:id="@+id/event_title_edit_text_event_edit_view"
+            android:theme="@style/SingleLineEditText"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_row="1"
@@ -94,6 +95,7 @@
 
         <EditText
             android:id="@+id/location_edit_text_event_edit_view"
+            android:theme="@style/SingleLineEditText"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_row="3"
@@ -132,6 +134,7 @@
 
         <EditText
             android:id="@+id/meeting_location_edit_text_event_edit_view"
+            android:theme="@style/SingleLineEditText"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_row="5"
@@ -170,6 +173,7 @@
 
         <EditText
             android:id="@+id/date_start_text_view_event_edit_view"
+            android:theme="@style/SingleLineEditText"
             android:inputType="datetime"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -180,6 +184,7 @@
 
         <EditText
             android:id="@+id/date_end_text_view_event_edit_view"
+            android:theme="@style/SingleLineEditText"
             android:inputType="datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,6 +214,7 @@
 
         <EditText
             android:id="@+id/phone_edit_text_event_edit_view"
+            android:theme="@style/SingleLineEditText"
             android:inputType="phone"
             android:layout_width="200dp"
             android:layout_height="wrap_content"

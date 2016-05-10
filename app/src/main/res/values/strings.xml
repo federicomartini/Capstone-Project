@@ -2,6 +2,9 @@
     <string name="app_name">GetTogether</string>
     <string name="action_settings">Settings</string>
 
+    <!-- ########## Empty Recycler View Message ########## -->
+    <string name="no_data_available">No data available</string>
+
     <!-- ########## Event List Overflow Menu ########## -->
     <string name="action_add_guest">Add Guest</string>
     <string name="action_remove_guest">Remove Guest</string>

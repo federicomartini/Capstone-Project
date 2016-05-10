@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/colorTextIcons</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -34,6 +33,18 @@
 
     <style name="CardLayoutTextStyle">
         <item name="android:gravity">bottom</item>
+    </style>
+
+    <style name="EditTextBase">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <style name="SingleLineEditText" parent="EditTextBase">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="app_bar_theme">
+        <item name="android:textColorPrimary">@color/colorTextIcons</item>
     </style>
 
 </resources>

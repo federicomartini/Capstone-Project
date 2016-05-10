@@ -39,7 +39,7 @@ public class GetTogetherContract {
         public static final String ATTENDEE_NUMBER = "attendee_number";
         public static final String CONFIRMATION_STATUS = "confirmation_status";
 
-        public static final String TABLE_CREATE = "CREATE TABLE" +
+        public static final String TABLE_CREATE = "CREATE TABLE " +
                 Events.TABLE_EVENTS + "(" +
                 _ID + " integer primary key autoincrement, " +
                 TITLE + " text non null, " +
@@ -90,7 +90,8 @@ public class GetTogetherContract {
         public static final String GENDER = "gender";
 
 
-        public static final String TABLE_CREATE = "CREATE TABLE (" +
+        public static final String TABLE_CREATE = "CREATE TABLE " +
+                Guests.TABLE_GUESTS + "(" +
                 _ID + " integer primary key autoincrement, " +
                 PHOTO_PATH + " text, " +
                 NAME + " text non null, " +

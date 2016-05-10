@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_layout_height"
         android:background="@color/colorPrimary"
+        android:theme="@style/app_bar_theme"
         android:elevation="@dimen/app_bar_layout_elevation">
 
         <android.support.design.widget.CollapsingToolbarLayout
