@@ -7,12 +7,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import app.com.ttins.gettogether.R;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class EventEditView extends Fragment {
+
+    @BindView(R.id.event_title_edit_text_event_edit_view) EditText eventTitle;
+    @BindView(R.id.location_edit_text_event_edit_view) EditText location;
+    @BindView(R.id.meeting_location_edit_text_event_edit_view) EditText meetingLocation;
+    @BindView(R.id.phone_edit_text_event_edit_view) EditText phone;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +38,10 @@ public class EventEditView extends Fragment {
         ButterKnife.bind(this, root);
 
         return root;
+    }
+
+    public void addEvent() {
+        //TODO: add data to DB
     }
 
 }

@@ -3,7 +3,7 @@ package app.com.ttins.gettogether.common;
 public interface EventMVP {
 
     interface PresenterOps {
-        void onAddEventFabClick();
+        void onFabClick();
         void eventListViewResume();
         void initFabStatus();
         void onConfigurationChanged(EventMVP.RequestedViewOps view);
@@ -20,8 +20,10 @@ public interface EventMVP {
 
     interface RequestedViewOps {
         void onShowEventEditView();
+        void onShowEventListView();
         void onSetFabToAddEventStatus();
         void onSetFabToAddEventConfirmStatus();
+        void onSaveEventDataRequest();
     }
 
 }

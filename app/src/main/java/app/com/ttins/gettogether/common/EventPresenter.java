@@ -24,17 +24,38 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
 
     @Override
     public void initFabStatus() {
-        setFabStatus(fabStatus);
+        setFabStatus(this.fabStatus);
     }
 
     @Override
+    public void onFabClick() {
+        switch (fabStatus) {
+            case FAB_STATUS_ADD_EVENT:
+                onAddEventFabClick();
+                break;
+            case FAB_STATUS_ADD_EVENT_CONFIRM:
+                onAddEventConfirmFabClick();
+                break;
+            default:
+                break;
+        }
+    }
+
     public void onAddEventFabClick() {
         view.get().onShowEventEditView();
-        fabStatus = FAB_STATUS_ADD_EVENT_CONFIRM;
-        setFabStatus(fabStatus);
+        setFabStatus(FAB_STATUS_ADD_EVENT_CONFIRM);
+    }
+
+    private void onAddEventConfirmFabClick() {
+        /*TODO: Shouldn't be done here because if something wrong will happen while
+        saving data on the Persistent Storage we don't want to show back the eventListView */
+        view.get().onShowEventListView();
+        view.get().onSaveEventDataRequest();
+        setFabStatus(FAB_STATUS_ADD_EVENT);
     }
 
     private void setFabStatus(int fabStatus) {
+        this.fabStatus = fabStatus;
         switch (fabStatus) {
             case FAB_STATUS_ADD_EVENT:
                 view.get().onSetFabToAddEventStatus();
@@ -47,6 +68,7 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
         }
         Log.d(LOG_TAG, "fatStatus: " + fabStatus);
     }
+
 
     /**
      * Sent from Activity after a configuration changes
@@ -74,8 +96,7 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     @Override
     public void eventListViewResume() {
         Log.d(LOG_TAG, "eventListView resumed");
-        fabStatus = FAB_STATUS_ADD_EVENT;
-        setFabStatus(fabStatus);
+        setFabStatus(FAB_STATUS_ADD_EVENT);
     }
 
 }

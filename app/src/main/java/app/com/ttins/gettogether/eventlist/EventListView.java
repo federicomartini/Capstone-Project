@@ -80,10 +80,6 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         return root;
     }
 
-    public interface Callback {
-        void onEventListViewResume();
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(LOG_TAG, "onCreateLoader");
@@ -124,5 +120,9 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public interface Callback {
+        void onEventListViewResume();
     }
 }

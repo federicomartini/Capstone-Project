@@ -22,6 +22,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     private final String LOG_TAG = getClass().getSimpleName();
 
+    private static final String FRAGMENT_LIST_VIEW_TAG = "FRAG_LIST_VIEW";
     private static final String FRAGMENT_EDIT_VIEW_TAG = "FRAG_EDIT_VIEW";
 
     private EventMVP.PresenterOps presenter;
@@ -46,7 +47,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.onAddEventFabClick();
+                    presenter.onFabClick();
                 }
             });
         } else {
@@ -140,7 +141,22 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onShowEventEditView() {
         EventEditView fragmentEventEditView = new EventEditView();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onShowEventListView() {
+        EventListView fragmentEventListView = new EventListView();
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG).commit();
+    }
+
+    @Override
+    public void onSaveEventDataRequest() {
+        EventEditView fragmentEventEditView = (EventEditView) getSupportFragmentManager().
+                                                        findFragmentByTag(FRAGMENT_EDIT_VIEW_TAG);
+        fragmentEventEditView.addEvent();
     }
 
     @Override
