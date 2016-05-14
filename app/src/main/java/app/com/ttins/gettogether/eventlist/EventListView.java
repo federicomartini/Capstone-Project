@@ -44,6 +44,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            titleView = ButterKnife.findById(view, R.id.event_title);
         }
     }
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +66,8 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         if(this.isVisible()) {
             callback.onEventListViewResume();
         }
+
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
@@ -74,6 +77,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         unbinder = ButterKnife.bind(this, root);
         recyclerView = ButterKnife.findById(root, R.id.recycler_view_event_list_view);
         emptyView = ButterKnife.findById(root, R.id.empty_view);
+        columnCount = root.getResources().getInteger(R.integer.event_list_column_count);
 
         getLoaderManager().initLoader(0, null, this);
 
@@ -95,6 +99,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         } else {
+            Log.d(LOG_TAG, "Total Events number: " + cursor.getCount());
             recyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
