@@ -9,7 +9,6 @@ public interface EventEditMVP {
         void saveEvent(String title, String location, String meetingLocation, String phone);
         void onAttachView(Context context);
         void onDetachView();
-
     }
 
     interface ModelOps {
@@ -19,11 +18,12 @@ public interface EventEditMVP {
     }
 
     interface RequiredPresenterOps {
-
+        void onEventSaved();
     }
 
     interface RequiredViewOps {
-
+        void onShowToast(String message);
+        void onEventSaved();
     }
 
 }

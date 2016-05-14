@@ -14,7 +14,6 @@ public class EventEditModel implements EventEditMVP.ModelOps {
 
     EventEditMVP.RequiredPresenterOps presenter;
     Context viewContext;
-    Uri uri;
 
     public EventEditModel(EventEditMVP.RequiredPresenterOps presenter) {
         this.presenter = presenter;
@@ -35,6 +34,7 @@ public class EventEditModel implements EventEditMVP.ModelOps {
             retUri = viewContext.getContentResolver().insert(GetTogetherContract.Events.CONTENT_URI, values);
             if (retUri != null) {
                 Log.d(LOG_TAG, "Uri created: " + retUri.toString());
+                presenter.onEventSaved();
             } else {
                 Log.d(LOG_TAG, "Uri returned after insert is null! ");
             }

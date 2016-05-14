@@ -18,7 +18,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EventActivity extends AppCompatActivity implements EventMVP.RequestedViewOps, EventListView.Callback {
+public class EventActivity extends AppCompatActivity implements EventMVP.RequestedViewOps,
+        EventListView.Callback, EventEditView.Callback {
 
     private final String LOG_TAG = getClass().getSimpleName();
 
@@ -159,10 +160,15 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fragmentEventEditView.addEvent();
     }
 
+
     @Override
     public void onDestroy() {
         presenter.onDestroy(isChangingConfigurations());
         super.onDestroy();
     }
 
+    @Override
+    public void onEventSaved() {
+        presenter.onEventDataSaved();
+    }
 }

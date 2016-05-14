@@ -47,11 +47,9 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     }
 
     private void onAddEventConfirmFabClick() {
-        /*TODO: Shouldn't be done here because if something wrong will happen while
-        saving data on the Persistent Storage we don't want to show back the eventListView */
-        view.get().onShowEventListView();
+        /*TODO: Shouldn't be done here because if therea re some problems with insert data
+        we don't want to show back the eventListView */
         view.get().onSaveEventDataRequest();
-        setFabStatus(FAB_STATUS_ADD_EVENT);
     }
 
     private void setFabStatus(int fabStatus) {
@@ -99,4 +97,9 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
         setFabStatus(FAB_STATUS_ADD_EVENT);
     }
 
+    @Override
+    public void onEventDataSaved() {
+        view.get().onShowEventListView();
+        setFabStatus(FAB_STATUS_ADD_EVENT);
+    }
 }

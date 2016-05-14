@@ -8,6 +8,7 @@ public interface EventMVP {
         void initFabStatus();
         void onConfigurationChanged(EventMVP.RequestedViewOps view);
         void onDestroy(boolean isChangingConfig);
+        void onEventDataSaved();
     }
 
     interface ModelOps {

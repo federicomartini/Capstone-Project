@@ -127,6 +127,12 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         unbinder.unbind();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        callback = null;
+    }
+
     public interface Callback {
         void onEventListViewResume();
     }
