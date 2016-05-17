@@ -4,6 +4,7 @@ public interface EventMVP {
 
     interface PresenterOps {
         void onFabClick();
+        void onEventLongClick();
         void eventListViewResume();
         void initFabStatus();
         void onConfigurationChanged(EventMVP.RequestedViewOps view);

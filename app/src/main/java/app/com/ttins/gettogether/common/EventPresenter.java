@@ -102,4 +102,9 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
         view.get().onShowEventListView();
         setFabStatus(FAB_STATUS_ADD_EVENT);
     }
+
+    @Override
+    public void onEventLongClick() {
+
+    }
 }

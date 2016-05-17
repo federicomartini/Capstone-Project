@@ -6,7 +6,7 @@
 
     <dimen name="app_bar_layout_height">128dp</dimen>
     <dimen name="app_bar_layout_elevation">4dp</dimen>
-    <dimen name="collapsing_toolbar_layout_expanded_title_margin_start">72dp</dimen>
+    <dimen name="collapsing_toolbar_layout_expanded_title_margin_start">16dp</dimen>
 
     <dimen name="small_margin_material_design">4dp</dimen>
     <dimen name="medium_margin_material_design">8dp</dimen>

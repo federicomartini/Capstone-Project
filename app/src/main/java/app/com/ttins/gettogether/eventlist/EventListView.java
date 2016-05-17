@@ -4,11 +4,13 @@ package app.com.ttins.gettogether.eventlist;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventlist.adapter.EventRecyclerViewAdapter;
 import app.com.ttins.gettogether.eventlist.loader.EventLoader;
 import butterknife.BindInt;
@@ -35,17 +38,23 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     @BindInt(R.integer.event_list_column_count) int columnCount;
     Callback callback;
     Unbinder unbinder;
+    EventRecyclerViewAdapter eventRecyclerViewAdapter;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.thumbnail) public ImageView thumbnailView;
         @BindView(R.id.event_title) public TextView titleView;
+        @BindView(R.id.card_view_list_item_event) public CardView cardView;
+        public long id;
 
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             titleView = ButterKnife.findById(view, R.id.event_title);
+            thumbnailView = ButterKnife.findById(view, R.id.thumbnail);
+            cardView = ButterKnife.findById(view, R.id.card_view_list_item_event);
         }
+
     }
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +72,12 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(LOG_TAG, "onResume");
         if(this.isVisible()) {
             callback.onEventListViewResume();
         }
 
-        getLoaderManager().restartLoader(0, null, this);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -79,8 +89,6 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         emptyView = ButterKnife.findById(root, R.id.empty_view);
         columnCount = root.getResources().getInteger(R.integer.event_list_column_count);
 
-        getLoaderManager().initLoader(0, null, this);
-
         return root;
     }
 
@@ -91,7 +99,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
         Log.d(LOG_TAG, "onLoadFinished");
 
         if (!cursor.moveToFirst()) {
@@ -104,8 +112,20 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
             emptyView.setVisibility(View.GONE);
         }
 
-        EventRecyclerViewAdapter eventRecyclerViewAdapter = new EventRecyclerViewAdapter(cursor);
-        eventRecyclerViewAdapter.setHasStableIds(true);
+        if (eventRecyclerViewAdapter == null) {
+            eventRecyclerViewAdapter = new EventRecyclerViewAdapter(cursor, new EventRecyclerViewAdapter.OnClickItemListener() {
+                @Override
+                public void onLongClick(long id) {
+                    Log.d(LOG_TAG, "onLongClick received");
+                    getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
+                            GetTogetherContract.Events._ID + " = ?",
+                            new String[]{String.valueOf(id)});
+
+                    eventRecyclerViewAdapter = null;
+                }
+            });
+        }
+
         recyclerView.setAdapter(eventRecyclerViewAdapter);
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
@@ -115,8 +135,10 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
 
     }
 
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        Log.d(LOG_TAG, "onLoaderReset");
         if(recyclerView != null)
             recyclerView.setAdapter(null);
     }

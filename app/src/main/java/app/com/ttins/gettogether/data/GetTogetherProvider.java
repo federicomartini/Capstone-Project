@@ -148,14 +148,15 @@ public class GetTogetherProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
 
-        if (selection == null || rows == 0) {
+        /*if (selection == null || rows == 0) {*/
             try {
                 getContext().getContentResolver().notifyChange(uri, null);
+                Log.d(LOG_TAG, "Delete command received");
             }
             catch (NullPointerException e) {
                 Log.d(LOG_TAG, "Content Resolver is null");
             }
-        }
+        /*}*/
 
         return rows;
     }

@@ -51,6 +51,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                     presenter.onFabClick();
                 }
             });
+
         } else {
             Log.d(LOG_TAG, "FAB setOnClickListener failed: FAB is null");
         }
