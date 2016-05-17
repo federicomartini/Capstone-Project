@@ -1,7 +1,6 @@
 package app.com.ttins.gettogether.eventlist.adapter;
 
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,7 +57,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
             holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    listener.onLongClick(holder.id);
+                    listener.onLongClick(holder.id, holder.titleView.getText().toString());
                     return true;
                 }
             });
@@ -79,7 +78,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
 
 
     public interface OnClickItemListener {
-        void onLongClick(long id);
+        void onLongClick(long id, String eventTitle);
     }
 
 }
