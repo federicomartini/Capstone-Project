@@ -29,6 +29,8 @@ public interface EventMVP {
         void onSetFabToGuestStatus();
         void onSaveEventDataRequest();
         void onShowEventDetailView(long id);
+        void onOpenFabGuestAnimation();
+        void onCloseFabGuestAnimation();
     }
 
 }

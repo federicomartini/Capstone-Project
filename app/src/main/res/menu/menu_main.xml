@@ -20,4 +20,12 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/event_edit_item_menu"
+        android:orderInCategory="3"
+        android:icon="@drawable/ic_mode_edit_white_24dp"
+        android:title="@string/event_edit_menu"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
 </menu>

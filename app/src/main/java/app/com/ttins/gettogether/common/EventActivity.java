@@ -10,15 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
 import app.com.ttins.gettogether.eventdetail.EventDetailView;
 import app.com.ttins.gettogether.eventedit.EventEditView;
 import app.com.ttins.gettogether.eventlist.EventListView;
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class EventActivity extends AppCompatActivity implements EventMVP.RequestedViewOps,
         EventListView.Callback, EventEditView.Callback, EventDetailView.Callback {
@@ -30,9 +30,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     private static final String FRAGMENT_DETAIL_VIEW_TAG = "FRAG_DETAIL_VIEW";
 
     private EventMVP.PresenterOps presenter;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab, fabGuestAdd;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Animation fab_guest_open, fab_guest_close;
     private final EventStateMaintainer stateMaintainer =
             new EventStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
 
@@ -42,12 +43,14 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         setContentView(R.layout.activity_event);
         toolbar = (Toolbar) findViewById(R.id.toolbar_event_activity);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout_event_activity);
+        fab_guest_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_open);
+        fab_guest_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_close);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
         startMVPOps();
 
-        /* Starts with the Event List View */
+        fabGuestAdd = (FloatingActionButton) findViewById(R.id.fab_guest_add_event_activity);
         fab = (FloatingActionButton) findViewById(R.id.fab_event_event_activity);
 
         if (fab != null) {
@@ -121,6 +124,11 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -213,5 +221,22 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onChangeToolbarToEventTitle(String eventTitle) {
         collapsingToolbarLayout.setTitle(eventTitle);
+    }
+
+    @Override
+    public void onOpenFabGuestAnimation() {
+        Log.d(LOG_TAG, "onOpenFabGuestAnimation");
+        fabGuestAdd.setVisibility(View.VISIBLE);
+        fabGuestAdd.setClickable(true);
+        fabGuestAdd.startAnimation(fab_guest_open);
+
+    }
+
+    @Override
+    public void onCloseFabGuestAnimation() {
+        Log.d(LOG_TAG, "onCloseFabGuestAnimation");
+        fabGuestAdd.setVisibility(View.GONE);
+        fabGuestAdd.startAnimation(fab_guest_close);
+        fabGuestAdd.setClickable(false);
     }
 }

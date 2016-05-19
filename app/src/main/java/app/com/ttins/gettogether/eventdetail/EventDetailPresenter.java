@@ -17,9 +17,13 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
     private static final String LOG_TAG = EventDetailPresenter.class.getSimpleName();
 
+    private static final String EVENT_STATUS_CONFIRMED = "YES";
+    private static final String EVENT_STATUS_NOT_CONFIRMED = "NO";
+
     EventDetailMVP.ModelOps model;
     WeakReference<EventDetailMVP.RequiredViewOps> view;
     HashMap<Integer, String> eventDataMap;
+    boolean confirmButtonStatus = false;
 
     public EventDetailPresenter(EventDetailMVP.RequiredViewOps view) {
         model = new EventDetailModel(this);
@@ -49,12 +53,18 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
         if (view != null) {
             view.get().onChangeEventTitle(this.eventDataMap.get(EventDetailLoader.Query.TITLE));
-            view.get().onChangeConfirmStatus(this.eventDataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS));
             view.get().onChangeEventDuration(this.eventDataMap.get(EventDetailLoader.Query.TITLE));
             view.get().onChangeMeetLocation(this.eventDataMap.get(EventDetailLoader.Query.MEETING_LOCATION));
             view.get().onChangeNotes(this.eventDataMap.get(EventDetailLoader.Query.NOTES));
             view.get().onChangePhoneNumber(this.eventDataMap.get(EventDetailLoader.Query.PLACE_PHONE_NUMBER));
             view.get().onChangeStartTimeText(this.eventDataMap.get(EventDetailLoader.Query.START_TIME_HOUR));
+
+
+            /*if (this.eventDataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS).compareTo(EVENT_STATUS_CONFIRMED) == 0) {
+                confirmButtonStatus = true;
+            } else {
+                confirmButtonStatus = false;
+            }*/
         }
     }
 
@@ -74,5 +84,10 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     @Override
     public void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass) {
         view.get().onLoaderInitCompleted(loaderClass);
+    }
+
+    @Override
+    public void onConfirmButtonClick() {
+
     }
 }

@@ -11,8 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,6 +41,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     TextView emptyGuestList;
     TextView notes;
     ListView guestsList;
+    ImageButton confirmButton;
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +53,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
         Bundle args = getArguments();
         eventId = args.getLong("FRAG_EVENT_DETAIL_EVENT_ID");
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -66,6 +72,12 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         presenter.initLoader();
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.event_edit_item_menu).setVisible(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,6 +93,14 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         emptyGuestList = (TextView) root.findViewById(R.id.empty_guest_list_text_view_event_detail_view);
         notes = (TextView) root.findViewById(R.id.note_text_view_event_detail_view);
         guestsList = (ListView) root.findViewById(R.id.guest_list_event_detail_view);
+        confirmButton = (ImageButton) root.findViewById(R.id.confirm_image_button_event_detail_view);
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onConfirmButtonClick();
+            }
+        });
 
         return root;
     }

@@ -11,6 +11,8 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     private static final int FAB_STATUS_ADD_EVENT           = 0;
     private static final int FAB_STATUS_ADD_EVENT_CONFIRM   = 1;
     private static final int FAB_STATUS_GUEST               = 2;
+    private static final int FAB_STATUS_GUEST_OPENED        = 3;
+    private static final int FAB_STATUS_GUEST_CLOSED        = 4;
 
     private WeakReference<EventMVP.RequestedViewOps> view;
     private EventMVP.ModelOps model;
@@ -37,6 +39,9 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
             case FAB_STATUS_ADD_EVENT_CONFIRM:
                 onAddEventConfirmFabClick();
                 break;
+            case FAB_STATUS_GUEST:
+                onGuestFabClick();
+                break;
             default:
                 break;
         }
@@ -53,7 +58,24 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
         view.get().onSaveEventDataRequest();
     }
 
+    private void onGuestFabClick() {
+        switch(fabStatus) {
+            case FAB_STATUS_GUEST:
+            case FAB_STATUS_GUEST_CLOSED:
+                setFabStatus(FAB_STATUS_GUEST_OPENED);
+                break;
+            case FAB_STATUS_GUEST_OPENED:
+                setFabStatus(FAB_STATUS_GUEST_CLOSED);
+                break;
+            default:
+                Log.d(LOG_TAG, "Unknown click event");
+                break;
+        }
+    }
+
     private void setFabStatus(int fabStatus) {
+        forceCloseStatus(fabStatus);
+
         this.fabStatus = fabStatus;
         switch (fabStatus) {
             case FAB_STATUS_ADD_EVENT:
@@ -65,10 +87,24 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
             case FAB_STATUS_GUEST:
                 view.get().onSetFabToGuestStatus();
                 break;
+            case FAB_STATUS_GUEST_OPENED:
+                view.get().onOpenFabGuestAnimation();
+                break;
+            case FAB_STATUS_GUEST_CLOSED:
+                view.get().onCloseFabGuestAnimation();
+                break;
             default:
                 break;
         }
         Log.d(LOG_TAG, "fatStatus: " + fabStatus);
+    }
+
+    private void forceCloseStatus(int fabStatus) {
+        if(this.fabStatus == FAB_STATUS_GUEST_OPENED) {
+            if (fabStatus != this.fabStatus ) {
+                view.get().onCloseFabGuestAnimation();
+            }
+        }
     }
 
 

@@ -13,6 +13,7 @@ public interface EventDetailMVP {
         void onDetachView();
         void onPopulateDetailView(long id);
         void initLoader();
+        void onConfirmButtonClick();
     }
 
     interface ModelOps {

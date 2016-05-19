@@ -135,8 +135,8 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/confirm_image_event_detail_view"
+            <ImageButton
+                android:id="@+id/confirm_image_button_event_detail_view"
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Not Confirmed"
-                android:layout_toEndOf="@+id/confirm_image_event_detail_view"
+                android:layout_toEndOf="@+id/confirm_image_button_event_detail_view"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/medium_margin_material_design"/>
 
