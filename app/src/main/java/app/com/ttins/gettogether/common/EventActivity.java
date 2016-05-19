@@ -2,6 +2,7 @@ package app.com.ttins.gettogether.common;
 
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     private EventMVP.PresenterOps presenter;
     private FloatingActionButton fab;
+    private Toolbar toolbar;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     private final EventStateMaintainer stateMaintainer =
             new EventStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
 
@@ -35,7 +38,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_event_activity);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_event_activity);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout_event_activity);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
@@ -142,6 +146,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onShowEventEditView() {
+        collapsingToolbarLayout.setTitle("Edit Event");
         EventEditView fragmentEventEditView = new EventEditView();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG).addToBackStack(null).commit();
@@ -149,6 +154,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onShowEventListView() {
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
         EventListView fragmentEventListView = new EventListView();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG).commit();
@@ -161,6 +167,11 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fragmentEventEditView.addEvent();
     }
 
+    @Override
+    public void onEventItemClick(long id, String eventTitle) {
+        collapsingToolbarLayout.setTitle(eventTitle);
+        //TODO: Show event detail fragment
+    }
 
     @Override
     public void onDestroy() {

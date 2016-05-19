@@ -116,6 +116,12 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
 
         if (eventRecyclerViewAdapter == null) {
             eventRecyclerViewAdapter = new EventRecyclerViewAdapter(cursor, new EventRecyclerViewAdapter.OnClickItemListener() {
+
+                @Override
+                public void onClick(long id, String eventTitle) {
+                    callback.onEventItemClick(id, eventTitle);
+                }
+
                 @Override
                 public void onLongClick(final long id, String title) {
                     Log.d(LOG_TAG, "onLongClick received");
@@ -167,6 +173,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     }
 
     public interface Callback {
+        void onEventItemClick(long id, String titleText);
         void onEventListViewResume();
     }
 }

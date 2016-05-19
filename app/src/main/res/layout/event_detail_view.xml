@@ -1,0 +1,229 @@
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/map_image_event_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_map_black_36dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example Text"
+                android:layout_toEndOf="@+id/map_image_event_detail_view"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example Text"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/start_time_event_detail_view"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <ImageView
+                android:id="@+id/start_time_event_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_access_time_black_36dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/meet_location_image_event_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location_on_black_36dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example Text"
+                android:layout_toEndOf="@+id/meet_location_image_event_detail_view"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example Text"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/elapse_time_event_detail_view"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <ImageView
+                android:id="@+id/elapse_time_event_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_timelapse_black_36dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/phone_image_event_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_phone_black_36dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example Text"
+                android:layout_toEndOf="@+id/phone_image_event_detail_view"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_margin="@dimen/medium_margin_material_design"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/confirm_image_event_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_crop_square_black_36dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not Confirmed"
+                android:layout_toEndOf="@+id/confirm_image_event_detail_view"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_margin="@dimen/medium_margin_material_design"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/guest_book_image_event_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_person_black_36dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guests List"
+                android:layout_toEndOf="@+id/guest_book_image_event_detail_view"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+
+            <ListView
+                android:id="@+id/guest_list_event_detail_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/note_image_event_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_note_black_36dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guests List"
+                android:layout_toEndOf="@+id/note_image_event_detail_view"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/medium_margin_material_design"/>
+
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/note_text_view_event_edit_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/medium_margin_material_design"/>
+
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

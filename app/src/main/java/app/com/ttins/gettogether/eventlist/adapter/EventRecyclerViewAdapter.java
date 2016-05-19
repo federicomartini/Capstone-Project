@@ -54,6 +54,13 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
                 }
             });
 
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(holder.id, holder.titleView.getText().toString());
+                }
+            });
+
             holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -78,7 +85,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
 
 
     public interface OnClickItemListener {
+        void onClick(long id, String eventTitle);
         void onLongClick(long id, String eventTitle);
     }
+
 
 }
