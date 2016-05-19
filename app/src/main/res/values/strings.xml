@@ -25,4 +25,8 @@
     <string name="event_transition_image">Event Transition Image</string>
     <string name="event_transition_text">Event Transition Text</string>
 
+    <!-- ########## Event Details ########## -->
+    <string name="null_field">-</string>
+    <string name="no_guests">No Guests</string>
+
 </resources>

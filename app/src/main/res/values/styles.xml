@@ -39,8 +39,18 @@
         <item name="android:textColor">@color/colorPrimaryText</item>
     </style>
 
+    <style name="TextViewBase">
+
+    </style>
+
     <style name="SingleLineEditText" parent="EditTextBase">
         <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="SingleLineTextView" parent="TextViewBase">
+        <item name="android:maxLines">2</item>
+        <item name="android:maxLength">18</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="app_bar_theme">

@@ -23,6 +23,8 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
+                android:id="@+id/event_title_text_view_event_detail_view"
+                style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Example Text"
@@ -31,6 +33,8 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
+                android:id="@+id/start_time_text_view_event_detail_view"
+                style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Example Text"
@@ -64,6 +68,8 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
+                android:id="@+id/meet_loc_text_view_event_detail_view"
+                style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Example Text"
@@ -72,6 +78,8 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
+                android:id="@+id/elapse_time_text_view_event_detail_view"
+                style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Example Text"
@@ -105,6 +113,8 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
+                android:id="@+id/phone_text_view_event_detail_view"
+                style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Example Text"
@@ -127,6 +137,7 @@
 
             <ImageView
                 android:id="@+id/confirm_image_event_detail_view"
+                style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_crop_square_black_36dp"
@@ -135,6 +146,8 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
+                android:id="@+id/confirm_status_text_view_event_detail_view"
+                style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Not Confirmed"
@@ -167,6 +180,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/SingleLineTextView"
                 android:text="Guests List"
                 android:layout_toEndOf="@+id/guest_book_image_event_detail_view"
                 android:layout_centerVertical="true"
@@ -179,10 +193,22 @@
             android:layout_height="0dp"
             android:layout_weight="3">
 
-            <ListView
-                android:id="@+id/guest_list_event_detail_view"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/guest_list_event_detail_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/empty_guest_list_text_view_event_detail_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="No guest in the list"/>
+
+            </FrameLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
@@ -203,7 +229,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guests List"
+                android:text="Notes"
                 android:layout_toEndOf="@+id/note_image_event_detail_view"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -216,7 +242,8 @@
             android:layout_weight="2">
 
             <TextView
-                android:id="@+id/note_text_view_event_edit_view"
+                android:id="@+id/note_text_view_event_detail_view"
+                style="@style/SingleLineTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/medium_margin_material_design"/>

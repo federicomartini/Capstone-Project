@@ -13,6 +13,7 @@ import android.view.View;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
+import app.com.ttins.gettogether.eventdetail.EventDetailView;
 import app.com.ttins.gettogether.eventedit.EventEditView;
 import app.com.ttins.gettogether.eventlist.EventListView;
 import butterknife.BindView;
@@ -20,12 +21,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class EventActivity extends AppCompatActivity implements EventMVP.RequestedViewOps,
-        EventListView.Callback, EventEditView.Callback {
+        EventListView.Callback, EventEditView.Callback, EventDetailView.Callback {
 
     private final String LOG_TAG = getClass().getSimpleName();
 
     private static final String FRAGMENT_LIST_VIEW_TAG = "FRAG_LIST_VIEW";
     private static final String FRAGMENT_EDIT_VIEW_TAG = "FRAG_EDIT_VIEW";
+    private static final String FRAGMENT_DETAIL_VIEW_TAG = "FRAG_DETAIL_VIEW";
 
     private EventMVP.PresenterOps presenter;
     private FloatingActionButton fab;
@@ -124,6 +126,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onEventListViewResume() {
         presenter.eventListViewResume();
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
     }
 
     @Override
@@ -169,8 +172,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onEventItemClick(long id, String eventTitle) {
-        collapsingToolbarLayout.setTitle(eventTitle);
-        //TODO: Show event detail fragment
+        presenter.onEventItemClick(id);
     }
 
     @Override
@@ -182,5 +184,34 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onEventSaved() {
         presenter.onEventDataSaved();
+    }
+
+    @Override
+    public void onShowEventDetailView(long id) {
+        Log.d(LOG_TAG, "onShowEventDetailView");
+
+        Bundle args = new Bundle();
+        EventDetailView fragmentEventDetailView = new EventDetailView();
+
+        args.putLong("FRAG_EVENT_DETAIL_EVENT_ID", id);
+
+        fragmentEventDetailView.setArguments(args);
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
+        .addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onSetFabToGuestStatus() {
+        if (fab != null) {
+            fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(), R.drawable.ic_person_white_36dp));
+        } else {
+            Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
+        }
+    }
+
+    @Override
+    public void onChangeToolbarToEventTitle(String eventTitle) {
+        collapsingToolbarLayout.setTitle(eventTitle);
     }
 }

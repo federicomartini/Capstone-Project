@@ -10,6 +10,7 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
 
     private static final int FAB_STATUS_ADD_EVENT           = 0;
     private static final int FAB_STATUS_ADD_EVENT_CONFIRM   = 1;
+    private static final int FAB_STATUS_GUEST               = 2;
 
     private WeakReference<EventMVP.RequestedViewOps> view;
     private EventMVP.ModelOps model;
@@ -61,6 +62,9 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
             case FAB_STATUS_ADD_EVENT_CONFIRM:
                 view.get().onSetFabToAddEventConfirmStatus();
                 break;
+            case FAB_STATUS_GUEST:
+                view.get().onSetFabToGuestStatus();
+                break;
             default:
                 break;
         }
@@ -105,6 +109,14 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
 
     @Override
     public void onEventLongClick() {
+
+    }
+
+    @Override
+    public void onEventItemClick(long id) {
+        Log.d(LOG_TAG, "onEventItemClick");
+        view.get().onShowEventDetailView(id);
+        setFabStatus(FAB_STATUS_GUEST);
 
     }
 }
