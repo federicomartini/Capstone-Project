@@ -104,6 +104,10 @@ public class GetTogetherContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + CONTENT_URI + "/" + PATH_GUESTS;
 
+        public static Uri buildGuestsUri() {
+            return CONTENT_URI;
+        }
+
         public static Uri buildGuestsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
