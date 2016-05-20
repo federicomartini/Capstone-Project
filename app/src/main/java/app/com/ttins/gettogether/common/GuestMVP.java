@@ -28,5 +28,6 @@ public interface GuestMVP {
         void onShowGuestListView();
         void onSaveGuestDataRequest();
         void onShowGuestDetailView(long id);
+        void onShowGuestEditDetailView();
     }
 }

@@ -20,6 +20,30 @@ public class GuestEditModel implements GuestEditMVP.ModelOps {
     }
 
     @Override
+    public void saveGuestData(Long id, String guestName, String phoneNumber, String address) {
+        int rows;
+        ContentValues values = new ContentValues();
+
+        if (viewContext != null) {
+            values.put(GetTogetherContract.Guests.NAME, guestName);
+            values.put(GetTogetherContract.Guests.PHONE_NUMBER, phoneNumber);
+            values.put(GetTogetherContract.Guests.ADDRESS, address);
+
+            rows = viewContext.getContentResolver().update(GetTogetherContract.Guests.CONTENT_URI,
+                                                            values,
+                                                            GetTogetherContract.Guests._ID + " = ?",
+                                                            new String[]{String.valueOf(id)});
+            if (rows != 0) {
+                Log.d(LOG_TAG, "Rows updated: " + rows);
+                presenter.onGuestSaved();
+            } else {
+                Log.d(LOG_TAG, "No rows updated for id = " + id);
+            }
+
+        }
+    }
+
+    @Override
     public void saveGuestData(String guestName, String phoneNumber, String address) {
 
         Uri retUri;

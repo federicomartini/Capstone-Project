@@ -22,6 +22,25 @@ public class GuestEditPresenter implements GuestEditMVP.PresenterOps, GuestEditM
     }
 
     @Override
+    public void saveGuest(Long id, String guestName, String phoneNumber, String address) {
+        int retCheck;
+
+        retCheck = areAllGuestDataOk(guestName, phoneNumber, address);
+
+        switch(retCheck) {
+            case INSERT_DATA_NAME_EMPTY_ERROR:
+                view.get().onShowToast("Guest Name field can't be empty");
+                break;
+            default:
+                break;
+        }
+
+        if (retCheck == INSERT_DATA_NO_ERROR) {
+            model.saveGuestData(id, guestName, phoneNumber, address);
+        }
+    }
+
+    @Override
     public void saveGuest(String guestName, String phoneNumber, String address) {
         int retCheck;
 
@@ -65,4 +84,5 @@ public class GuestEditPresenter implements GuestEditMVP.PresenterOps, GuestEditM
     public void onGuestSaved() {
         view.get().onGuestSaved();
     }
+
 }

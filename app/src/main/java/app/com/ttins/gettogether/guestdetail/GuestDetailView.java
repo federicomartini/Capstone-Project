@@ -12,12 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import app.com.ttins.gettogether.R;
 
 public class GuestDetailView extends Fragment implements GuestDetailMVP.RequestedViewOps {
 
+    public static final String FRAG_GUEST_ID_ARG = "FRAG_GUEST_ID_ARG ";
+    public static final String FRAG_GUEST_NAME_ARG = "FRAG_GUEST_NAME_ARG";
+    public static final String FRAG_PHONE_ARG = "FRAG_PHONE_ARG";
+    public static final String FRAG_ADDRESS_ARG = "FRAG_ADDRESS_ARG ";
+
     GuestDetailMVP.PresenterOps presenter;
     long guestId;
+    String guestName;
     TextView phoneNumber;
     TextView address;
     Callback callback;
@@ -92,6 +100,7 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
     @Override
     public void onChangeGuestName(String guestName) {
         callback.onChangeToolbarTitleToGuestName(guestName);
+        this.guestName = guestName;
     }
 
     @Override
@@ -102,6 +111,18 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
     @Override
     public void onChangeAddress(String address) {
         this.address.setText(address);
+    }
+
+    public Bundle getDetails() {
+
+        Bundle args = new Bundle();
+
+        args.putString(FRAG_GUEST_ID_ARG, Long.toString(guestId));
+        args.putString(FRAG_GUEST_NAME_ARG, guestName);
+        args.putString(FRAG_PHONE_ARG, phoneNumber.getText().toString());
+        args.putString(FRAG_ADDRESS_ARG, address.getText().toString());
+
+        return args;
     }
 
     public interface Callback {

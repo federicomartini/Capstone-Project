@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import java.util.HashMap;
+
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.GuestStateMaintainer;
 import app.com.ttins.gettogether.guestdetail.GuestDetailView;
@@ -204,5 +206,19 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onChangeToolbarTitleToGuestName(String guestName) {
         collapsingToolbarLayout.setTitle(guestName);
+    }
+
+    @Override
+    public void onShowGuestEditDetailView() {
+        GuestDetailView fragmentGuestDetailView = (GuestDetailView ) getSupportFragmentManager().
+                findFragmentByTag(FRAGMENT_DETAIL_VIEW_TAG);
+        if (fragmentGuestDetailView != null) {
+            Bundle args = fragmentGuestDetailView.getDetails();
+            collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
+            GuestEditView fragmentGuestAddView = new GuestEditView();
+            fragmentGuestAddView.setArguments(args);
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG).addToBackStack(null).commit();
+        }
     }
 }

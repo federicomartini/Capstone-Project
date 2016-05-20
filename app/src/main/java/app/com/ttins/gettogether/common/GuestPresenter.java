@@ -11,6 +11,8 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
     private static final int FAB_STATUS_ADD_GUEST = 0;
     private static final int FAB_STATUS_ADD_GUEST_CONFIRM = 1;
     private static final int FAB_GUEST_DETAIL = 2;
+    private static final int FAB_GUEST_EDIT_DETAIL = 3;
+
 
 
     WeakReference<GuestMVP.RequestedViewOps> view;
@@ -78,9 +80,17 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
             case FAB_STATUS_ADD_GUEST_CONFIRM:
                 onAddGuestConfirmFabClick();
                 break;
+            case FAB_GUEST_DETAIL:
+                onEditGuestFabClick();
+                break;
             default:
                 break;
         }
+    }
+
+    void onEditGuestFabClick() {
+        Log.d(LOG_TAG, "onEditGuestFabClick");
+        view.get().onShowGuestEditDetailView();
     }
 
     void onAddGuestFabClick() {
