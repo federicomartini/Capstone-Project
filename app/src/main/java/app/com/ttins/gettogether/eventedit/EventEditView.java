@@ -55,7 +55,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @Override
     public void onResume() {
         super.onResume();
-        presenter.onAttachView(getActivity());
+        presenter.onAttachView(getContext());
         getActivity().invalidateOptionsMenu();
     }
 

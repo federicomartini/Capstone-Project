@@ -64,7 +64,7 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         } else {
-            Log.d(LOG_TAG, "Total Events number: " + cursor.getCount());
+            Log.d(LOG_TAG, "Total Guests number: " + cursor.getCount());
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
@@ -84,7 +84,9 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        Log.d(LOG_TAG, "onLoaderReset");
+        if(recyclerView != null)
+            recyclerView.setAdapter(null);
     }
 
     public void onCreate(@Nullable Bundle savedInstanceState) {

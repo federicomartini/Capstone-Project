@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,21 +14,23 @@ import android.view.Menu;
 import android.view.View;
 
 import app.com.ttins.gettogether.R;
-import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
+import app.com.ttins.gettogether.common.persistence.GuestStateMaintainer;
 import app.com.ttins.gettogether.guestedit.GuestEditView;
 import app.com.ttins.gettogether.guestlist.GuestListView;
 
-public class GuestActivity extends AppCompatActivity implements GuestMVP.RequestedViewOps, GuestListView.Callback {
+public class GuestActivity extends AppCompatActivity implements GuestMVP.RequestedViewOps,
+                        GuestListView.Callback, GuestEditView.Callback {
 
     private static final String LOG_TAG = GuestActivity.class.getSimpleName();
     private static final String FRAGMENT_GUEST_ADD_VIEW_TAG = "FRAGMENT_GUEST_ADD_VIEW_TAG";
+    private static final String FRAGMENT_GUEST_LIST_VIEW_TAG = "FRAGMENT_GUEST_LIST_VIEW_TAG";
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton fab;
     GuestMVP.PresenterOps presenter;
-    private final EventStateMaintainer stateMaintainer =
-            new EventStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
+    private final GuestStateMaintainer stateMaintainer =
+            new GuestStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
 
 
     @Override
@@ -38,6 +41,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.initFabStatus();
     }
 
     @Override
@@ -81,7 +85,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
 
     /**
      * Initialize relevant MVP Objects.
-     * Creates a Presenter instance, saves the presenter in {@link EventStateMaintainer}
+     * Creates a Presenter instance, saves the presenter in {@link GuestStateMaintainer}
      */
     private void initialize(GuestMVP.RequestedViewOps view)
             throws InstantiationException, IllegalAccessException{
@@ -97,7 +101,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
      */
     private void reinitialize(GuestMVP.RequestedViewOps view)
             throws InstantiationException, IllegalAccessException {
-        presenter = stateMaintainer.get(EventMVP.PresenterOps.class.getSimpleName());
+        presenter = stateMaintainer.get(GuestMVP.PresenterOps.class.getSimpleName());
 
         if (presenter == null) {
             Log.w(LOG_TAG, "recreating Presenter");
@@ -133,7 +137,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
 
     @Override
     public void onShowGuestEditView() {
-        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
         GuestEditView fragmentGuestAddView = new GuestEditView();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG).addToBackStack(null).commit();
@@ -147,6 +151,29 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onGuestListViewResume() {
         presenter.guestListViewResume();
-        collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_activity));
+    }
+
+    @Override
+    public void onSaveGuestDataRequest() {
+        GuestEditView fragmentGuestEditView = (GuestEditView) getSupportFragmentManager().
+                findFragmentByTag(FRAGMENT_GUEST_ADD_VIEW_TAG);
+        if (fragmentGuestEditView != null) {
+            fragmentGuestEditView.addGuest();
+        }
+    }
+
+    @Override
+    public void onGuestSaved() {
+        presenter.onGuestDataSaved();
+    }
+
+    @Override
+    public void onShowGuestListView() {
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_activity));
+        GuestListView fragmentGuestListView = new GuestListView();
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentGuestListView, FRAGMENT_GUEST_ADD_VIEW_TAG).commit();
     }
 }

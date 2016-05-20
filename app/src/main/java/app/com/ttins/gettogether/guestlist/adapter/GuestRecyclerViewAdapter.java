@@ -24,7 +24,7 @@ public class GuestRecyclerViewAdapter extends RecyclerView.Adapter<GuestListView
 
     @Override
     public int getItemCount() {
-        return 0;
+        return cursor.getCount();
     }
 
     @Override

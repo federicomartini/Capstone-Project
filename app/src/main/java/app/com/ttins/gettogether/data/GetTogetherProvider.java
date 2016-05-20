@@ -73,6 +73,7 @@ public class GetTogetherProvider extends ContentProvider {
                         values,
                         selection,
                         selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
 
@@ -88,6 +89,8 @@ public class GetTogetherProvider extends ContentProvider {
         SQLiteDatabase db = getTogetherDBHelper.getWritableDatabase();
         long id;
         Uri retUri;
+
+        Log.d(LOG_TAG, "UriMatcher = " + uriMatcher.match(uri));
 
         switch (uriMatcher.match(uri)) {
             case EVENTS:
@@ -113,6 +116,7 @@ public class GetTogetherProvider extends ContentProvider {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
 
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }

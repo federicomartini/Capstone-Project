@@ -56,7 +56,6 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     }
 
     private int areAllEventDataOk(String title, String location, String meetingLocation, String phone) {
-        int retVal = 0;
 
         if (title.isEmpty()) {
             return INSERT_DATA_TITLE_EMPTY_ERROR;

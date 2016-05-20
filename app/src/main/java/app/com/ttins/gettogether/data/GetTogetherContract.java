@@ -58,8 +58,8 @@ public class GetTogetherContract {
                 PHOTO_PATH + " text, " +
                 NOTES + " text, " +
                 GUEST_LIST + " text, " +
-                ATTENDEE_NUMBER + " integer non null, " +
-                CONFIRMATION_STATUS + " integer non null);";
+                ATTENDEE_NUMBER + " integer, " +
+                CONFIRMATION_STATUS + " integer);";
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + CONTENT_URI + "/" + PATH_EVENTS;

@@ -7,6 +7,7 @@ public interface GuestMVP {
         void initFabStatus();
         void onFabClick();
         void guestListViewResume();
+        void onGuestDataSaved();
     }
 
     interface ModelOps {
@@ -22,5 +23,7 @@ public interface GuestMVP {
         void onSetFabToAddGuestStatus();
         void onSetFabToAddGuestConfirmStatus();
         void onShowGuestEditView();
+        void onShowGuestListView();
+        void onSaveGuestDataRequest();
     }
 }

@@ -213,7 +213,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onSaveEventDataRequest() {
         EventEditView fragmentEventEditView = (EventEditView) getSupportFragmentManager().
                                                         findFragmentByTag(FRAGMENT_EDIT_VIEW_TAG);
-        fragmentEventEditView.addEvent();
+        if (fragmentEventEditView != null) {
+            fragmentEventEditView.addEvent();
+        }
     }
 
     @Override
