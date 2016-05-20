@@ -91,7 +91,7 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
 
     void onAddGuestConfirmFabClick() {
         view.get().onSaveGuestDataRequest();
-        setFabStatus(FAB_STATUS_ADD_GUEST);
+        //setFabStatus(FAB_STATUS_ADD_GUEST);
     }
 
     @Override
