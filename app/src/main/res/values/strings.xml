@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">GetTogether</string>
+    <string name="guest_activity">Guests List</string>
     <string name="action_settings">Settings</string>
     <string name="event_edit_menu">Edit Event</string>
+    <string name="guets_list_item_menu">Guests List</string>
+
+    <!-- ########## Intents ########## -->
+    <string name="guest_list_open_action_intent">app.com.ttins.gettogether.ACTION_GUESTSLIST_OPEN</string>
 
     <!-- ########## Empty Recycler View Message ########## -->
     <string name="no_data_available">No data available</string>

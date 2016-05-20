@@ -23,9 +23,17 @@
 
     <item
         android:id="@+id/event_edit_item_menu"
-        android:orderInCategory="3"
+        android:orderInCategory="4"
         android:icon="@drawable/ic_mode_edit_white_24dp"
         android:title="@string/event_edit_menu"
         app:showAsAction="ifRoom"
         android:visible="false" />
+
+    <item android:id="@+id/guest_item_menu"
+        android:orderInCategory="3"
+        android:icon="@drawable/ic_people_white_36dp"
+        android:title="@string/guets_list_item_menu"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+
 </menu>

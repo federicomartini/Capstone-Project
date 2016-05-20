@@ -11,6 +11,7 @@ public interface EventMVP {
         void onDestroy(boolean isChangingConfig);
         void onEventDataSaved();
         void onEventItemClick(long id);
+        void guestMenuItemClick();
     }
 
     interface ModelOps {
@@ -31,6 +32,7 @@ public interface EventMVP {
         void onShowEventDetailView(long id);
         void onOpenFabGuestAnimation();
         void onCloseFabGuestAnimation();
+        void onOpenGuestActivity();
     }
 
 }

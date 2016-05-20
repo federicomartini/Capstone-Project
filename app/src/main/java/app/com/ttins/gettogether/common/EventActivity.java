@@ -1,6 +1,7 @@
 package app.com.ttins.gettogether.common;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -57,6 +59,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d(LOG_TAG, "fab onClick");
                     presenter.onFabClick();
                 }
             });
@@ -64,6 +67,16 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         } else {
             Log.d(LOG_TAG, "FAB setOnClickListener failed: FAB is null");
         }
+
+        if (fabGuestAdd != null) {
+            fabGuestAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(LOG_TAG, "fabGustAdd onClick");
+                }
+            });
+        }
+
     }
 
     /**
@@ -129,6 +142,31 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onOpenGuestActivity() {
+        Intent guestActivityIntent = new Intent(EventActivity.this, GuestActivity.class);
+        //guestActivityIntent.setAction(getResources().getString(R.string.guest_list_open_action_intent));
+        startActivity(guestActivityIntent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_add_guest:
+                break;
+            case R.id.action_remove_guest:
+                break;
+            case R.id.action_settings:
+                break;
+            case R.id.guest_item_menu:
+                presenter.guestMenuItemClick();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

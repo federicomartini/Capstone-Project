@@ -6,7 +6,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -24,6 +27,8 @@ import butterknife.Unbinder;
 
 public class EventEditView extends Fragment implements EventEditMVP.RequiredViewOps {
 
+    private static final String LOG_TAG = EventEditView.class.getSimpleName();
+
     @BindView(R.id.event_title_edit_text_event_edit_view) EditText eventTitle;
     @BindView(R.id.location_edit_text_event_edit_view) EditText location;
     @BindView(R.id.meeting_location_edit_text_event_edit_view) EditText meetingLocation;
@@ -35,6 +40,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new EventEditPresenter(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -50,6 +56,15 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     public void onResume() {
         super.onResume();
         presenter.onAttachView(getActivity());
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        Log.d(LOG_TAG, "onPrepareOptionsMenu");
+        menu.findItem(R.id.guest_item_menu).setVisible(false);
+        menu.findItem(R.id.event_edit_item_menu).setVisible(false);
     }
 
     @Override

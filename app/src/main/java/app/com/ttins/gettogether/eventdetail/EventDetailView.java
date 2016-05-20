@@ -76,6 +76,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.event_edit_item_menu).setVisible(true);
+        menu.findItem(R.id.guest_item_menu).setVisible(false);
     }
 
     @Nullable

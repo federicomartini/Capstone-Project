@@ -40,6 +40,8 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
                 onAddEventConfirmFabClick();
                 break;
             case FAB_STATUS_GUEST:
+            case FAB_STATUS_GUEST_OPENED:
+            case FAB_STATUS_GUEST_CLOSED:
                 onGuestFabClick();
                 break;
             default:
@@ -88,15 +90,17 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
                 view.get().onSetFabToGuestStatus();
                 break;
             case FAB_STATUS_GUEST_OPENED:
+                view.get().onSetFabToGuestStatus();
                 view.get().onOpenFabGuestAnimation();
                 break;
             case FAB_STATUS_GUEST_CLOSED:
+                view.get().onSetFabToGuestStatus();
                 view.get().onCloseFabGuestAnimation();
                 break;
             default:
                 break;
         }
-        Log.d(LOG_TAG, "fatStatus: " + fabStatus);
+        Log.d(LOG_TAG, "fabStatus: " + fabStatus);
     }
 
     private void forceCloseStatus(int fabStatus) {
@@ -154,5 +158,10 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
         view.get().onShowEventDetailView(id);
         setFabStatus(FAB_STATUS_GUEST);
 
+    }
+
+    @Override
+    public void guestMenuItemClick() {
+        view.get().onOpenGuestActivity();
     }
 }

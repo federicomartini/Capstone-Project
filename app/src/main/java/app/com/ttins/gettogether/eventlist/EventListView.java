@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -60,6 +61,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     }
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -80,6 +82,13 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         }
 
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.event_edit_item_menu).setVisible(false);
+        menu.findItem(R.id.guest_item_menu).setVisible(true);
     }
 
     @Override
