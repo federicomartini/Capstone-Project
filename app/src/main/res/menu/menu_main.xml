@@ -32,7 +32,7 @@
     <item android:id="@+id/guest_item_menu"
         android:orderInCategory="3"
         android:icon="@drawable/ic_people_white_36dp"
-        android:title="@string/guets_list_item_menu"
+        android:title="@string/guest_list_item_menu"
         app:showAsAction="ifRoom"
         android:visible="false" />
 

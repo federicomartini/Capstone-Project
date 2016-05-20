@@ -1,6 +1,7 @@
 package app.com.ttins.gettogether.guestlist;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
     RecyclerView recyclerView;
     TextView emptyView;
     int columnCount;
+    Callback callback;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -93,12 +95,17 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onResume() {
         super.onResume();
+        callback.onGuestListViewResume();
         getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        if(context instanceof Activity) {
+            callback = (Callback) context;
+        }
     }
 
     @Nullable
@@ -127,5 +134,10 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public interface Callback {
+        void onGuestItemClick(long id, String titleText);
+        void onGuestListViewResume();
     }
 }

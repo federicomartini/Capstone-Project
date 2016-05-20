@@ -5,6 +5,8 @@ public interface GuestMVP {
         void onConfigurationChanged(GuestMVP.RequestedViewOps view);
         void onDestroy(boolean isChangingConfig);
         void initFabStatus();
+        void onFabClick();
+        void guestListViewResume();
     }
 
     interface ModelOps {
@@ -19,5 +21,6 @@ public interface GuestMVP {
     interface RequestedViewOps {
         void onSetFabToAddGuestStatus();
         void onSetFabToAddGuestConfirmStatus();
+        void onShowGuestEditView();
     }
 }

@@ -4,6 +4,7 @@ package app.com.ttins.gettogether.common;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,11 +14,13 @@ import android.view.View;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
+import app.com.ttins.gettogether.guestedit.GuestEditView;
 import app.com.ttins.gettogether.guestlist.GuestListView;
 
-public class GuestActivity extends AppCompatActivity implements GuestMVP.RequestedViewOps {
+public class GuestActivity extends AppCompatActivity implements GuestMVP.RequestedViewOps, GuestListView.Callback {
 
     private static final String LOG_TAG = GuestActivity.class.getSimpleName();
+    private static final String FRAGMENT_GUEST_ADD_VIEW_TAG = "FRAGMENT_GUEST_ADD_VIEW_TAG";
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -52,7 +55,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                presenter.onFabClick();
             }
         });
     }
@@ -117,7 +120,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onSetFabToAddGuestStatus() {
         if (fab != null) {
-            fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person_white_36dp));
+            fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person_add_white_36dp));
         }
     }
 
@@ -128,4 +131,22 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         }
     }
 
+    @Override
+    public void onShowGuestEditView() {
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+        GuestEditView fragmentGuestAddView = new GuestEditView();
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onGuestItemClick(long id, String titleText) {
+
+    }
+
+    @Override
+    public void onGuestListViewResume() {
+        presenter.guestListViewResume();
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
+    }
 }

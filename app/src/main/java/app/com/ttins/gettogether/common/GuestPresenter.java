@@ -65,4 +65,34 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
         }
         Log.d(LOG_TAG, "fabStatus: " + fabStatus);
     }
+
+    @Override
+    public void onFabClick() {
+        switch (fabStatus) {
+            case FAB_STATUS_ADD_GUEST:
+                onAddGuestFabClick();
+                break;
+            case FAB_STATUS_ADD_GUEST_CONFIRM:
+                onAddGuestConfirmFabClick();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void onAddGuestFabClick() {
+        Log.d(LOG_TAG, "onAddGuestFabClick");
+        view.get().onShowGuestEditView();
+        setFabStatus(FAB_STATUS_ADD_GUEST_CONFIRM);
+    }
+
+    void onAddGuestConfirmFabClick() {
+        setFabStatus(FAB_STATUS_ADD_GUEST);
+    }
+
+    @Override
+    public void guestListViewResume() {
+        Log.d(LOG_TAG, "GuestListView resumed");
+        setFabStatus(FAB_STATUS_ADD_GUEST);
+    }
 }
