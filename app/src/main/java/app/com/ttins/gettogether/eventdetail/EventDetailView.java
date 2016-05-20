@@ -117,9 +117,14 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onDetachView();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
-        presenter.onDetachView();
     }
 
     @Override

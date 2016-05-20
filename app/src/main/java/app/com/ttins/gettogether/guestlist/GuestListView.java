@@ -70,7 +70,17 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
         }
 
         if (guestRecyclerViewAdapter == null) {
-            guestRecyclerViewAdapter = new GuestRecyclerViewAdapter(cursor);
+            guestRecyclerViewAdapter = new GuestRecyclerViewAdapter(cursor, new GuestRecyclerViewAdapter.OnClickItemListener() {
+                @Override
+                public void onClick(long id, String guestName) {
+                    callback.onGuestItemClick(id, guestName);
+                }
+
+                @Override
+                public void onLongClick(long id, String guestName) {
+
+                }
+            });
         }
 
         recyclerView.setAdapter(guestRecyclerViewAdapter);
@@ -139,7 +149,7 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
     }
 
     public interface Callback {
-        void onGuestItemClick(long id, String titleText);
+        void onGuestItemClick(long id, String guestName);
         void onGuestListViewResume();
     }
 }

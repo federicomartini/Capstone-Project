@@ -15,15 +15,17 @@ import android.view.View;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.GuestStateMaintainer;
+import app.com.ttins.gettogether.guestdetail.GuestDetailView;
 import app.com.ttins.gettogether.guestedit.GuestEditView;
 import app.com.ttins.gettogether.guestlist.GuestListView;
 
 public class GuestActivity extends AppCompatActivity implements GuestMVP.RequestedViewOps,
-                        GuestListView.Callback, GuestEditView.Callback {
+                        GuestListView.Callback, GuestEditView.Callback, GuestDetailView.Callback {
 
     private static final String LOG_TAG = GuestActivity.class.getSimpleName();
     private static final String FRAGMENT_GUEST_ADD_VIEW_TAG = "FRAGMENT_GUEST_ADD_VIEW_TAG";
     private static final String FRAGMENT_GUEST_LIST_VIEW_TAG = "FRAGMENT_GUEST_LIST_VIEW_TAG";
+    private static final String FRAGMENT_DETAIL_VIEW_TAG = "FRAGMENT_DETAIL_VIEW_TAG";
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -144,8 +146,8 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     }
 
     @Override
-    public void onGuestItemClick(long id, String titleText) {
-
+    public void onGuestItemClick(long id, String guestName) {
+        presenter.onGuestItemClick(id);
     }
 
     @Override
@@ -175,5 +177,32 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentGuestListView, FRAGMENT_GUEST_ADD_VIEW_TAG).commit();
+    }
+
+    @Override
+    public void onShowGuestDetailView(long id) {
+        Log.d(LOG_TAG, "onShowGuestDetailView");
+
+        Bundle args = new Bundle();
+        GuestDetailView fragmentGuestDetailView = new GuestDetailView();
+
+        args.putLong("FRAG_GUEST_DETAIL_EVENT_ID", id);
+
+        fragmentGuestDetailView.setArguments(args);
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentGuestDetailView, FRAGMENT_DETAIL_VIEW_TAG)
+                .addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onSetFabToGuestDetailStatus() {
+        if (fab != null) {
+            fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_mode_edit_white_24dp));
+        }
+    }
+
+    @Override
+    public void onChangeToolbarTitleToGuestName(String guestName) {
+        collapsingToolbarLayout.setTitle(guestName);
     }
 }

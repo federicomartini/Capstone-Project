@@ -17,9 +17,11 @@ public class GuestRecyclerViewAdapter extends RecyclerView.Adapter<GuestListView
     private static final String LOG_TAG = GuestRecyclerViewAdapter.class.getSimpleName();
 
     Cursor cursor;
+    OnClickItemListener listener;
 
-    public GuestRecyclerViewAdapter (Cursor cursor) {
+    public GuestRecyclerViewAdapter (Cursor cursor, OnClickItemListener listener) {
         this.cursor = cursor;
+        this.listener = listener;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class GuestRecyclerViewAdapter extends RecyclerView.Adapter<GuestListView
     }
 
     @Override
-    public void onBindViewHolder(GuestListView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final GuestListView.ViewHolder holder, int position) {
         if(cursor != null) {
             cursor.moveToPosition(position);
 
@@ -57,14 +59,14 @@ public class GuestRecyclerViewAdapter extends RecyclerView.Adapter<GuestListView
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //listener.onClick(holder.id, holder.titleView.getText().toString());
+                    listener.onClick(holder.id, holder.guestName.getText().toString());
                 }
             });
 
             holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    //listener.onLongClick(holder.id, holder.titleView.getText().toString());
+                    listener.onLongClick(holder.id, holder.guestName.getText().toString());
                     return true;
                 }
             });
@@ -74,5 +76,10 @@ public class GuestRecyclerViewAdapter extends RecyclerView.Adapter<GuestListView
         }
 
         //TODO: insert here the upload of the photo from local storage through Picasso, Glide, etc
+    }
+
+    public interface OnClickItemListener {
+        void onClick(long id, String guestName);
+        void onLongClick(long id, String guestName);
     }
 }

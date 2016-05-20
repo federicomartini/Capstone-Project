@@ -50,13 +50,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO: Add click event handler here
-                }
-            });
-
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
                     listener.onClick(holder.id, holder.titleView.getText().toString());
                 }
             });

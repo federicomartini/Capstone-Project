@@ -1,0 +1,94 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/phone_image_guest_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_phone_black_36dp"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/large_margin_material_design"/>
+
+            <TextView
+                android:id="@+id/phone_label_text_view_guest_detail_view"
+                style="@style/SingleLineTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_label_guest_edit_view"
+                android:layout_toEndOf="@id/phone_image_guest_detail_view" />
+
+            <TextView
+                android:id="@+id/phone_num_text_view_guest_detail_view"
+                style="@style/SingleLineTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example Text"
+                android:layout_toEndOf="@id/phone_image_guest_detail_view"
+                android:layout_below="@id/phone_label_text_view_guest_detail_view"
+                android:layout_marginTop="@dimen/large_margin_material_design"
+                android:layout_marginBottom="@dimen/large_margin_material_design" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/large_margin_material_design">
+
+            <ImageView
+                android:id="@+id/address_image_guest_detail_view"
+                style="@style/SingleLineTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location_on_black_36dp"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/large_margin_material_design"/>
+
+            <TextView
+                android:id="@+id/address_label_text_view_guest_detail_view"
+                style="@style/SingleLineTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address_label_guest_edit_view"
+                android:layout_toEndOf="@id/address_image_guest_detail_view" />
+
+            <TextView
+                android:id="@+id/address_text_view_guest_detail_view"
+                style="@style/SingleLineTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example Text"
+                android:layout_toEndOf="@id/address_image_guest_detail_view"
+                android:layout_below="@id/address_label_text_view_guest_detail_view"
+                android:layout_marginTop="@dimen/large_margin_material_design"
+                android:layout_marginBottom="@dimen/large_margin_material_design" />
+
+            <ImageView
+                android:id="@+id/map_image_guest_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_map_black_36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/large_margin_material_design"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+</android.support.v4.widget.NestedScrollView>

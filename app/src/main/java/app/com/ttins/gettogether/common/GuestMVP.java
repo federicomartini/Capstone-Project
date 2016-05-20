@@ -8,6 +8,7 @@ public interface GuestMVP {
         void onFabClick();
         void guestListViewResume();
         void onGuestDataSaved();
+        void onGuestItemClick(long id);
     }
 
     interface ModelOps {
@@ -22,8 +23,10 @@ public interface GuestMVP {
     interface RequestedViewOps {
         void onSetFabToAddGuestStatus();
         void onSetFabToAddGuestConfirmStatus();
+        void onSetFabToGuestDetailStatus();
         void onShowGuestEditView();
         void onShowGuestListView();
         void onSaveGuestDataRequest();
+        void onShowGuestDetailView(long id);
     }
 }
