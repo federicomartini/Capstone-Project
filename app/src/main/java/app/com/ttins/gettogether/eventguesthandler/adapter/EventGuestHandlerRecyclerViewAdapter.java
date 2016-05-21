@@ -25,7 +25,6 @@ public class EventGuestHandlerRecyclerViewAdapter extends RecyclerView.Adapter<E
 
     @Override
     public int getItemCount() {
-        Log.d(LOG_TAG, "Cursor Items: " + cursor.getCount());
         return cursor.getCount();
     }
 

@@ -24,6 +24,8 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     WeakReference<EventDetailMVP.RequiredViewOps> view;
     HashMap<Integer, String> eventDataMap;
     boolean confirmButtonStatus = false;
+    boolean addGuestRequestPending = false;
+    LoaderManager.LoaderCallbacks<Cursor> loader;
 
     public EventDetailPresenter(EventDetailMVP.RequiredViewOps view) {
         model = new EventDetailModel(this);
@@ -31,6 +33,13 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
     public void onAttachView(EventDetailMVP.RequiredViewOps view) {
             this.view = new WeakReference<>(view);
+
+        if (addGuestRequestPending) {
+            Log.d(LOG_TAG, "onAttachView pendingRequest");
+            this.view.get().onRestartLoaderRequest(this.loader);
+            addGuestRequestPending = false;
+            this.loader = null;
+        }
     }
 
     @Override
@@ -40,14 +49,12 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
     @Override
     public void onPopulateDetailView(long id) {
-        Log.d(LOG_TAG, "onPopulateDetailView");
         model.getEventData(id);
     }
 
 
     @Override
     public void onEventLoadFinished(HashMap<Integer, String> eventDetailMap) {
-        Log.d(LOG_TAG, "onEventLoadFinished");
 
         eventDataMap = eventDetailMap;
 
@@ -94,5 +101,22 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     @Override
     public void onEditItemClick() {
         view.get().onSendDataForEditDetailsView();
+    }
+
+    @Override
+    public void onEventAddGuestReceived(long id) {
+        model.onEventAddGuestReceived(id);
+    }
+
+    @Override
+    public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass) {
+        if (view != null) {
+            view.get().onRestartLoaderRequest(loaderClass);
+        } else {
+            Log.d(LOG_TAG, "onRestartLoaderRequest: view is null");
+            addGuestRequestPending = true;
+            this.loader = loaderClass;
+        }
+
     }
 }

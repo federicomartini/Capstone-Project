@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+
+import com.google.gson.Gson;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.eventguesthandler.adapter.EventGuestHandlerRecyclerViewAdapter;
@@ -119,14 +120,15 @@ public class EventGuestHandlerView extends Fragment implements EventGuestHandler
 
     @Override
     public void onLoadResults(Cursor cursor) {
-        Log.d(LOG_TAG, "onLoadResults");
         if (eventGuestHandlerRecyclerViewAdapter == null) {
-            eventGuestHandlerRecyclerViewAdapter = new EventGuestHandlerRecyclerViewAdapter(cursor, new EventGuestHandlerRecyclerViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(long id) {
-                    Log.d(LOG_TAG, "onItemClick Received by View");
-                }
-            });
+            eventGuestHandlerRecyclerViewAdapter = new EventGuestHandlerRecyclerViewAdapter(cursor,
+                    new EventGuestHandlerRecyclerViewAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(long id) {
+                                    Log.d(LOG_TAG, "onItemClick Received by View");
+                                    callback.onEventGuestHandlerAddRequest(id);
+                                }
+                            });
         }
     }
 
@@ -146,19 +148,17 @@ public class EventGuestHandlerView extends Fragment implements EventGuestHandler
 
     @Override
     public void onSetRecyclerViewAdapter() {
-        Log.d(LOG_TAG, "onSetRecyclerViewAdapter");
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(eventGuestHandlerRecyclerViewAdapter);
 
-
-        Log.d(LOG_TAG, "Adapter Items: " + eventGuestHandlerRecyclerViewAdapter.getItemCount());
         eventGuestHandlerRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     public interface Callback {
         void onEventGuestHandlerResumed();
+        void onEventGuestHandlerAddRequest(long id);
     }
 }

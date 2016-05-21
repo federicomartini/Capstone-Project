@@ -29,6 +29,9 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
     private static final String LOG_TAG = EventDetailView.class.getSimpleName();
 
+    public static final String FRAG_EVENT_DETAIL_EVENT_ID = "FRAG_EVENT_DETAIL_EVENT_ID";
+    public static final String FRAG_GUEST_ADD_LIST_ID_ARG = "FRAG_GUEST_ADD_LIST_ID_ARG";
+
     EventDetailMVP.PresenterOps presenter;
     long eventId;
     Callback callback;
@@ -43,6 +46,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     TextView notes;
     ListView guestsList;
     ImageButton confirmButton;
+    long guestAddListId;
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +57,16 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         }
 
         Bundle args = getArguments();
-        eventId = args.getLong("FRAG_EVENT_DETAIL_EVENT_ID");
+
+        if(args.containsKey(FRAG_EVENT_DETAIL_EVENT_ID)) {
+            eventId = args.getLong(FRAG_EVENT_DETAIL_EVENT_ID);
+        }
+
+        if(args.containsKey(FRAG_GUEST_ADD_LIST_ID_ARG)) {
+            presenter.onEventAddGuestReceived(args.getLong(FRAG_GUEST_ADD_LIST_ID_ARG));
+        }
+
+
         setHasOptionsMenu(true);
     }
 
@@ -68,6 +81,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
     @Override
     public void onResume() {
+        Log.d(LOG_TAG, "EventDetailViewResume");
         super.onResume();
         presenter.onAttachView(this);
         presenter.initLoader();
@@ -168,7 +182,6 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
     @Override
     public void onChangeEventTitle(String eventTitle) {
-        Log.d(LOG_TAG, "onChangeEventTitle: " + eventTitle);
         if(eventTitle != null && !eventTitle.isEmpty()) {
             this.eventTitle.setText(eventTitle);
             callback.onChangeToolbarToEventTitle(eventTitle);
@@ -219,8 +232,18 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     }
 
     @Override
+    public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass) {
+        getLoaderManager().restartLoader(1, null, loaderClass);
+    }
+
+    @Override
     public Context onContextViewRequired() {
         return getContext();
+    }
+
+    public void setGuestIdToAddOnList(long id) {
+        Log.d(LOG_TAG, "setGuestIdToAddOnList");
+        presenter.onEventAddGuestReceived(id);
     }
 
     @Override
@@ -228,6 +251,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         Log.d(LOG_TAG, "onSendDataForEditDetailsView: Id = " + eventId);
         callback.onReceiveIdEditDetailView(eventId);
     }
+
 
     public interface Callback {
         void onChangeToolbarToEventTitle(String eventTitle);

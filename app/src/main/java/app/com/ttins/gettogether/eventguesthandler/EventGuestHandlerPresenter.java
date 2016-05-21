@@ -40,13 +40,9 @@ public class EventGuestHandlerPresenter implements EventGuestHandlerMVP.Presente
     public void onLoadResults(Cursor cursor) {
         view.get().onLoadResults(cursor);
 
-        Log.d(LOG_TAG, "onLoadFinished");
-
         if (!cursor.moveToFirst()) {
-            Log.d(LOG_TAG, "RecyclerView is empty. Showing empty view");
             view.get().onShowEmptyRecyclerView();
         } else {
-            Log.d(LOG_TAG, "Total Guests number: " + cursor.getCount());
             view.get().onShowRecyclerView();
         }
 

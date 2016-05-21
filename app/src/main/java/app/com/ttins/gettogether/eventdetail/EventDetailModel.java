@@ -93,4 +93,9 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
     public void initLoader() {
         presenter.onLoaderInitCompleted(this);
     }
+
+    @Override
+    public void onEventAddGuestReceived(long id) {
+        presenter.onRestartLoaderRequest(this);
+    }
 }

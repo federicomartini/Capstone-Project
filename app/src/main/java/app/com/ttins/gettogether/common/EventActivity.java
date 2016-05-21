@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import java.util.List;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
@@ -110,7 +114,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             throws InstantiationException, IllegalAccessException{
         presenter = new EventPresenter(view);
         EventListView fragmentEventListView = new EventListView();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_content, fragmentEventListView).commit();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG).commit();
         stateMaintainer.put(EventMVP.PresenterOps.class.getSimpleName(), presenter);
     }
 
@@ -175,8 +180,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onEventListViewResume() {
+        Log.d(LOG_TAG, "onEventListViewresume");
         presenter.eventListViewResume();
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+
     }
 
     @Override
@@ -204,7 +211,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         collapsingToolbarLayout.setTitle("Edit Event");
         EventEditView fragmentEventEditView = new EventEditView();
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG).addToBackStack(null).commit();
+                replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG)
+                .addToBackStack(null)
+                .commit();
+
     }
 
     @Override
@@ -212,7 +222,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
         EventListView fragmentEventListView = new EventListView();
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG).commit();
+                replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG)
+                .addToBackStack(null)
+                .commit();
+
     }
 
     @Override
@@ -252,7 +265,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fragmentEventDetailView.setArguments(args);
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
-        .addToBackStack(null).commit();
+                .addToBackStack(null)
+                .commit();
+
     }
 
     @Override
@@ -297,7 +312,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fragmentEventEditView.setArguments(args);
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventEditView , FRAGMENT_EDIT_VIEW_TAG)
-                .addToBackStack(null).commit();
+                .addToBackStack(null)
+                .commit();
+
     }
 
     @Override
@@ -307,32 +324,46 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     }
 
     @Override
-    public void onEventDetailViewResumed() {
-        presenter.eventDetailViewResume();
-    }
-
-    @Override
-    public void onShowGuestHandlerView() {
-        Log.d(LOG_TAG, "onShowGuestHandlerView");
-        EventGuestHandlerView fragmentEventGuestHandlerView = new EventGuestHandlerView();
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventGuestHandlerView,
-                        FRAGMENT_GUEST_HANDLER_VIEW_TAG)
-                .addToBackStack(null).commit();
-    }
-
-    @Override
-    public void onEventGuestHandlerResumed() {
-        collapsingToolbarLayout.setTitle(getResources().getString(R.string.event_guest_list_title));
-        presenter.eventGuestHandlerResume();
-    }
-
-    @Override
-    public void onsetFabToAddGuestToListStatus() {
-        if (fab != null) {
-            fab.setVisibility(View.GONE);
-        } else {
-            Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
+        public void onEventDetailViewResumed() {
+            presenter.eventDetailViewResume();
         }
+
+        @Override
+        public void onShowGuestHandlerView() {
+            Log.d(LOG_TAG, "onShowGuestHandlerView");
+            EventGuestHandlerView fragmentEventGuestHandlerView = new EventGuestHandlerView();
+
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_content, fragmentEventGuestHandlerView,
+                            FRAGMENT_GUEST_HANDLER_VIEW_TAG)
+                    .addToBackStack(null)
+                    .commit();
+
+        }
+
+        @Override
+        public void onEventGuestHandlerResumed() {
+            collapsingToolbarLayout.setTitle(getResources().getString(R.string.event_guest_list_title));
+            presenter.eventGuestHandlerResume();
+        }
+
+        @Override
+        public void onsetFabToAddGuestToListStatus() {
+            if (fab != null) {
+                fab.setVisibility(View.GONE);
+            } else {
+                Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
+            }
+    }
+
+    @Override
+    public void onEventGuestHandlerAddRequest(long id) {
+        Log.d(LOG_TAG, "onEventGuestHandlerAddRequest");
+        EventDetailView fragmentEventDetailView = (EventDetailView) getSupportFragmentManager()
+                .findFragmentByTag(FRAGMENT_DETAIL_VIEW_TAG);
+
+        getSupportFragmentManager().popBackStack();
+
+        fragmentEventDetailView.setGuestIdToAddOnList(id);
     }
 }

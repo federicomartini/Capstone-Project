@@ -81,7 +81,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
 
         Bundle args = getArguments();
 
-        if (!args.isEmpty()) {
+        if (args != null && !args.isEmpty()) {
             Log.d(LOG_TAG, "onCreateView with args: Id = " + args.getLong(FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG));
             presenter.initEventEditLoader(args.getLong(FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG));
             eventId = args.getLong(FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG);

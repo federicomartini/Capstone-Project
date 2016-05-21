@@ -29,7 +29,6 @@ public class EventGuestHandlerModel implements EventGuestHandlerMVP.ModelOps, Lo
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.d(LOG_TAG, "onLoadFinished");
         presenter.onLoadResults(cursor);
     }
 
