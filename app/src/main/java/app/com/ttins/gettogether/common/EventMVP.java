@@ -12,6 +12,8 @@ public interface EventMVP {
         void onEventDataSaved();
         void onEventItemClick(long id);
         void guestMenuItemClick();
+        void eventEditViewResume();
+        void eventDetailViewResume();
     }
 
     interface ModelOps {

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -70,6 +71,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         super.onResume();
         presenter.onAttachView(this);
         presenter.initLoader();
+        callback.onEventDetailViewResumed();
     }
 
     @Override
@@ -77,6 +79,17 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.event_edit_item_menu).setVisible(true);
         menu.findItem(R.id.guest_item_menu).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.event_edit_item_menu:
+                presenter.onEditItemClick();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Nullable
@@ -210,7 +223,15 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         return getContext();
     }
 
+    @Override
+    public void onSendDataForEditDetailsView() {
+        Log.d(LOG_TAG, "onSendDataForEditDetailsView: Id = " + eventId);
+        callback.onReceiveIdEditDetailView(eventId);
+    }
+
     public interface Callback {
         void onChangeToolbarToEventTitle(String eventTitle);
+        void onReceiveIdEditDetailView(long id);
+        void onEventDetailViewResumed();
     }
 }

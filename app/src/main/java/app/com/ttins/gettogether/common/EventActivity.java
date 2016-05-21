@@ -279,4 +279,26 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fabGuestAdd.startAnimation(fab_guest_close);
         fabGuestAdd.setClickable(false);
     }
+
+    @Override
+    public void onReceiveIdEditDetailView(long id) {
+        Log.d(LOG_TAG, "onReceiveIdEditDetailView: Id = " + id);
+        Bundle args = new Bundle();
+        args.putLong(EventEditView.FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG, id);
+        EventEditView fragmentEventEditView = new EventEditView ();
+        fragmentEventEditView.setArguments(args);
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentEventEditView , FRAGMENT_EDIT_VIEW_TAG).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onEventEditViewResumed() {
+        presenter.eventEditViewResume();
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
+    }
+
+    @Override
+    public void onEventDetailViewResumed() {
+        presenter.eventDetailViewResume();
+    }
 }

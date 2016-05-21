@@ -142,6 +142,12 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     }
 
     @Override
+    public void eventEditViewResume() {
+        Log.d(LOG_TAG, "eventEditView resumed");
+        setFabStatus(FAB_STATUS_ADD_EVENT_CONFIRM);
+    }
+
+    @Override
     public void onEventDataSaved() {
         view.get().onShowEventListView();
         setFabStatus(FAB_STATUS_ADD_EVENT);
@@ -163,5 +169,10 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     @Override
     public void guestMenuItemClick() {
         view.get().onOpenGuestActivity();
+    }
+
+    @Override
+    public void eventDetailViewResume() {
+        setFabStatus(FAB_STATUS_GUEST);
     }
 }
