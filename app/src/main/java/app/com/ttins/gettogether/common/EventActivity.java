@@ -190,7 +190,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onSetFabToAddEventStatus() {
         if (fab != null) {
             fab.setVisibility(View.VISIBLE);
-            fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(), R.drawable.ic_add_white_36dp));
+            fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(),
+                    R.drawable.ic_add_white_36dp));
         } else {
             Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
         }
@@ -200,7 +201,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onSetFabToAddEventConfirmStatus() {
         if (fab != null) {
             fab.setVisibility(View.VISIBLE);
-            fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(), R.drawable.ic_check_white_36dp));
+            fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(),
+                    R.drawable.ic_check_white_36dp));
         } else {
             Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
         }

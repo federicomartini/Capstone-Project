@@ -84,6 +84,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         Log.d(LOG_TAG, "EventDetailViewResume");
         super.onResume();
         presenter.onAttachView(this);
+        presenter.onAttachContext(getContext());
         presenter.initLoader();
         callback.onEventDetailViewResumed();
     }
@@ -147,6 +148,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     public void onPause() {
         super.onPause();
         presenter.onDetachView();
+        presenter.onDetachContext();
     }
 
     @Override
@@ -232,8 +234,8 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     }
 
     @Override
-    public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass) {
-        getLoaderManager().restartLoader(1, null, loaderClass);
+    public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId) {
+        getLoaderManager().restartLoader(loaderId, null, loaderClass);
     }
 
     @Override

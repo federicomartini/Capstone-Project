@@ -6,9 +6,15 @@ import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
 import android.util.Log;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
+import com.google.gson.Gson;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import app.com.ttins.gettogether.eventdetail.gson.Guest;
+import app.com.ttins.gettogether.eventdetail.gson.Guests;
 import app.com.ttins.gettogether.eventdetail.loader.EventDetailLoader;
 
 
@@ -26,6 +32,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     boolean confirmButtonStatus = false;
     boolean addGuestRequestPending = false;
     LoaderManager.LoaderCallbacks<Cursor> loader;
+    int loaderId;
 
     public EventDetailPresenter(EventDetailMVP.RequiredViewOps view) {
         model = new EventDetailModel(this);
@@ -36,7 +43,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
         if (addGuestRequestPending) {
             Log.d(LOG_TAG, "onAttachView pendingRequest");
-            this.view.get().onRestartLoaderRequest(this.loader);
+            this.view.get().onRestartLoaderRequest(this.loader, this.loaderId);
             addGuestRequestPending = false;
             this.loader = null;
         }
@@ -109,14 +116,47 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     }
 
     @Override
-    public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass) {
+    public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId) {
         if (view != null) {
-            view.get().onRestartLoaderRequest(loaderClass);
+            view.get().onRestartLoaderRequest(loaderClass, loaderId);
         } else {
             Log.d(LOG_TAG, "onRestartLoaderRequest: view is null");
             addGuestRequestPending = true;
             this.loader = loaderClass;
+            this.loaderId = loaderId;
         }
 
+    }
+
+    @Override
+    public void guestListHandler(long guestId, long eventId, String guestList) {
+        Log.d(LOG_TAG, "guestListHandler");
+        Gson gson = new Gson();
+
+        if (guestList == null || guestList.isEmpty()) {
+            List<Guest> listGuest = new ArrayList<>();
+            listGuest.add(new Guest(guestId, ""));
+            /*listGuest.add(new Guest(Long.getLong("8"), "pizza"));
+            listGuest.add(new Guest(Long.getLong("10"), "pasta"));
+            listGuest.add(new Guest(Long.getLong("12"), "panino"));*/
+            String idJsonList = gson.toJson(listGuest);
+            Log.d(LOG_TAG, "Json: " + idJsonList);
+
+            model.onSaveGuestList(eventId, idJsonList);
+
+        } else {
+            //Guests listGuest = gson.fromJson(guestList, Guests.class);
+            Log.d(LOG_TAG, "Guest List: " + guestList);
+        }
+    }
+
+    @Override
+    public void onAttachContext(Context context) {
+        model.onAttachContext(context);
+    }
+
+    @Override
+    public void onDetachContext() {
+        model.onDetachContext();
     }
 }

@@ -1,6 +1,8 @@
 package app.com.ttins.gettogether.eventdetail;
 
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -9,15 +11,21 @@ import android.util.Log;
 
 import java.util.HashMap;
 
+import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventdetail.loader.EventDetailLoader;
 
 public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = EventDetailModel.class.getSimpleName();
 
+    private static final int LOADER_EVENT_ALL_DETAILS = 1;
+    private static final int LOADER_EVENT_GUEST_LIST_DETAIL = 10;
+
     HashMap<Integer, String> dataMap;
     EventDetailMVP.RequiredPresenterOps presenter;
     long eventId;
+    long guestListAddId;
+    private Context context;
 
     public EventDetailModel(EventDetailMVP.RequiredPresenterOps presenter) {
         this.presenter = presenter;
@@ -31,7 +39,16 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return EventDetailLoader.eventDetailFromId(presenter.onContextViewRequired(), eventId);
+        switch(id) {
+            case LOADER_EVENT_ALL_DETAILS:
+                return EventDetailLoader.eventDetailFromId(presenter.onContextViewRequired(), eventId);
+            case LOADER_EVENT_GUEST_LIST_DETAIL:
+                return EventDetailLoader.eventDetailFromId(presenter.onContextViewRequired(), eventId);
+            default:
+                break;
+        }
+
+        return null;
     }
 
     @Override
@@ -81,6 +98,20 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             );
         }
 
+        switch(loader.getId()) {
+            case LOADER_EVENT_ALL_DETAILS:
+                Log.d(LOG_TAG, "LOADER_EVENT_ALL_DETAILS");
+                break;
+            case LOADER_EVENT_GUEST_LIST_DETAIL:
+                Log.d(LOG_TAG, "LOADER_EVENT_GUEST_LIST_DETAIL: ID = " + dataMap.get(EventDetailLoader.Query._ID));
+                presenter.guestListHandler(guestListAddId,
+                        guestListAddId,
+                        cursor.getString(EventDetailLoader.Query.GUEST_LIST));
+                break;
+            default:
+                break;
+        }
+
         presenter.onEventLoadFinished(dataMap);
     }
 
@@ -96,6 +127,32 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
     @Override
     public void onEventAddGuestReceived(long id) {
-        presenter.onRestartLoaderRequest(this);
+        presenter.onRestartLoaderRequest(this, LOADER_EVENT_GUEST_LIST_DETAIL);
+        guestListAddId = id;
+    }
+
+    @Override
+    public void onSaveGuestList(long eventId, String guestList) {
+        ContentValues values = new ContentValues();
+        values.put(GetTogetherContract.Events.GUEST_LIST, guestList);
+
+        context.getContentResolver().update(
+                GetTogetherContract.Events.buildEventsUri(),
+                values,
+                GetTogetherContract.Events._ID + " = ? ",
+                new String[]{String.valueOf(eventId)}
+        );
+
+        Log.d(LOG_TAG, "Save guest list: " + guestList);
+    }
+
+    @Override
+    public void onAttachContext(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void onDetachContext() {
+        this.context = null;
     }
 }

@@ -17,19 +17,25 @@ public interface EventDetailMVP {
         void onConfirmButtonClick();
         void onEditItemClick();
         void onEventAddGuestReceived(long id);
+        void onAttachContext(Context context);
+        void onDetachContext();
     }
 
     interface ModelOps {
+        void onAttachContext(Context context);
+        void onDetachContext();
         void getEventData(long id);
         void initLoader();
         void onEventAddGuestReceived(long id);
+        void onSaveGuestList(long eventId, String guestList);
     }
 
     interface RequiredPresenterOps {
         void onEventLoadFinished(HashMap<Integer, String> eventDetailMap);
         Context onContextViewRequired();
         void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass);
-        void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass);
+        void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId);
+        void guestListHandler(long guestId, long eventId, String guestList);
     }
 
     interface RequiredViewOps {
@@ -44,7 +50,7 @@ public interface EventDetailMVP {
         void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass);
         Context onContextViewRequired();
         void onSendDataForEditDetailsView();
-        void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass);
+        void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId);
 
     }
 }
