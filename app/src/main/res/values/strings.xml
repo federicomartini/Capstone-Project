@@ -5,6 +5,7 @@
     <string name="event_edit_menu">Edit Event</string>
     <string name="guest_list_item_menu">Guests List</string>
     <string name="guest_edit_menu">Edit Guest</string>
+    <string name="event_guest_list_title">Select Guest</string>
 
     <!-- ########## Intents ########## -->
     <string name="guest_list_open_action_intent">app.com.ttins.gettogether.ACTION_GUESTSLIST_OPEN</string>

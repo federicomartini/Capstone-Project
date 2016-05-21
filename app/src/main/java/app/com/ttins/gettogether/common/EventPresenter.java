@@ -13,6 +13,7 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     private static final int FAB_STATUS_GUEST               = 2;
     private static final int FAB_STATUS_GUEST_OPENED        = 3;
     private static final int FAB_STATUS_GUEST_CLOSED        = 4;
+    private static final int FAB_STATUS_ADD_GUEST_LIST      = 5;
 
     private WeakReference<EventMVP.RequestedViewOps> view;
     private EventMVP.ModelOps model;
@@ -97,6 +98,9 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
                 view.get().onSetFabToGuestStatus();
                 view.get().onCloseFabGuestAnimation();
                 break;
+            case FAB_STATUS_ADD_GUEST_LIST:
+                view.get().onsetFabToAddGuestToListStatus();
+                break;
             default:
                 break;
         }
@@ -174,5 +178,16 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     @Override
     public void eventDetailViewResume() {
         setFabStatus(FAB_STATUS_GUEST);
+    }
+
+    @Override
+    public void onFabAddGuestClick() {
+        view.get().onShowGuestHandlerView();
+    }
+
+    @Override
+    public void eventGuestHandlerResume() {
+        Log.d(LOG_TAG, "eventGuestHandlerResume");
+        setFabStatus(FAB_STATUS_ADD_GUEST_LIST);
     }
 }

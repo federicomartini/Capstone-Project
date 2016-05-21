@@ -14,6 +14,8 @@ public interface EventMVP {
         void guestMenuItemClick();
         void eventEditViewResume();
         void eventDetailViewResume();
+        void eventGuestHandlerResume();
+        void onFabAddGuestClick();
     }
 
     interface ModelOps {
@@ -30,11 +32,13 @@ public interface EventMVP {
         void onSetFabToAddEventStatus();
         void onSetFabToAddEventConfirmStatus();
         void onSetFabToGuestStatus();
+        void onsetFabToAddGuestToListStatus();
         void onSaveEventDataRequest();
         void onShowEventDetailView(long id);
         void onOpenFabGuestAnimation();
         void onCloseFabGuestAnimation();
         void onOpenGuestActivity();
+        void onShowGuestHandlerView();
     }
 
 }

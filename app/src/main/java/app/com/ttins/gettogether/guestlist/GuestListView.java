@@ -3,12 +3,14 @@ package app.com.ttins.gettogether.guestlist;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.guestlist.adapter.GuestRecyclerViewAdapter;
 import app.com.ttins.gettogether.guestlist.loader.GuestLoader;
 
@@ -77,8 +80,22 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
                 }
 
                 @Override
-                public void onLongClick(long id, String guestName) {
+                public void onLongClick(final long id, String guestName) {
+                    Log.d(LOG_TAG, "onLongClick received");
 
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Delete Guest")
+                            .setMessage("Want to delete guest \"" + guestName + "\" ?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    getActivity().getContentResolver().delete(GetTogetherContract.Guests.CONTENT_URI,
+                                            GetTogetherContract.Guests._ID + " = ?",
+                                            new String[]{String.valueOf(id)});
+                                    guestRecyclerViewAdapter = null;
+                                }
+                            });
+                    builder.create().show();
                 }
             });
         }

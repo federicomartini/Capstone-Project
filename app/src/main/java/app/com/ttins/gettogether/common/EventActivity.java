@@ -19,17 +19,20 @@ import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
 import app.com.ttins.gettogether.eventdetail.EventDetailView;
 import app.com.ttins.gettogether.eventedit.EventEditView;
+import app.com.ttins.gettogether.eventguesthandler.EventGuestHandlerView;
 import app.com.ttins.gettogether.eventlist.EventListView;
 import butterknife.ButterKnife;
 
 public class EventActivity extends AppCompatActivity implements EventMVP.RequestedViewOps,
-        EventListView.Callback, EventEditView.Callback, EventDetailView.Callback {
+        EventListView.Callback, EventEditView.Callback, EventDetailView.Callback,
+        EventGuestHandlerView.Callback {
 
     private final String LOG_TAG = getClass().getSimpleName();
 
     private static final String FRAGMENT_LIST_VIEW_TAG = "FRAG_LIST_VIEW";
     private static final String FRAGMENT_EDIT_VIEW_TAG = "FRAG_EDIT_VIEW";
     private static final String FRAGMENT_DETAIL_VIEW_TAG = "FRAG_DETAIL_VIEW";
+    private static final String FRAGMENT_GUEST_HANDLER_VIEW_TAG = "FRAGMENT_GUEST_HANDLER_VIEW_TAG";
 
     private EventMVP.PresenterOps presenter;
     private FloatingActionButton fab, fabGuestAdd;
@@ -72,7 +75,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             fabGuestAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(LOG_TAG, "fabGustAdd onClick");
+                    Log.d(LOG_TAG, "fabGuestAdd onClick");
+                    presenter.onFabAddGuestClick();
                 }
             });
         }
@@ -178,6 +182,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onSetFabToAddEventStatus() {
         if (fab != null) {
+            fab.setVisibility(View.VISIBLE);
             fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(), R.drawable.ic_add_white_36dp));
         } else {
             Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
@@ -187,6 +192,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onSetFabToAddEventConfirmStatus() {
         if (fab != null) {
+            fab.setVisibility(View.VISIBLE);
             fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(), R.drawable.ic_check_white_36dp));
         } else {
             Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
@@ -252,7 +258,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onSetFabToGuestStatus() {
         if (fab != null) {
-            fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(), R.drawable.ic_person_white_36dp));
+            fab.setVisibility(View.VISIBLE);
+            fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(),
+                    R.drawable.ic_person_white_36dp));
         } else {
             Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
         }
@@ -288,7 +296,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         EventEditView fragmentEventEditView = new EventEditView ();
         fragmentEventEditView.setArguments(args);
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventEditView , FRAGMENT_EDIT_VIEW_TAG).addToBackStack(null).commit();
+                replace(R.id.fragment_content, fragmentEventEditView , FRAGMENT_EDIT_VIEW_TAG)
+                .addToBackStack(null).commit();
     }
 
     @Override
@@ -300,5 +309,30 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onEventDetailViewResumed() {
         presenter.eventDetailViewResume();
+    }
+
+    @Override
+    public void onShowGuestHandlerView() {
+        Log.d(LOG_TAG, "onShowGuestHandlerView");
+        EventGuestHandlerView fragmentEventGuestHandlerView = new EventGuestHandlerView();
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentEventGuestHandlerView,
+                        FRAGMENT_GUEST_HANDLER_VIEW_TAG)
+                .addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onEventGuestHandlerResumed() {
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.event_guest_list_title));
+        presenter.eventGuestHandlerResume();
+    }
+
+    @Override
+    public void onsetFabToAddGuestToListStatus() {
+        if (fab != null) {
+            fab.setVisibility(View.GONE);
+        } else {
+            Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
+        }
     }
 }
