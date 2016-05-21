@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import java.util.HashMap;
 import app.com.ttins.gettogether.R;
 
 public class GuestDetailView extends Fragment implements GuestDetailMVP.RequestedViewOps {
+
+    private static final String LOG_TAG = GuestDetailView.class.getSimpleName();
 
     public static final String FRAG_GUEST_ID_ARG = "FRAG_GUEST_ID_ARG ";
     public static final String FRAG_GUEST_NAME_ARG = "FRAG_GUEST_NAME_ARG";
@@ -54,9 +57,11 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
 
     @Override
     public void onResume() {
+        Log.d(LOG_TAG, "onResume");
         super.onResume();
         presenter.onAttachView(this);
         presenter.initLoader();
+        callback.onGuestDetailViewResumed();
     }
 
     @Nullable
@@ -127,5 +132,6 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
 
     public interface Callback {
         void onChangeToolbarTitleToGuestName(String guestName);
+        void onGuestDetailViewResumed();
     }
 }

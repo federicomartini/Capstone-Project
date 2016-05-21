@@ -122,4 +122,16 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
         view.get().onShowGuestDetailView(id);
         setFabStatus(FAB_GUEST_DETAIL);
     }
+
+    @Override
+    public void guestEditViewResume() {
+        Log.d(LOG_TAG, "GuestEditView resumed");
+        setFabStatus(FAB_STATUS_ADD_GUEST_CONFIRM);
+    }
+
+    @Override
+    public void guestDetailViewResume() {
+        Log.d(LOG_TAG, "GuestDetailView resumed");
+        setFabStatus(FAB_GUEST_DETAIL);
+    }
 }

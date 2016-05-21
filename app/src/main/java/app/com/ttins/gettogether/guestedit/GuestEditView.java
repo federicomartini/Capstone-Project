@@ -52,6 +52,7 @@ public class GuestEditView extends Fragment implements GuestEditMVP.RequestedVie
     public void onResume() {
         super.onResume();
         presenter.onAttachView(getContext());
+        callback.onGuestEditViewResumed();
     }
 
     @Override
@@ -129,5 +130,6 @@ public class GuestEditView extends Fragment implements GuestEditMVP.RequestedVie
 
     public interface Callback {
         void onGuestSaved();
+        void onGuestEditViewResumed();
     }
 }

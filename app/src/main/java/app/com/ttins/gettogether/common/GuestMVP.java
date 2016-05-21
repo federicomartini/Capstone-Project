@@ -7,13 +7,14 @@ public interface GuestMVP {
         void initFabStatus();
         void onFabClick();
         void guestListViewResume();
+        void guestEditViewResume();
+        void guestDetailViewResume();
         void onGuestDataSaved();
         void onGuestItemClick(long id);
     }
 
     interface ModelOps {
         void onDestroy();
-
     }
 
     interface RequestedPresenterOps {

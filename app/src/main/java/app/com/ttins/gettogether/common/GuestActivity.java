@@ -221,4 +221,15 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
                     replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG).addToBackStack(null).commit();
         }
     }
+
+    @Override
+    public void onGuestEditViewResumed() {
+        presenter.guestEditViewResume();
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
+    }
+
+    @Override
+    public void onGuestDetailViewResumed() {
+        presenter.guestDetailViewResume();
+    }
 }
