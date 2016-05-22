@@ -104,6 +104,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         switch(loader.getId()) {
             case LOADER_EVENT_ALL_DETAILS:
                 Log.d(LOG_TAG, "LOADER_EVENT_ALL_DETAILS");
+                presenter.guestListHandler(cursor.getString(EventDetailLoader.Query.GUEST_LIST));
                 break;
             case LOADER_EVENT_GUEST_LIST_DETAIL:
                 Log.d(LOG_TAG, "LOADER_EVENT_GUEST_LIST_DETAIL: ID = " + dataMap.get(EventDetailLoader.Query._ID));
@@ -147,8 +148,8 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             rows = context.getContentResolver().update(
                     GetTogetherContract.Events.buildEventsUri(eventId),
                     values,
-                    null,
-                    null
+                    GetTogetherContract.Events._ID + " = ? ",
+                    new String[]{String.valueOf(eventId)}
             );
         } else {
             Log.d(LOG_TAG, "onSaveGuestList pending");
@@ -172,5 +173,10 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
     @Override
     public void onDetachContext() {
         this.context = null;
+    }
+
+    @Override
+    public void onGetGuestList() {
+
     }
 }

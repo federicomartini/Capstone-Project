@@ -396,4 +396,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fabGuestRemove.startAnimation(fab_guest_remove_close);
         fabGuestRemove.setClickable(false);
     }
+
+    @Override
+    public void onShowEventGuestRemoveView() {
+        Log.d(LOG_TAG, "onShowEventGuestRemoveView");
+
+    }
 }

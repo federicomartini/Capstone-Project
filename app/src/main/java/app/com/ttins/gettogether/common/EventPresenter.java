@@ -193,4 +193,9 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
         Log.d(LOG_TAG, "eventGuestHandlerResume");
         setFabStatus(FAB_STATUS_ADD_GUEST_LIST);
     }
+
+    @Override
+    public void onFabGuestRemoveClick() {
+        view.get().onShowEventGuestRemoveView();
+    }
 }

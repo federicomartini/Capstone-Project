@@ -18,15 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
-import com.google.gson.Gson;
-
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.eventguesthandler.adapter.EventGuestHandlerRecyclerViewAdapter;
 
 public class EventGuestHandlerView extends Fragment implements EventGuestHandlerMVP.RequestedViewOps {
 
     private static final String LOG_TAG = EventGuestHandlerView.class.getSimpleName();
+
+    public static final String FRAG_GUEST_REMOVE_ARG = "FRAG_GUEST_REMOVE_ARG";
 
     RecyclerView recyclerView;
     TextView emptyRecyclerView;

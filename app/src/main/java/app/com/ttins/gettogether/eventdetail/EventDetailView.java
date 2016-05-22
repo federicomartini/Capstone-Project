@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,7 +47,20 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     TextView notes;
     ListView guestsList;
     ImageButton confirmButton;
-    long guestAddListId;
+    RecyclerView recyclerView;
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView guestName;
+        TextView note;
+
+        public ViewHolder(View view) {
+            super(view);
+
+            guestName = (TextView) view.findViewById(R.id.guest_list_name_text_view_event_detail_view);
+            note = (TextView) view.findViewById(R.id.guest_note_list_text_view_event_detail_view);
+        }
+    }
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +100,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         presenter.onAttachView(this);
         presenter.onAttachContext(getContext());
         presenter.initLoader();
+
         callback.onEventDetailViewResumed();
     }
 
@@ -121,8 +136,8 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         confirmStatus = (TextView) root.findViewById(R.id.confirm_status_text_view_event_detail_view);
         emptyGuestList = (TextView) root.findViewById(R.id.empty_guest_list_text_view_event_detail_view);
         notes = (TextView) root.findViewById(R.id.note_text_view_event_detail_view);
-        guestsList = (ListView) root.findViewById(R.id.guest_list_event_detail_view);
         confirmButton = (ImageButton) root.findViewById(R.id.confirm_image_button_event_detail_view);
+        recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view_guests_event_detail_view);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,6 +273,19 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     @Override
     public void onDestroyLoader(int loaderId) {
         getLoaderManager().destroyLoader(loaderId);
+    }
+
+
+    @Override
+    public void onShowEmptyRecyclerView() {
+        Log.d(LOG_TAG, "onShowEmptyRecyclerView");
+        recyclerView.setVisibility(View.GONE);
+        emptyGuestList.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onShowRecyclerView() {
+
     }
 
     public interface Callback {

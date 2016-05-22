@@ -19,6 +19,7 @@ public interface EventDetailMVP {
         void onEventAddGuestReceived(long id);
         void onAttachContext(Context context);
         void onDetachContext();
+        void populateGuestListView();
     }
 
     interface ModelOps {
@@ -28,6 +29,7 @@ public interface EventDetailMVP {
         void initLoader();
         void onEventAddGuestReceived(long id);
         void onSaveGuestList(long eventId, String guestList);
+        void onGetGuestList();
     }
 
     interface RequiredPresenterOps {
@@ -36,6 +38,7 @@ public interface EventDetailMVP {
         void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass);
         void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId);
         void guestListHandler(long guestId, long eventId, String guestList);
+        void guestListHandler(String guestList);
         void onDestroyLoader(int loaderId);
     }
 
@@ -53,5 +56,7 @@ public interface EventDetailMVP {
         void onSendDataForEditDetailsView();
         void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId);
         void onDestroyLoader(int loaderId);
+        void onShowEmptyRecyclerView();
+        void onShowRecyclerView();
     }
 }

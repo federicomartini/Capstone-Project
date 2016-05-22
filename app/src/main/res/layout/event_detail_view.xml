@@ -194,23 +194,31 @@
             android:layout_weight="3">
 
             <FrameLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ListView
-                    android:id="@+id/guest_list_event_detail_view"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_guests_event_detail_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingLeft="@dimen/medium_margin_material_design"
+                    android:paddingRight="@dimen/medium_margin_material_design"
+                    android:scrollbarStyle="insideOverlay" />
 
                 <TextView
                     android:id="@+id/empty_guest_list_text_view_event_detail_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="No guest in the list"/>
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/no_data_available" />
 
             </FrameLayout>
 
         </android.support.v4.widget.NestedScrollView>
+
 
         <RelativeLayout
             android:layout_width="match_parent"

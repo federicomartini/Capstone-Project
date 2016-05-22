@@ -1,4 +1,4 @@
-package app.com.ttins.gettogether.eventdetail.gson;
+package app.com.ttins.gettogether.common.gson;
 
 
 public class Guests {

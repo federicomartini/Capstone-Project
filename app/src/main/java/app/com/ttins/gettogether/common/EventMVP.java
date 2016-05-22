@@ -16,6 +16,7 @@ public interface EventMVP {
         void eventDetailViewResume();
         void eventGuestHandlerResume();
         void onFabAddGuestClick();
+        void onFabGuestRemoveClick();
     }
 
     interface ModelOps {
@@ -41,6 +42,7 @@ public interface EventMVP {
         void onCloseFabGuestRemoveAnimation();
         void onOpenGuestActivity();
         void onShowGuestHandlerView();
+        void onShowEventGuestRemoveView();
     }
 
 }

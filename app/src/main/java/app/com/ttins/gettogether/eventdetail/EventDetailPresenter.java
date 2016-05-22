@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import app.com.ttins.gettogether.eventdetail.gson.Guest;
-import app.com.ttins.gettogether.eventdetail.gson.Guests;
+import app.com.ttins.gettogether.common.gson.Guest;
 import app.com.ttins.gettogether.eventdetail.loader.EventDetailLoader;
 
 
@@ -51,6 +50,8 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             addGuestRequestPending = false;
             this.loader = null;
         }
+
+        this.view.get().onShowEmptyRecyclerView();
     }
 
     @Override
@@ -134,12 +135,24 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     }
 
     @Override
+    public void guestListHandler(String guestList) {
+        Log.d(LOG_TAG, "onGuestListReceived");
+        Gson gson = new Gson();
+        List<Guest> guests = gson.fromJson(guestList,
+                new TypeToken<List<Guest>>(){}.getType());
+        for (Guest guest: guests) {
+            Log.d(LOG_TAG, "id = " + guest.getId() + " - note: " + guest.getNote());
+        }
+        Log.d(LOG_TAG, "Guest List lenght = " + guests.size());
+    }
+
+    @Override
     public void guestListHandler(long guestId, long eventId, String guestList) {
         Log.d(LOG_TAG, "guestListHandler");
         Gson gson = new Gson();
 
         if (guestList == null) {
-            Log.d(LOG_TAG, "Guest List is NULL");
+            //Log.d(LOG_TAG, "Guest List is NULL");
         }
 
         if (guestList == null || guestList.isEmpty()) {
@@ -149,7 +162,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             listGuest.add(new Guest(Long.getLong("10"), "pasta"));
             listGuest.add(new Guest(Long.getLong("12"), "panino"));*/
             String idJsonList = gson.toJson(listGuest);
-            Log.d(LOG_TAG, "Json: " + idJsonList);
+            //Log.d(LOG_TAG, "Json: " + idJsonList);
 
             model.onSaveGuestList(eventId, idJsonList);
 
@@ -159,13 +172,13 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             List<Guest> guests = gson.fromJson(guestList,
                     new TypeToken<List<Guest>>(){}.getType());
             for (Guest guest: guests) {
-                Log.d(LOG_TAG, "id = " + guest.getId() + " - note: " + guest.getNote());
+                //Log.d(LOG_TAG, "id = " + guest.getId() + " - note: " + guest.getNote());
             }
             guests.add(new Guest(guestId, ""));
             String idJsonList = gson.toJson(guests);
             model.onSaveGuestList(eventId, idJsonList);
             
-            Log.d(LOG_TAG, "Guest List: " + guestList);
+            //Log.d(LOG_TAG, "Guest List: " + guestList);
         }
     }
 
@@ -183,4 +196,10 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     public void onDestroyLoader(int loaderId) {
         view.get().onDestroyLoader(loaderId);
     }
+
+    @Override
+    public void populateGuestListView() {
+        model.onGetGuestList();
+    }
+
 }
