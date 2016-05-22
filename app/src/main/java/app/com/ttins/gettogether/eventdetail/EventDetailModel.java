@@ -9,8 +9,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
-import java.util.HashMap;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.HashMap;
+import java.util.List;
+
+import app.com.ttins.gettogether.common.gson.Guest;
+import app.com.ttins.gettogether.common.gson.Guests;
 import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventdetail.loader.EventDetailLoader;
 
@@ -61,6 +67,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         }
 
         if (cursor.moveToFirst()) {
+            dataMap.clear();
             dataMap.put(EventDetailLoader.Query._ID, cursor.getString(EventDetailLoader.Query._ID));
             dataMap.put(EventDetailLoader.Query.TITLE, cursor.getString(EventDetailLoader.Query.TITLE));
             dataMap.put(EventDetailLoader.Query.CONFIRMATION_STATUS, cursor.getString(EventDetailLoader.Query.CONFIRMATION_STATUS));
@@ -109,14 +116,20 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             case LOADER_EVENT_GUEST_LIST_DETAIL:
                 Log.d(LOG_TAG, "LOADER_EVENT_GUEST_LIST_DETAIL: ID = " + dataMap.get(EventDetailLoader.Query._ID));
                 presenter.guestListHandler(guestListAddId,
-                        guestListAddId,
-                        cursor.getString(EventDetailLoader.Query.GUEST_LIST));
+                        eventId,
+                        dataMap.get(EventDetailLoader.Query.GUEST_LIST));
                 break;
             default:
                 break;
         }
 
-        presenter.onEventLoadFinished(dataMap);
+        Gson gson = new Gson();
+        List<Guest> guestList = gson.fromJson(dataMap.get(EventDetailLoader.Query.GUEST_LIST),
+                new TypeToken<List<Guest>>(){}.getType());
+        Guests guests = new Guests();
+        guests.setGuests(guestList);
+
+        presenter.onEventLoadFinished(dataMap, guests);
     }
 
     @Override
@@ -138,6 +151,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
     @Override
     public void onSaveGuestList(long eventId, String guestList) {
+        Log.d(LOG_TAG, "Save new Guest on EVENT ID = " + eventId);
         ContentValues values = new ContentValues();
         values.put(GetTogetherContract.Events.GUEST_LIST, guestList);
         int rows = 0;
@@ -153,12 +167,13 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             );
         } else {
             Log.d(LOG_TAG, "onSaveGuestList pending");
+            Log.d(LOG_TAG, "onSaveGuestList PENDING: " + guestList);
             isSaveGuestPending = true;
             pendingEventId = eventId;
             pendingGuestList = guestList;
         }
 
-        Log.d(LOG_TAG, "Rows:" + rows + "Save guest list: " + guestList);
+        Log.d(LOG_TAG, "Rows: " + rows + " - Save guest list: " + guestList);
     }
 
     @Override

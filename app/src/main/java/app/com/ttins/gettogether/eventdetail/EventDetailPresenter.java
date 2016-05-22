@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.com.ttins.gettogether.common.gson.Guest;
+import app.com.ttins.gettogether.common.gson.Guests;
 import app.com.ttins.gettogether.eventdetail.loader.EventDetailLoader;
 
 
@@ -66,7 +67,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
 
     @Override
-    public void onEventLoadFinished(HashMap<Integer, String> eventDetailMap) {
+    public void onEventLoadFinished(HashMap<Integer, String> eventDetailMap, Guests guests) {
 
         eventDataMap = eventDetailMap;
 
@@ -78,13 +79,20 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             view.get().onChangePhoneNumber(this.eventDataMap.get(EventDetailLoader.Query.PLACE_PHONE_NUMBER));
             view.get().onChangeStartTimeText(this.eventDataMap.get(EventDetailLoader.Query.START_TIME_HOUR));
 
-
+            view.get().onResetViewAdapter();
+            view.get().onLoadFinished(guests);
+            if (guests.getGuests().size() > 0) {
+                view.get().onShowRecyclerView();
+                view.get().onSetRecyclerViewAdapter();
+            }
             /*if (this.eventDataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS).compareTo(EVENT_STATUS_CONFIRMED) == 0) {
                 confirmButtonStatus = true;
             } else {
                 confirmButtonStatus = false;
             }*/
         }
+
+
     }
 
     @Override
@@ -144,6 +152,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             Log.d(LOG_TAG, "id = " + guest.getId() + " - note: " + guest.getNote());
         }
         Log.d(LOG_TAG, "Guest List lenght = " + guests.size());
+
     }
 
     @Override
@@ -172,13 +181,14 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             List<Guest> guests = gson.fromJson(guestList,
                     new TypeToken<List<Guest>>(){}.getType());
             for (Guest guest: guests) {
-                //Log.d(LOG_TAG, "id = " + guest.getId() + " - note: " + guest.getNote());
+                Log.d(LOG_TAG, "id = " + guest.getId() + " - note: " + guest.getNote());
             }
             guests.add(new Guest(guestId, ""));
             String idJsonList = gson.toJson(guests);
             model.onSaveGuestList(eventId, idJsonList);
             
-            //Log.d(LOG_TAG, "Guest List: " + guestList);
+            Log.d(LOG_TAG, "guestListHandler Guest List: ID: " + guestId + " to add to list: " + guestList);
+            Log.d(LOG_TAG, "guestListHandler JSON list: " + idJsonList);
         }
     }
 

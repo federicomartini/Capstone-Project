@@ -9,22 +9,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.HashMap;
-
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.gson.Guests;
+import app.com.ttins.gettogether.eventdetail.adapter.EventDetailAdapter;
 
 public class EventDetailView extends Fragment implements EventDetailMVP.RequiredViewOps {
 
@@ -48,15 +48,18 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     ListView guestsList;
     ImageButton confirmButton;
     RecyclerView recyclerView;
+    EventDetailAdapter eventDetailAdapter;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView guestName;
-        TextView note;
+        public LinearLayout itemLayout;
+        public TextView guestName;
+        public TextView note;
 
         public ViewHolder(View view) {
             super(view);
 
+            itemLayout = (LinearLayout) view.findViewById(R.id.guest_list_item_event_detail_view);
             guestName = (TextView) view.findViewById(R.id.guest_list_name_text_view_event_detail_view);
             note = (TextView) view.findViewById(R.id.guest_note_list_text_view_event_detail_view);
         }
@@ -100,7 +103,6 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         presenter.onAttachView(this);
         presenter.onAttachContext(getContext());
         presenter.initLoader();
-
         callback.onEventDetailViewResumed();
     }
 
@@ -251,7 +253,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     @Override
     public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId) {
         Log.d(LOG_TAG, "onRestartLoaderRequest");
-        getLoaderManager().initLoader(loaderId, null, loaderClass);
+        getLoaderManager().restartLoader(loaderId, null, loaderClass);
     }
 
     @Override
@@ -285,12 +287,43 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
     @Override
     public void onShowRecyclerView() {
-
+        Log.d(LOG_TAG, "onShowRecyclerView");
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyGuestList.setVisibility(View.GONE);
     }
 
     public interface Callback {
         void onChangeToolbarToEventTitle(String eventTitle);
         void onReceiveIdEditDetailView(long id);
         void onEventDetailViewResumed();
+    }
+
+    @Override
+    public void onSetRecyclerViewAdapter() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(eventDetailAdapter);
+
+        eventDetailAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoadFinished(Guests guests) {
+        if (eventDetailAdapter == null) {
+            eventDetailAdapter = new EventDetailAdapter(guests, new EventDetailAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(long id) {
+                    Log.d(LOG_TAG, "onItemClick Received by View");
+                    //callback.onEventGuestHandlerAddRequest(id);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onResetViewAdapter() {
+        recyclerView.setAdapter(null);
+        eventDetailAdapter = null;
     }
 }

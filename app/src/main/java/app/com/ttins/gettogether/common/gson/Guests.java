@@ -1,14 +1,16 @@
 package app.com.ttins.gettogether.common.gson;
 
 
-public class Guests {
-    Guest[] guestList;
+import java.util.List;
 
-    public void setGuests(Guest[] guestList) {
+public class Guests {
+    List<Guest> guestList;
+
+    public void setGuests(List<Guest> guestList) {
         this.guestList = guestList;
     }
 
-    public Guest[] getGuests() {
+    public List<Guest> getGuests() {
         return this.guestList;
     }
 }

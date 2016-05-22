@@ -29,8 +29,8 @@ public class EventGuestRemoveRecyclerViewAdapter extends RecyclerView.Adapter<Ev
 
     @Override
     public int getItemCount() {
-        Log.d(LOG_TAG, "getItemCount = " + guests.getGuests().length);
-        return guests.getGuests().length;
+        Log.d(LOG_TAG, "getItemCount = " + guests.getGuests().size());
+        return guests.getGuests().size();
     }
 
     @Override

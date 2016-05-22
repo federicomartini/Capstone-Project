@@ -7,6 +7,8 @@ import android.support.v4.app.LoaderManager;
 
 import java.util.HashMap;
 
+import app.com.ttins.gettogether.common.gson.Guests;
+
 
 public interface EventDetailMVP {
     interface PresenterOps {
@@ -33,7 +35,7 @@ public interface EventDetailMVP {
     }
 
     interface RequiredPresenterOps {
-        void onEventLoadFinished(HashMap<Integer, String> eventDetailMap);
+        void onEventLoadFinished(HashMap<Integer, String> eventDetailMap, Guests guests);
         Context onContextViewRequired();
         void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass);
         void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId);
@@ -58,5 +60,8 @@ public interface EventDetailMVP {
         void onDestroyLoader(int loaderId);
         void onShowEmptyRecyclerView();
         void onShowRecyclerView();
+        void onSetRecyclerViewAdapter();
+        void onLoadFinished(Guests guests);
+        void onResetViewAdapter();
     }
 }
