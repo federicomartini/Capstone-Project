@@ -26,6 +26,9 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
     long eventId;
     long guestListAddId;
     private Context context;
+    boolean isSaveGuestPending;
+    long pendingEventId;
+    String pendingGuestList;
 
     public EventDetailModel(EventDetailMVP.RequiredPresenterOps presenter) {
         this.presenter = presenter;
@@ -127,6 +130,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
     @Override
     public void onEventAddGuestReceived(long id) {
+        Log.d(LOG_TAG, "onEventAddGuestReceived");
         presenter.onRestartLoaderRequest(this, LOADER_EVENT_GUEST_LIST_DETAIL);
         guestListAddId = id;
     }
@@ -135,20 +139,34 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
     public void onSaveGuestList(long eventId, String guestList) {
         ContentValues values = new ContentValues();
         values.put(GetTogetherContract.Events.GUEST_LIST, guestList);
+        int rows = 0;
 
-        context.getContentResolver().update(
-                GetTogetherContract.Events.buildEventsUri(),
-                values,
-                GetTogetherContract.Events._ID + " = ? ",
-                new String[]{String.valueOf(eventId)}
-        );
+        if (this.context != null) {
+            Log.d(LOG_TAG, "onSaveGuestList: " + guestList);
+            isSaveGuestPending = false;
+            rows = context.getContentResolver().update(
+                    GetTogetherContract.Events.buildEventsUri(eventId),
+                    values,
+                    null,
+                    null
+            );
+        } else {
+            Log.d(LOG_TAG, "onSaveGuestList pending");
+            isSaveGuestPending = true;
+            pendingEventId = eventId;
+            pendingGuestList = guestList;
+        }
 
-        Log.d(LOG_TAG, "Save guest list: " + guestList);
+        Log.d(LOG_TAG, "Rows:" + rows + "Save guest list: " + guestList);
     }
 
     @Override
     public void onAttachContext(Context context) {
         this.context = context;
+
+        if(isSaveGuestPending) {
+            onSaveGuestList(pendingEventId, pendingGuestList);
+        }
     }
 
     @Override

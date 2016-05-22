@@ -235,7 +235,8 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
     @Override
     public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId) {
-        getLoaderManager().restartLoader(loaderId, null, loaderClass);
+        Log.d(LOG_TAG, "onRestartLoaderRequest");
+        getLoaderManager().initLoader(loaderId, null, loaderClass);
     }
 
     @Override
@@ -254,6 +255,10 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         callback.onReceiveIdEditDetailView(eventId);
     }
 
+    @Override
+    public void onDestroyLoader(int loaderId) {
+        getLoaderManager().destroyLoader(loaderId);
+    }
 
     public interface Callback {
         void onChangeToolbarToEventTitle(String eventTitle);

@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -35,10 +36,13 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     int loaderId;
 
     public EventDetailPresenter(EventDetailMVP.RequiredViewOps view) {
-        model = new EventDetailModel(this);
+        if (this.model == null) {
+            model = new EventDetailModel(this);
+        }
     }
 
     public void onAttachView(EventDetailMVP.RequiredViewOps view) {
+        Log.d(LOG_TAG, "Presenter onAttachView");
             this.view = new WeakReference<>(view);
 
         if (addGuestRequestPending) {
@@ -118,6 +122,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     @Override
     public void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId) {
         if (view != null) {
+
             view.get().onRestartLoaderRequest(loaderClass, loaderId);
         } else {
             Log.d(LOG_TAG, "onRestartLoaderRequest: view is null");
@@ -133,6 +138,10 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
         Log.d(LOG_TAG, "guestListHandler");
         Gson gson = new Gson();
 
+        if (guestList == null) {
+            Log.d(LOG_TAG, "Guest List is NULL");
+        }
+
         if (guestList == null || guestList.isEmpty()) {
             List<Guest> listGuest = new ArrayList<>();
             listGuest.add(new Guest(guestId, ""));
@@ -145,7 +154,17 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             model.onSaveGuestList(eventId, idJsonList);
 
         } else {
-            //Guests listGuest = gson.fromJson(guestList, Guests.class);
+
+            //Guest[] listGuest = gson.fromJson(guestList, Guest[].class);
+            List<Guest> guests = gson.fromJson(guestList,
+                    new TypeToken<List<Guest>>(){}.getType());
+            for (Guest guest: guests) {
+                Log.d(LOG_TAG, "id = " + guest.getId() + " - note: " + guest.getNote());
+            }
+            guests.add(new Guest(guestId, ""));
+            String idJsonList = gson.toJson(guests);
+            model.onSaveGuestList(eventId, idJsonList);
+            
             Log.d(LOG_TAG, "Guest List: " + guestList);
         }
     }
@@ -158,5 +177,10 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     @Override
     public void onDetachContext() {
         model.onDetachContext();
+    }
+
+    @Override
+    public void onDestroyLoader(int loaderId) {
+        view.get().onDestroyLoader(loaderId);
     }
 }

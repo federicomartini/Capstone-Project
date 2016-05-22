@@ -39,10 +39,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     private static final String FRAGMENT_GUEST_HANDLER_VIEW_TAG = "FRAGMENT_GUEST_HANDLER_VIEW_TAG";
 
     private EventMVP.PresenterOps presenter;
-    private FloatingActionButton fab, fabGuestAdd;
+    private FloatingActionButton fab, fabGuestAdd, fabGuestRemove;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private Animation fab_guest_open, fab_guest_close;
+    private Animation fab_guest_open, fab_guest_close, fab_guest_remove_open, fab_guest_remove_close;
     private final EventStateMaintainer stateMaintainer =
             new EventStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
 
@@ -54,11 +54,14 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout_event_activity);
         fab_guest_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_open);
         fab_guest_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_close);
+        fab_guest_remove_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_remove_open);
+        fab_guest_remove_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_remove_close);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
         startMVPOps();
 
+        fabGuestRemove = (FloatingActionButton) findViewById(R.id.fab_guest_remove_event_activity);
         fabGuestAdd = (FloatingActionButton) findViewById(R.id.fab_guest_add_event_activity);
         fab = (FloatingActionButton) findViewById(R.id.fab_event_event_activity);
 
@@ -81,6 +84,15 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                 public void onClick(View v) {
                     Log.d(LOG_TAG, "fabGuestAdd onClick");
                     presenter.onFabAddGuestClick();
+                }
+            });
+        }
+
+        if (fabGuestRemove != null) {
+            fabGuestRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(LOG_TAG, "fabGuestRemove onClick");
                 }
             });
         }
@@ -367,5 +379,21 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         getSupportFragmentManager().popBackStack();
 
         fragmentEventDetailView.setGuestIdToAddOnList(id);
+    }
+
+    @Override
+    public void onOpenFabGuestRemoveAnimation() {
+        Log.d(LOG_TAG, "onOpenFabGuestRemoveAnimation");
+        fabGuestRemove.setVisibility(View.VISIBLE);
+        fabGuestRemove.setClickable(true);
+        fabGuestRemove.startAnimation(fab_guest_remove_open);
+    }
+
+    @Override
+    public void onCloseFabGuestRemoveAnimation() {
+        Log.d(LOG_TAG, "onOpenFabGuestRemoveAnimation");
+        fabGuestRemove.setVisibility(View.GONE);
+        fabGuestRemove.startAnimation(fab_guest_remove_close);
+        fabGuestRemove.setClickable(false);
     }
 }

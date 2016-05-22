@@ -93,10 +93,12 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
             case FAB_STATUS_GUEST_OPENED:
                 view.get().onSetFabToGuestStatus();
                 view.get().onOpenFabGuestAnimation();
+                view.get().onOpenFabGuestRemoveAnimation();
                 break;
             case FAB_STATUS_GUEST_CLOSED:
                 view.get().onSetFabToGuestStatus();
                 view.get().onCloseFabGuestAnimation();
+                view.get().onCloseFabGuestRemoveAnimation();
                 break;
             case FAB_STATUS_ADD_GUEST_LIST:
                 view.get().onsetFabToAddGuestToListStatus();
@@ -111,6 +113,7 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
         if(this.fabStatus == FAB_STATUS_GUEST_OPENED) {
             if (fabStatus != this.fabStatus ) {
                 view.get().onCloseFabGuestAnimation();
+                view.get().onCloseFabGuestRemoveAnimation();
             }
         }
     }

@@ -18,7 +18,7 @@
         android:fromYDelta="0%"
         android:interpolator="@android:anim/linear_interpolator"
         android:toXDelta="0%"
-        android:toYDelta="200%"/>
+        android:toYDelta="300%"/>
 
 
     <alpha android:fromAlpha="1.0"

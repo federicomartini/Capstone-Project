@@ -36,6 +36,7 @@ public interface EventDetailMVP {
         void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass);
         void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId);
         void guestListHandler(long guestId, long eventId, String guestList);
+        void onDestroyLoader(int loaderId);
     }
 
     interface RequiredViewOps {
@@ -51,6 +52,6 @@ public interface EventDetailMVP {
         Context onContextViewRequired();
         void onSendDataForEditDetailsView();
         void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId);
-
+        void onDestroyLoader(int loaderId);
     }
 }
