@@ -22,6 +22,7 @@ public interface EventDetailMVP {
         void onAttachContext(Context context);
         void onDetachContext();
         void populateGuestListView();
+
     }
 
     interface ModelOps {
@@ -32,6 +33,8 @@ public interface EventDetailMVP {
         void onEventAddGuestReceived(long id);
         void onSaveGuestList(long eventId, String guestList);
         void onGetGuestList();
+        void onAddGuestToList(String guestList);
+        void onGetDataForView(Guests guests);
     }
 
     interface RequiredPresenterOps {
@@ -42,6 +45,9 @@ public interface EventDetailMVP {
         void guestListHandler(long guestId, long eventId, String guestList);
         void guestListHandler(String guestList);
         void onDestroyLoader(int loaderId);
+        void onNotifySetDataChanged();
+        void onLoadFinished(String guests);
+        void onGuestListUpdated(Guests guests);
     }
 
     interface RequiredViewOps {
@@ -63,5 +69,6 @@ public interface EventDetailMVP {
         void onSetRecyclerViewAdapter();
         void onLoadFinished(Guests guests);
         void onResetViewAdapter();
+        void onNotifySetDataChanged();
     }
 }

@@ -22,6 +22,10 @@ public class EventDetailAdapter extends RecyclerView.Adapter<EventDetailView.Vie
         this.listener = listener;
     }
 
+    public void swapGuests(Guests guests){
+        this.guests = guests;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {

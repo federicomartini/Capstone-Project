@@ -42,7 +42,6 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
     @Override
     public void getEventData(long id) {
-
         eventId = id;
     }
 
@@ -87,37 +86,41 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             dataMap.put(EventDetailLoader.Query.START_TIME_HOUR, cursor.getString(EventDetailLoader.Query.START_TIME_HOUR));
             dataMap.put(EventDetailLoader.Query.START_TIME_MINUTE, cursor.getString(EventDetailLoader.Query.START_TIME_MINUTE));
 
-            Log.d(LOG_TAG, "_ID = " + dataMap.get(EventDetailLoader.Query._ID) + ", " +
-                            "CONFIRMATION_STATUS = " + dataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS) + ", " +
-                            "TITLE = " + dataMap.get(EventDetailLoader.Query.TITLE) + ", " +
-                            "END_TIME_HOUR = " + dataMap.get(EventDetailLoader.Query.END_TIME_HOUR) + ", " +
-                            "END_TIME_MINUTE = " + dataMap.get(EventDetailLoader.Query.END_TIME_MINUTE) + ", " +
-                            "EVENT_DAY = " + dataMap.get(EventDetailLoader.Query.EVENT_DAY) + ", " +
-                            "EVENT_MONTH = " + dataMap.get(EventDetailLoader.Query.EVENT_MONTH) + ", " +
-                            "EVENT_TYPE = " + dataMap.get(EventDetailLoader.Query.EVENT_TYPE) + ", " +
-                            "EVENT_YEAR = " + dataMap.get(EventDetailLoader.Query.EVENT_YEAR) + ", " +
-                            "GUEST_LIST = " + dataMap.get(EventDetailLoader.Query.GUEST_LIST) + ", " +
-                            "LOCATION = " + dataMap.get(EventDetailLoader.Query.LOCATION) + ", " +
-                            "MEETING_LOCATION = " + dataMap.get(EventDetailLoader.Query.MEETING_LOCATION) + ", " +
-                            "NOTES = " + dataMap.get(EventDetailLoader.Query.NOTES) + ", " +
-                            "PHOTO_PATH = " + dataMap.get(EventDetailLoader.Query.PHOTO_PATH) + ", " +
-                            "PLACE_NAME = " + dataMap.get(EventDetailLoader.Query.PLACE_NAME) + ", " +
-                            "PLACE_PHONE_NUMBER = " + dataMap.get(EventDetailLoader.Query.PLACE_PHONE_NUMBER) + ", " +
-                            "START_TIME_HOUR = " + dataMap.get(EventDetailLoader.Query.START_TIME_HOUR) + ", " +
-                            "START_TIME_MINUTE = " + dataMap.get(EventDetailLoader.Query.START_TIME_MINUTE)
-            );
+            /*Log.d(LOG_TAG, "_ID = " + dataMap.get(EventDetailLoader.Query._ID) + ", " +
+                    "CONFIRMATION_STATUS = " + dataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS) + ", " +
+                    "TITLE = " + dataMap.get(EventDetailLoader.Query.TITLE) + ", " +
+                    "END_TIME_HOUR = " + dataMap.get(EventDetailLoader.Query.END_TIME_HOUR) + ", " +
+                    "END_TIME_MINUTE = " + dataMap.get(EventDetailLoader.Query.END_TIME_MINUTE) + ", " +
+                    "EVENT_DAY = " + dataMap.get(EventDetailLoader.Query.EVENT_DAY) + ", " +
+                    "EVENT_MONTH = " + dataMap.get(EventDetailLoader.Query.EVENT_MONTH) + ", " +
+                    "EVENT_TYPE = " + dataMap.get(EventDetailLoader.Query.EVENT_TYPE) + ", " +
+                    "EVENT_YEAR = " + dataMap.get(EventDetailLoader.Query.EVENT_YEAR) + ", " +
+                    "GUEST_LIST = " + dataMap.get(EventDetailLoader.Query.GUEST_LIST) + ", " +
+                    "LOCATION = " + dataMap.get(EventDetailLoader.Query.LOCATION) + ", " +
+                    "MEETING_LOCATION = " + dataMap.get(EventDetailLoader.Query.MEETING_LOCATION) + ", " +
+                    "NOTES = " + dataMap.get(EventDetailLoader.Query.NOTES) + ", " +
+                    "PHOTO_PATH = " + dataMap.get(EventDetailLoader.Query.PHOTO_PATH) + ", " +
+                    "PLACE_NAME = " + dataMap.get(EventDetailLoader.Query.PLACE_NAME) + ", " +
+                    "PLACE_PHONE_NUMBER = " + dataMap.get(EventDetailLoader.Query.PLACE_PHONE_NUMBER) + ", " +
+                    "START_TIME_HOUR = " + dataMap.get(EventDetailLoader.Query.START_TIME_HOUR) + ", " +
+                    "START_TIME_MINUTE = " + dataMap.get(EventDetailLoader.Query.START_TIME_MINUTE)
+            );*/
         }
 
         switch(loader.getId()) {
             case LOADER_EVENT_ALL_DETAILS:
-                Log.d(LOG_TAG, "LOADER_EVENT_ALL_DETAILS");
-                presenter.guestListHandler(cursor.getString(EventDetailLoader.Query.GUEST_LIST));
+                /*Log.d(LOG_TAG, "LOADER_EVENT_ALL_DETAILS : ID = " +
+                        cursor.getString(EventDetailLoader.Query._ID) +
+                        " - GuestList: " + cursor.getString(EventDetailLoader.Query.GUEST_LIST));*/
+                //presenter.guestListHandler(cursor.getString(EventDetailLoader.Query.GUEST_LIST));
                 break;
             case LOADER_EVENT_GUEST_LIST_DETAIL:
-                Log.d(LOG_TAG, "LOADER_EVENT_GUEST_LIST_DETAIL: ID = " + dataMap.get(EventDetailLoader.Query._ID));
-                presenter.guestListHandler(guestListAddId,
+                /*Log.d(LOG_TAG, "LOADER_EVENT_GUEST_LIST_DETAIL: ID = " +
+                        cursor.getString(EventDetailLoader.Query._ID) +
+                        " - GuestList: " + cursor.getString(EventDetailLoader.Query.GUEST_LIST));*/
+                /*presenter.guestListHandler(guestListAddId,
                         eventId,
-                        dataMap.get(EventDetailLoader.Query.GUEST_LIST));
+                        dataMap.get(EventDetailLoader.Query.GUEST_LIST));*/
                 break;
             default:
                 break;
@@ -129,7 +132,9 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         Guests guests = new Guests();
         guests.setGuests(guestList);
 
-        presenter.onEventLoadFinished(dataMap, guests);
+        Log.d(LOG_TAG, "onLoadFinished - Guest List: " + cursor.getString(EventDetailLoader.Query.GUEST_LIST));
+        presenter.onLoadFinished(cursor.getString(EventDetailLoader.Query.GUEST_LIST));
+        //presenter.onEventLoadFinished(dataMap, guests);
     }
 
     @Override
@@ -144,9 +149,10 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
     @Override
     public void onEventAddGuestReceived(long id) {
-        Log.d(LOG_TAG, "onEventAddGuestReceived");
-        presenter.onRestartLoaderRequest(this, LOADER_EVENT_GUEST_LIST_DETAIL);
-        guestListAddId = id;
+        Log.d(LOG_TAG, "onEventAddGuestReceived - ID = " + id);
+        presenter.onLoaderInitCompleted(this);
+        //presenter.onRestartLoaderRequest(this, LOADER_EVENT_GUEST_LIST_DETAIL);
+        //guestListAddId = id;
     }
 
     @Override
@@ -157,7 +163,6 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         int rows = 0;
 
         if (this.context != null) {
-            Log.d(LOG_TAG, "onSaveGuestList: " + guestList);
             isSaveGuestPending = false;
             rows = context.getContentResolver().update(
                     GetTogetherContract.Events.buildEventsUri(eventId),
@@ -173,7 +178,17 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             pendingGuestList = guestList;
         }
 
-        Log.d(LOG_TAG, "Rows: " + rows + " - Save guest list: " + guestList);
+        if (rows > 0) {
+            Gson gson = new Gson();
+            List<Guest> listOfGuest = gson.fromJson(guestList,
+                    new TypeToken<List<Guest>>(){}.getType());
+            Guests guests = new Guests();
+            guests.setGuests(listOfGuest);
+
+            presenter.onGuestListUpdated(guests);
+        }
+
+        //Log.d(LOG_TAG, "Rows: " + rows + " - Save guest list: " + guestList);
     }
 
     @Override
@@ -182,6 +197,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
         if(isSaveGuestPending) {
             onSaveGuestList(pendingEventId, pendingGuestList);
+            onAddGuestToList(pendingGuestList);
         }
     }
 
@@ -193,5 +209,50 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
     @Override
     public void onGetGuestList() {
 
+    }
+
+    @Override
+    public void onAddGuestToList(String guestList) {
+        Log.d(LOG_TAG, "onAddGuestToList");
+        Log.d(LOG_TAG, "Updating DB Event guest list: " + guestList);
+        ContentValues values = new ContentValues();
+        values.put(GetTogetherContract.Events.GUEST_LIST, guestList);
+        int rows = 0;
+
+        if (this.context != null) {
+            isSaveGuestPending = false;
+            rows = context.getContentResolver().update(
+                    GetTogetherContract.Events.buildEventsUri(eventId),
+                    values,
+                    GetTogetherContract.Events._ID + " = ? ",
+                    new String[]{String.valueOf(eventId)}
+            );
+            Log.d(LOG_TAG, "onAddGuestToList updated");
+
+            Gson gson = new Gson();
+            List<Guest> listOfGuest = gson.fromJson(guestList,
+                    new TypeToken<List<Guest>>(){}.getType());
+            Guests guests = new Guests();
+            guests.setGuests(listOfGuest);
+
+            presenter.onGuestListUpdated(guests);
+
+        } else {
+            Log.d(LOG_TAG, "onAddGuestToList pending");
+            //Log.d(LOG_TAG, "onSaveGuestList PENDING: " + guestList);
+            isSaveGuestPending = true;
+            pendingEventId = eventId;
+            pendingGuestList = guestList;
+        }
+
+        //presenter.onEventLoadFinished(dataMap, guests);
+        //Log.d(LOG_TAG, "Rows: " + rows + " - Save guest list: " + guestList);
+
+    }
+
+    @Override
+    public void onGetDataForView(Guests guests) {
+        Log.d(LOG_TAG, "onGetDataForView");
+        presenter.onEventLoadFinished(dataMap, guests);
     }
 }

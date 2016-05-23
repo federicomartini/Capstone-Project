@@ -71,7 +71,7 @@ public class GuestEditView extends Fragment implements GuestEditMVP.RequestedVie
 
         Bundle args = getArguments();
 
-        if (!args.isEmpty()) {
+        if (args != null && !args.isEmpty()) {
             Log.d(LOG_TAG, "Arguments received");
             guestName.setText(args.getString(GuestDetailView.FRAG_GUEST_NAME_ARG));
             phoneNumber.setText(args.getString(GuestDetailView.FRAG_PHONE_ARG));

@@ -4,6 +4,8 @@ package app.com.ttins.gettogether.eventedit;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -47,8 +49,10 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
             } else {
                 Log.d(LOG_TAG, "Uri returned after insert is null! ");
             }
+
         }
     }
+
 
     @Override
     public void saveEventData(Long eventId, String title, String location, String meetingLocation, String phone) {
@@ -71,7 +75,7 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
                 Log.d(LOG_TAG, "Rows created: " + rows);
                 presenter.onEventSaved();
             } else {
-                Log.d(LOG_TAG, "Uri returned after insert is null! ");
+                Log.d(LOG_TAG, "Uri returned after update is null! ");
             }
         }
     }

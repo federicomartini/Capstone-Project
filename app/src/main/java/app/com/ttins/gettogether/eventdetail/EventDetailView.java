@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.gson.Guest;
 import app.com.ttins.gettogether.common.gson.Guests;
 import app.com.ttins.gettogether.eventdetail.adapter.EventDetailAdapter;
 
@@ -80,7 +81,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         }
 
         if(args.containsKey(FRAG_GUEST_ADD_LIST_ID_ARG)) {
-            presenter.onEventAddGuestReceived(args.getLong(FRAG_GUEST_ADD_LIST_ID_ARG));
+            //presenter.onEventAddGuestReceived(args.getLong(FRAG_GUEST_ADD_LIST_ID_ARG));
         }
 
 
@@ -247,7 +248,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
     @Override
     public void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass) {
-        getLoaderManager().initLoader(1, null, loaderClass);
+        getLoaderManager().restartLoader(1, null, loaderClass);
     }
 
     @Override
@@ -302,10 +303,17 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     public void onSetRecyclerViewAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(eventDetailAdapter);
 
-        eventDetailAdapter.notifyDataSetChanged();
+        if(recyclerView.hasPendingAdapterUpdates()) {
+            Log.d(LOG_TAG, "recyclerView hasPendingAdapterUpdates");
+            eventDetailAdapter.notifyDataSetChanged();
+        }
+
+        if (recyclerView.getAdapter() == null) {
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(eventDetailAdapter);
+        }
+
     }
 
     @Override
@@ -319,11 +327,26 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
                 }
             });
         }
+        eventDetailAdapter.swapGuests(guests);
     }
 
     @Override
     public void onResetViewAdapter() {
         recyclerView.setAdapter(null);
         eventDetailAdapter = null;
+        /*recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(LOG_TAG, "Item Count : " + eventDetailAdapter.getItemCount());
+                eventDetailAdapter.notifyDataSetChanged();
+                Log.d(LOG_TAG, "notifyDataSetChanged -> Item Count : " + eventDetailAdapter.getItemCount());
+            }
+        });*/
+    }
+
+    @Override
+    public void onNotifySetDataChanged() {
+        if (eventDetailAdapter != null)
+            eventDetailAdapter.notifyDataSetChanged();
     }
 }

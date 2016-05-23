@@ -87,7 +87,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             eventId = args.getLong(FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG);
             isNewEvent = false;
         } else {
-            isNewEvent = false;
+            isNewEvent = true;
         }
 
         eventTitle = ButterKnife.findById(root, R.id.event_title_edit_text_event_edit_view);
@@ -119,8 +119,10 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         Log.d(LOG_TAG, "Title = " + titleText);
 
         if (isNewEvent) {
+            Log.d(LOG_TAG, "Creating New Event");
             presenter.saveEvent(titleText, locationText, meetingLocationText, phoneNumber);
         } else {
+            Log.d(LOG_TAG, "Editing Event");
             presenter.saveEvent(eventId, titleText, locationText, meetingLocationText, phoneNumber);
         }
 
