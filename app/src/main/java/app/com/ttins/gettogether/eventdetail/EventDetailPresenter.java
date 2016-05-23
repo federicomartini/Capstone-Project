@@ -33,6 +33,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     EventDetailMVP.ModelOps model;
     WeakReference<EventDetailMVP.RequiredViewOps> view;
     HashMap<Integer, String> eventDataMap;
+    Guests localGuestList;
     boolean loaderPendingRequest = false;
     boolean confirmButtonStatus = false;
     boolean addGuestRequestPending = false;
@@ -297,15 +298,17 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                 listOfGuest.add(new Guest(addGuestId, ""));
                 String idJsonList = gson.toJson(listOfGuest);
 
-                model.onAddGuestToList(idJsonList);
+                model.onUpdateGuestList(idJsonList);
             } else {
                 Log.d(LOG_TAG, "Guest ID Found");
                 model.onGetDataForView(guests);
+                localGuestList = guests;
             }
 
         } else {
             Log.d(LOG_TAG, "No guest to add - addGuestId = " + addGuestId);
             model.onGetDataForView(guests);
+            localGuestList = guests;
         }
 
 
@@ -317,9 +320,29 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     public void onGuestListUpdated(Guests guests) {
         Log.d(LOG_TAG, "onGuestListUpdated");
         model.onGetDataForView(guests);
+        localGuestList = guests;
 
         for (Guest guest:guests.getGuests()) {
             Log.d(LOG_TAG, "Guest Id = " + guest.getId());
         }
+    }
+
+    @Override
+    public void onEventRemoveGuestReceived(long id) {
+        List<Guest> listOfGuest = localGuestList.getGuests();
+        Gson gson = new Gson();
+        int posToRemove = 0;
+
+        for (Guest guest:listOfGuest) {
+            if (guest.getId() == id) {
+                Log.d(LOG_TAG, "Item to delete found (" + id + ")");
+                break;
+            }
+            posToRemove++;
+        }
+
+        listOfGuest.remove(posToRemove);
+        String idJsonList = gson.toJson(listOfGuest);
+        model.onUpdateGuestList(idJsonList);
     }
 }

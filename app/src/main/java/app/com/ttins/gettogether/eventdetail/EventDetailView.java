@@ -3,12 +3,14 @@ package app.com.ttins.gettogether.eventdetail;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.gson.Guest;
 import app.com.ttins.gettogether.common.gson.Guests;
+import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventdetail.adapter.EventDetailAdapter;
 
 public class EventDetailView extends Fragment implements EventDetailMVP.RequiredViewOps {
@@ -323,9 +326,24 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
                 @Override
                 public void onItemClick(long id) {
                     Log.d(LOG_TAG, "onItemClick Received by View");
-                    //callback.onEventGuestHandlerAddRequest(id);
+                }
+
+                @Override
+                public void onLongItemClick(final long id) {
+                    Log.d(LOG_TAG, "onLongItemClick Received by View");
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Delete Event")
+                            .setMessage("Want to delete guest \"" + id + "\" from the event ?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    presenter.onEventRemoveGuestReceived(id);
+                                }
+                            });
+                    builder.create().show();
                 }
             });
+
         }
         eventDetailAdapter.swapGuests(guests);
     }

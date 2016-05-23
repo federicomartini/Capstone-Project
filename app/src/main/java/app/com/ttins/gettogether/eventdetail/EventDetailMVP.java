@@ -19,6 +19,7 @@ public interface EventDetailMVP {
         void onConfirmButtonClick();
         void onEditItemClick();
         void onEventAddGuestReceived(long id);
+        void onEventRemoveGuestReceived(long id);
         void onAttachContext(Context context);
         void onDetachContext();
         void populateGuestListView();
@@ -33,7 +34,7 @@ public interface EventDetailMVP {
         void onEventAddGuestReceived(long id);
         void onSaveGuestList(long eventId, String guestList);
         void onGetGuestList();
-        void onAddGuestToList(String guestList);
+        void onUpdateGuestList(String guestList);
         void onGetDataForView(Guests guests);
     }
 

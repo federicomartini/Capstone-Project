@@ -197,7 +197,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
         if(isSaveGuestPending) {
             onSaveGuestList(pendingEventId, pendingGuestList);
-            onAddGuestToList(pendingGuestList);
+            onUpdateGuestList(pendingGuestList);
         }
     }
 
@@ -212,7 +212,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
     }
 
     @Override
-    public void onAddGuestToList(String guestList) {
+    public void onUpdateGuestList(String guestList) {
         Log.d(LOG_TAG, "onAddGuestToList");
         Log.d(LOG_TAG, "Updating DB Event guest list: " + guestList);
         ContentValues values = new ContentValues();
@@ -255,4 +255,5 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         Log.d(LOG_TAG, "onGetDataForView");
         presenter.onEventLoadFinished(dataMap, guests);
     }
+
 }

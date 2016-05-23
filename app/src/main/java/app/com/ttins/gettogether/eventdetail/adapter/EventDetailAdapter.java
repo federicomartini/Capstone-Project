@@ -55,10 +55,19 @@ public class EventDetailAdapter extends RecyclerView.Adapter<EventDetailView.Vie
                     listener.onItemClick(guests.getGuests().get(position).getId());
                 }
             });
+
+            holder.itemLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onLongItemClick(guests.getGuests().get(position).getId());
+                    return true;
+                }
+            });
         }
     }
 
     public interface OnItemClickListener {
         void onItemClick(long id);
+        void onLongItemClick(long id);
     }
 }
