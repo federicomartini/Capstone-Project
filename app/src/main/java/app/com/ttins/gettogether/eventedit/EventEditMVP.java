@@ -14,6 +14,11 @@ public interface EventEditMVP {
         void onAttachView(Context context);
         void onDetachView();
         void initEventEditLoader(long id);
+        void onStartTimeTextClick();
+        void onEndTimeTextClick();
+        void onStartDateTextClick();
+        void onEndDateTextClick();
+        void onUpdateDateTimeFromDialog(String dialogTag, String message);
     }
 
     interface ModelOps {
@@ -42,6 +47,12 @@ public interface EventEditMVP {
         void onChangePhoneNumber(String phoneNumber);
         void onChangeStartTimeText(String startTime);
         void onChangeLocationText(String location);
+        void onShowSetTimeDialog(String dialogTag);
+        void onShowSetDateDialog(String dialogTag);
+        void onSetStartTime(String message);
+        void onSetEndTime(String message);
+        void onSetStartDate(String message);
+        void onSetEndDate(String message);
     }
 
 }

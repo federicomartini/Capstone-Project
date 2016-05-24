@@ -10,17 +10,12 @@ import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import app.com.ttins.gettogether.R;
-import app.com.ttins.gettogether.common.EventActivity;
-import app.com.ttins.gettogether.common.EventMVP;
-import app.com.ttins.gettogether.eventlist.EventListMVP;
-import app.com.ttins.gettogether.eventlist.EventListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -36,6 +31,10 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @BindView(R.id.location_edit_text_event_edit_view) EditText location;
     @BindView(R.id.meeting_location_edit_text_event_edit_view) EditText meetingLocation;
     @BindView(R.id.phone_edit_text_event_edit_view) EditText phone;
+    @BindView(R.id.start_time_text_view_event_detail_view) EditText startTime;
+    @BindView(R.id.time_end_text_view_event_edit_view) EditText endTime;
+    @BindView(R.id.date_start_text_view_event_edit_view) EditText startDate;
+    @BindView(R.id.date_end_text_view_event_edit_view) EditText endDate;
     private EventEditMVP.PresenterOps presenter;
     private EventEditView.Callback callback;
     Unbinder unbinder;
@@ -94,6 +93,43 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         location = ButterKnife.findById(root, R.id.location_edit_text_event_edit_view);
         meetingLocation = ButterKnife.findById(root, R.id.meeting_location_edit_text_event_edit_view);
         phone = ButterKnife.findById(root, R.id.phone_edit_text_event_edit_view);
+        startTime = ButterKnife.findById(root, R.id.time_start_text_view_event_edit_view);
+        endTime = ButterKnife.findById(root, R.id.time_end_text_view_event_edit_view);
+        startDate = ButterKnife.findById(root, R.id.date_start_text_view_event_edit_view);
+        endDate = ButterKnife.findById(root, R.id.date_end_text_view_event_edit_view);
+
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "startTime click");
+                presenter.onStartTimeTextClick();
+            }
+        });
+
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "endTime click");
+                presenter.onEndTimeTextClick();
+            }
+        });
+
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "startDate click");
+                presenter.onStartDateTextClick();
+            }
+        });
+
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "endDate click");
+                presenter.onEndDateTextClick();
+            }
+        });
+
 
         return root;
     }
@@ -216,9 +252,50 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         }
     }
 
+    @Override
+    public void onShowSetTimeDialog(String dialogTag) {
+        callback.onShowTimePickerDialog(dialogTag);
+    }
+
+    @Override
+    public void onShowSetDateDialog(String dialogTag) {
+        callback.onShowDatePickerDialog(dialogTag);
+    }
+
+    @Override
+    public void onSetStartTime(String time) {
+        Log.d(LOG_TAG, "onSetStartTime - " + time);
+        startTime.setText(time);
+    }
+
+    @Override
+    public void onSetEndTime(String time) {
+        Log.d(LOG_TAG, "onSetStartTime - " + time);
+        endTime.setText(time);
+    }
+
+    @Override
+    public void onSetStartDate(String date) {
+        Log.d(LOG_TAG, "onSetStartDate - " + date);
+        startDate.setText(date);
+    }
+
+    @Override
+    public void onSetEndDate(String date) {
+        Log.d(LOG_TAG, "onSetEndDate - " + date);
+        endDate.setText(date);
+    }
+
+    public void onUpdateDateTimeFromDialog(String dialogTag, String message) {
+        presenter.onUpdateDateTimeFromDialog(dialogTag, message);
+    }
+
     public interface Callback {
         void onEventSaved();
         void onEventEditViewResumed();
+        void onShowTimePickerDialog(String dialogTag);
+        void onShowDatePickerDialog(String dialogTag);
     }
+
 
 }

@@ -8,7 +8,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:rowCount="12"
+        android:rowCount="14"
         android:columnCount="4">
 
         <!-- ##################### Row 0 ##################### -->
@@ -144,8 +144,8 @@
 
         <!-- ##################### Row 6 ##################### -->
         <TextView
-            android:id="@+id/start_time_label_event_edit_view"
-            android:text="@string/start_time_label_event_edit_view"
+            android:id="@+id/start_date_label_event_edit_view"
+            android:text="@string/start_date_label_event_edit_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="6"
@@ -154,8 +154,8 @@
             android:paddingEnd="@dimen/medium_margin_material_design" />
 
         <TextView
-            android:id="@+id/end_time_label_event_edit_view"
-            android:text="@string/end_time_label_event_edit_view"
+            android:id="@+id/end_date_label_event_edit_view"
+            android:text="@string/end_date_label_event_edit_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="6"
@@ -174,6 +174,7 @@
         <EditText
             android:id="@+id/date_start_text_view_event_edit_view"
             android:theme="@style/SingleLineEditText"
+            android:focusable="false"
             android:inputType="datetime"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -185,6 +186,7 @@
         <EditText
             android:id="@+id/date_end_text_view_event_edit_view"
             android:theme="@style/SingleLineEditText"
+            android:focusable="false"
             android:inputType="datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -194,8 +196,8 @@
 
         <!-- ##################### Row 8 ##################### -->
         <TextView
-            android:id="@+id/phone_label_event_edit_view"
-            android:text="@string/phone_label_event_edit_view"
+            android:id="@+id/start_time_label_event_edit_view"
+            android:text="@string/start_time_label_event_edit_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="8"
@@ -203,30 +205,51 @@
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design" />
 
+        <TextView
+            android:id="@+id/end_time_label_event_edit_view"
+            android:text="@string/end_time_label_event_edit_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="8"
+            android:layout_column="3"
+            android:padding="@dimen/medium_margin_material_design" />
+
         <!-- ##################### Row 9 ##################### -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="9"
             android:layout_column="0"
-            android:src="@drawable/ic_phone_black_36dp"
+            android:src="@drawable/ic_date_range_black_36dp"
             android:padding="@dimen/medium_margin_material_design" />
 
         <EditText
-            android:id="@+id/phone_edit_text_event_edit_view"
+            android:id="@+id/time_start_text_view_event_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:inputType="phone"
+            android:inputType="datetime"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_row="9"
             android:layout_column="1"
+            android:focusable="false"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design" />
 
+        <EditText
+            android:id="@+id/time_end_text_view_event_edit_view"
+            android:theme="@style/SingleLineEditText"
+            android:inputType="datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="9"
+            android:layout_column="3"
+            android:focusable="false"
+            android:padding="@dimen/medium_margin_material_design" />
+
         <!-- ##################### Row 10 ##################### -->
         <TextView
-            android:id="@+id/note_label_event_edit_view"
-            android:text="@string/note_label_event_edit_view"
+            android:id="@+id/phone_label_event_edit_view"
+            android:text="@string/phone_label_event_edit_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="10"
@@ -240,6 +263,37 @@
             android:layout_height="wrap_content"
             android:layout_row="11"
             android:layout_column="0"
+            android:src="@drawable/ic_phone_black_36dp"
+            android:padding="@dimen/medium_margin_material_design" />
+
+        <EditText
+            android:id="@+id/phone_edit_text_event_edit_view"
+            android:theme="@style/SingleLineEditText"
+            android:inputType="phone"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_row="11"
+            android:layout_column="1"
+            android:paddingStart="@dimen/medium_margin_material_design"
+            android:paddingEnd="@dimen/medium_margin_material_design" />
+
+        <!-- ##################### Row 12 ##################### -->
+        <TextView
+            android:id="@+id/note_label_event_edit_view"
+            android:text="@string/note_label_event_edit_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="12"
+            android:layout_column="1"
+            android:paddingStart="@dimen/medium_margin_material_design"
+            android:paddingEnd="@dimen/medium_margin_material_design" />
+
+        <!-- ##################### Row 13 ##################### -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="13"
+            android:layout_column="0"
             android:src="@drawable/ic_note_black_36dp"
             android:padding="@dimen/medium_margin_material_design" />
 
@@ -248,7 +302,7 @@
             android:text="@string/empty_note_text_event_edit_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="11"
+            android:layout_row="13"
             android:layout_column="1"
             android:layout_gravity="bottom"
             android:layout_marginBottom="@dimen/large_margin_material_design"

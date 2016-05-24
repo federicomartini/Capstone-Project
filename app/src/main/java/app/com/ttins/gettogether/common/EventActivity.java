@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -21,15 +22,17 @@ import java.util.List;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
+import app.com.ttins.gettogether.datepickerdialog.DatePickerDialogView;
 import app.com.ttins.gettogether.eventdetail.EventDetailView;
 import app.com.ttins.gettogether.eventedit.EventEditView;
 import app.com.ttins.gettogether.eventguesthandler.EventGuestHandlerView;
 import app.com.ttins.gettogether.eventlist.EventListView;
+import app.com.ttins.gettogether.timepickerdialog.TimePickerDialogView;
 import butterknife.ButterKnife;
 
 public class EventActivity extends AppCompatActivity implements EventMVP.RequestedViewOps,
         EventListView.Callback, EventEditView.Callback, EventDetailView.Callback,
-        EventGuestHandlerView.Callback {
+        EventGuestHandlerView.Callback, TimePickerDialogView.Callback, DatePickerDialogView.Callback {
 
     private final String LOG_TAG = getClass().getSimpleName();
 
@@ -39,10 +42,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     private static final String FRAGMENT_GUEST_HANDLER_VIEW_TAG = "FRAGMENT_GUEST_HANDLER_VIEW_TAG";
 
     private EventMVP.PresenterOps presenter;
-    private FloatingActionButton fab, fabGuestAdd, fabGuestRemove;
+    private FloatingActionButton fab, fabGuestAdd;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private Animation fab_guest_open, fab_guest_close, fab_guest_remove_open, fab_guest_remove_close;
+    private Animation fab_guest_open, fab_guest_close;
     private final EventStateMaintainer stateMaintainer =
             new EventStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
 
@@ -54,14 +57,11 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout_event_activity);
         fab_guest_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_open);
         fab_guest_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_close);
-        fab_guest_remove_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_remove_open);
-        fab_guest_remove_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_remove_close);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
         startMVPOps();
 
-        fabGuestRemove = (FloatingActionButton) findViewById(R.id.fab_guest_remove_event_activity);
         fabGuestAdd = (FloatingActionButton) findViewById(R.id.fab_guest_add_event_activity);
         fab = (FloatingActionButton) findViewById(R.id.fab_event_event_activity);
 
@@ -84,15 +84,6 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                 public void onClick(View v) {
                     Log.d(LOG_TAG, "fabGuestAdd onClick");
                     presenter.onFabAddGuestClick();
-                }
-            });
-        }
-
-        if (fabGuestRemove != null) {
-            fabGuestRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(LOG_TAG, "fabGuestRemove onClick");
                 }
             });
         }
@@ -381,25 +372,44 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fragmentEventDetailView.setGuestIdToAddOnList(id);
     }
 
-    @Override
-    public void onOpenFabGuestRemoveAnimation() {
-        Log.d(LOG_TAG, "onOpenFabGuestRemoveAnimation");
-        fabGuestRemove.setVisibility(View.VISIBLE);
-        fabGuestRemove.setClickable(true);
-        fabGuestRemove.startAnimation(fab_guest_remove_open);
-    }
-
-    @Override
-    public void onCloseFabGuestRemoveAnimation() {
-        Log.d(LOG_TAG, "onOpenFabGuestRemoveAnimation");
-        fabGuestRemove.setVisibility(View.GONE);
-        fabGuestRemove.startAnimation(fab_guest_remove_close);
-        fabGuestRemove.setClickable(false);
-    }
 
     @Override
     public void onShowEventGuestRemoveView() {
         Log.d(LOG_TAG, "onShowEventGuestRemoveView");
 
+    }
+
+    @Override
+    public void onShowTimePickerDialog(String dialogTag) {
+        Log.d(LOG_TAG, "onShowTimePickerDialog");
+        TimePickerDialogView timePickerDialogView = new TimePickerDialogView();
+        timePickerDialogView.show(getSupportFragmentManager(), dialogTag);
+    }
+
+    @Override
+    public void onShowDatePickerDialog(String dialogTag) {
+        Log.d(LOG_TAG, "onShowDatePickerDialog");
+        DatePickerDialogView datePickerDialogView = new DatePickerDialogView();
+                datePickerDialogView.show(getSupportFragmentManager(), dialogTag);
+    }
+
+    @Override
+    public void onTimeSet(String tag, String time) {
+        EventEditView fragmentEventEditView = (EventEditView)
+                getSupportFragmentManager().findFragmentByTag(FRAGMENT_EDIT_VIEW_TAG);
+
+        if(fragmentEventEditView != null)
+            fragmentEventEditView.onUpdateDateTimeFromDialog(tag, time);
+
+    }
+
+    @Override
+    public void onDateSet(String tag, String date) {
+        Log.d(LOG_TAG, "Date = " + date);
+        EventEditView fragmentEventEditView = (EventEditView)
+                getSupportFragmentManager().findFragmentByTag(FRAGMENT_EDIT_VIEW_TAG);
+
+        if(fragmentEventEditView != null)
+            fragmentEventEditView.onUpdateDateTimeFromDialog(tag, date);
     }
 }

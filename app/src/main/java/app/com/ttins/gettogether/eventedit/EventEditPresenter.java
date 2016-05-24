@@ -18,6 +18,11 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     private static final int INSERT_DATA_TITLE_EMPTY_ERROR = 1;
     private static final int INSERT_DATA_LOCATION_EMPTY_ERROR = 2;
 
+    public static final String START_DATE_DIALOG_TAG = "START_DATE_DIALOG_TAG";
+    public static final String END_DATE_DIALOG_TAG = "END_DATE_DIALOG_TAG";
+    public static final String START_TIME_DIALOG_TAG = "START_TIME_PICKER";
+    public static final String END_TIME_DIALOG_TAG = "END_TIME_DIALOG_TAG";
+
     private WeakReference<EventEditMVP.RequiredViewOps> view;
     private EventEditMVP.ModelOps model;
     private Context viewContext;
@@ -131,6 +136,41 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
             view.get().onChangeNotes(eventDataMap.get(EventEditLoader.Query.NOTES));
             view.get().onChangePhoneNumber(eventDataMap.get(EventEditLoader.Query.PLACE_PHONE_NUMBER));
             view.get().onChangeStartTimeText(eventDataMap.get(EventEditLoader.Query.START_TIME_HOUR));
+        }
+    }
+
+    @Override
+    public void onStartTimeTextClick() {
+        view.get().onShowSetTimeDialog(START_TIME_DIALOG_TAG);
+    }
+
+    @Override
+    public void onEndTimeTextClick() {
+        view.get().onShowSetTimeDialog(END_TIME_DIALOG_TAG);
+    }
+
+    @Override
+    public void onStartDateTextClick() {
+        view.get().onShowSetDateDialog(START_DATE_DIALOG_TAG);
+    }
+
+    @Override
+    public void onEndDateTextClick() {
+        view.get().onShowSetDateDialog(END_DATE_DIALOG_TAG);
+    }
+
+    @Override
+    public void onUpdateDateTimeFromDialog(String dialogTag, String message) {
+        if (dialogTag.compareTo(START_TIME_DIALOG_TAG) == 0) {
+            view.get().onSetStartTime(message);
+        } else if (dialogTag.compareTo(END_TIME_DIALOG_TAG) == 0) {
+            view.get().onSetEndTime(message);
+        } else if (dialogTag.compareTo(START_DATE_DIALOG_TAG) == 0) {
+            view.get().onSetStartDate(message);
+        } else if (dialogTag.compareTo(END_DATE_DIALOG_TAG) == 0) {
+            view.get().onSetEndDate(message);
+        } else {
+            Log.d(LOG_TAG, "Update Date Time - Unknown tag");
         }
     }
 }

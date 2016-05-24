@@ -38,8 +38,6 @@ public interface EventMVP {
         void onShowEventDetailView(long id);
         void onOpenFabGuestAnimation();
         void onCloseFabGuestAnimation();
-        void onOpenFabGuestRemoveAnimation();
-        void onCloseFabGuestRemoveAnimation();
         void onOpenGuestActivity();
         void onShowGuestHandlerView();
         void onShowEventGuestRemoveView();

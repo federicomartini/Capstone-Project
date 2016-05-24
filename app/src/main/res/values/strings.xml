@@ -23,6 +23,8 @@
     <string name="event_type_label_event_edit_view">Type</string>
     <string name="location_label_event_edit_view">Location</string>
     <string name="meeting_location_label_event_edit_view">Meeting Location</string>
+    <string name="start_date_label_event_edit_view">Start Date</string>
+    <string name="end_date_label_event_edit_view">End Date</string>
     <string name="start_time_label_event_edit_view">Start Time</string>
     <string name="end_time_label_event_edit_view">End time</string>
     <string name="phone_label_event_edit_view">Phone</string>
