@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
     String guestName;
     TextView phoneNumber;
     TextView address;
+    ImageView mapImage;
     Callback callback;
 
     public void onAttach(Context context) {
@@ -72,6 +74,15 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
 
         phoneNumber = (TextView) root.findViewById(R.id.phone_num_text_view_guest_detail_view);
         address = (TextView) root.findViewById(R.id.address_text_view_guest_detail_view);
+        mapImage = (ImageView) root.findViewById(R.id.map_image_guest_detail_view);
+
+        mapImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onMapClick(address.getText().toString());
+            }
+        });
+
 
         return root;
     }
@@ -130,8 +141,15 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
         return args;
     }
 
+    @Override
+    public void onSendAddressToActivity(String address) {
+        Log.d(LOG_TAG, "onSendAddressToActivity");
+        callback.onAddressForMap(address);
+    }
+
     public interface Callback {
         void onChangeToolbarTitleToGuestName(String guestName);
         void onGuestDetailViewResumed();
+        void onAddressForMap(String address);
     }
 }

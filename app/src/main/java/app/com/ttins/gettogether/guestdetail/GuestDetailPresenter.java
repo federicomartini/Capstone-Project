@@ -72,4 +72,9 @@ public class GuestDetailPresenter implements GuestDetailMVP.PresenterOps, GuestD
             }*/
         }
     }
+
+    @Override
+    public void onMapClick(String address) {
+        view.get().onSendAddressToActivity(address);
+    }
 }

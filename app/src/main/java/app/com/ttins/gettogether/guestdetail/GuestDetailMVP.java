@@ -12,6 +12,7 @@ public interface GuestDetailMVP {
         void onAttachView(GuestDetailMVP.RequestedViewOps view);
         void onDetachView();
         void initLoader();
+        void onMapClick(String address);
     }
 
     interface ModelOps {
@@ -31,5 +32,6 @@ public interface GuestDetailMVP {
         void onChangeGuestName(String guestName);
         void onChangePhoneNumber(String phoneNumber);
         void onChangeAddress(String address);
+        void onSendAddressToActivity(String address);
     }
 }

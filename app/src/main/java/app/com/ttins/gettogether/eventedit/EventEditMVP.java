@@ -19,6 +19,7 @@ public interface EventEditMVP {
         void onStartDateTextClick();
         void onEndDateTextClick();
         void onUpdateDateTimeFromDialog(String dialogTag, String message);
+        void onLocationClick();
     }
 
     interface ModelOps {
@@ -53,6 +54,7 @@ public interface EventEditMVP {
         void onSetEndTime(String message);
         void onSetStartDate(String message);
         void onSetEndDate(String message);
+        void onShowPlaceView();
     }
 
 }

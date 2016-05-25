@@ -11,7 +11,6 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import app.com.ttins.gettogether.R;
-import app.com.ttins.gettogether.common.EventActivity;
 
 public class GetTogetherWidgetProvider extends AppWidgetProvider {
 

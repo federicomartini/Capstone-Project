@@ -20,14 +20,18 @@ import app.com.ttins.gettogether.common.persistence.GuestStateMaintainer;
 import app.com.ttins.gettogether.guestdetail.GuestDetailView;
 import app.com.ttins.gettogether.guestedit.GuestEditView;
 import app.com.ttins.gettogether.guestlist.GuestListView;
+import app.com.ttins.gettogether.guestsetmaplocation.GuestSetMapLocationMVP;
+import app.com.ttins.gettogether.guestsetmaplocation.GuestSetMapLocationView;
 
 public class GuestActivity extends AppCompatActivity implements GuestMVP.RequestedViewOps,
-                        GuestListView.Callback, GuestEditView.Callback, GuestDetailView.Callback {
+                        GuestListView.Callback, GuestEditView.Callback, GuestDetailView.Callback,
+                        GuestSetMapLocationView.Callback {
 
     private static final String LOG_TAG = GuestActivity.class.getSimpleName();
     private static final String FRAGMENT_GUEST_ADD_VIEW_TAG = "FRAGMENT_GUEST_ADD_VIEW_TAG";
     private static final String FRAGMENT_GUEST_LIST_VIEW_TAG = "FRAGMENT_GUEST_LIST_VIEW_TAG";
     private static final String FRAGMENT_DETAIL_VIEW_TAG = "FRAGMENT_DETAIL_VIEW_TAG";
+    private static final String FRAGMENT_MAP_VIEW_TAG = "FRAGMENT_MAP_VIEW_TAG";
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -231,5 +235,45 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onGuestDetailViewResumed() {
         presenter.guestDetailViewResume();
+    }
+
+    @Override
+    public void onAddressForMap(String address) {
+        Log.d(LOG_TAG, "onAddressForMap");
+        GuestSetMapLocationView fragmentMapView = (GuestSetMapLocationView) getSupportFragmentManager()
+                .findFragmentByTag(FRAGMENT_MAP_VIEW_TAG);
+
+        if (fragmentMapView == null) {
+            fragmentMapView = new GuestSetMapLocationView();
+            Bundle args = new Bundle();
+            args.putString(GuestSetMapLocationView.FRAG_MAP_ADDRESS_ARG, address);
+            fragmentMapView.setArguments(args);
+
+        } else {
+            fragmentMapView.setAddress(address);
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_content, fragmentMapView, FRAGMENT_MAP_VIEW_TAG)
+                .commit();
+
+    }
+
+    @Override
+    public void onMapViewGone() {
+        Log.d(LOG_TAG, "onMapViewGone");
+        getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(LOG_TAG, "onBackPressed");
+        super.onBackPressed();
+        GuestSetMapLocationView fragmentMapView = (GuestSetMapLocationView) getSupportFragmentManager()
+                .findFragmentByTag(FRAGMENT_MAP_VIEW_TAG);
+
+        if (fragmentMapView != null) {
+            getSupportFragmentManager().beginTransaction().remove(fragmentMapView).commit();
+        }
     }
 }

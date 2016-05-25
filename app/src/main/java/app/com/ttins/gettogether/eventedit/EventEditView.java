@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.eventsetplace.EventSetPlaceView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -97,6 +98,13 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         endTime = ButterKnife.findById(root, R.id.time_end_text_view_event_edit_view);
         startDate = ButterKnife.findById(root, R.id.date_start_text_view_event_edit_view);
         endDate = ButterKnife.findById(root, R.id.date_end_text_view_event_edit_view);
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onLocationClick();
+            }
+        });
 
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,9 +298,15 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         presenter.onUpdateDateTimeFromDialog(dialogTag, message);
     }
 
+    @Override
+    public void onShowPlaceView() {
+        callback.onShowPlaceView();
+    }
+
     public interface Callback {
         void onEventSaved();
         void onEventEditViewResumed();
+        void onShowPlaceView();
         void onShowTimePickerDialog(String dialogTag);
         void onShowDatePickerDialog(String dialogTag);
     }

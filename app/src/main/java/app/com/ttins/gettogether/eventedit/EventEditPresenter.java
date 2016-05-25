@@ -173,4 +173,9 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
             Log.d(LOG_TAG, "Update Date Time - Unknown tag");
         }
     }
+
+    @Override
+    public void onLocationClick() {
+        view.get().onShowPlaceView();
+    }
 }

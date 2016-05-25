@@ -18,6 +18,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+
 import java.util.List;
 
 import app.com.ttins.gettogether.R;
@@ -27,6 +31,7 @@ import app.com.ttins.gettogether.eventdetail.EventDetailView;
 import app.com.ttins.gettogether.eventedit.EventEditView;
 import app.com.ttins.gettogether.eventguesthandler.EventGuestHandlerView;
 import app.com.ttins.gettogether.eventlist.EventListView;
+import app.com.ttins.gettogether.eventsetplace.EventSetPlaceView;
 import app.com.ttins.gettogether.timepickerdialog.TimePickerDialogView;
 import butterknife.ButterKnife;
 
@@ -40,6 +45,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     private static final String FRAGMENT_EDIT_VIEW_TAG = "FRAG_EDIT_VIEW";
     private static final String FRAGMENT_DETAIL_VIEW_TAG = "FRAG_DETAIL_VIEW";
     private static final String FRAGMENT_GUEST_HANDLER_VIEW_TAG = "FRAGMENT_GUEST_HANDLER_VIEW_TAG";
+    private static final String FRAGMENT_PLACE_VIEW_TAG = "FRAGMENT_PLACE_VIEW_TAG";
 
     private EventMVP.PresenterOps presenter;
     private FloatingActionButton fab, fabGuestAdd;
@@ -411,5 +417,45 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
         if(fragmentEventEditView != null)
             fragmentEventEditView.onUpdateDateTimeFromDialog(tag, date);
+    }
+
+    @Override
+    public void onShowPlaceView() {
+        EventSetPlaceView eventSetPlaceView = (EventSetPlaceView) getSupportFragmentManager()
+                            .findFragmentByTag(FRAGMENT_PLACE_VIEW_TAG);
+
+        if(eventSetPlaceView == null) {
+            eventSetPlaceView = new EventSetPlaceView();
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_content, eventSetPlaceView, FRAGMENT_PLACE_VIEW_TAG)
+                .commit();
+
+        eventSetPlaceView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.d(LOG_TAG, "onPlaceSelected");
+                Log.d(LOG_TAG, "Name= " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        EventSetPlaceView eventSetPlaceView = (EventSetPlaceView) getSupportFragmentManager()
+                .findFragmentByTag(FRAGMENT_PLACE_VIEW_TAG);
+
+        if (eventSetPlaceView != null) {
+            getSupportFragmentManager().beginTransaction().remove(eventSetPlaceView).commit();
+        }
+
     }
 }
