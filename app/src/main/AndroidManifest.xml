@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
 
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_api_key"/>
+            android:value="@string/debug_map_api_key"/>
 
         <activity
             android:name=".common.EventActivity"

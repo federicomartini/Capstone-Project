@@ -219,6 +219,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onShowEventEditView() {
+        Log.d(LOG_TAG, "onShowEventEditView");
         collapsingToolbarLayout.setTitle("Edit Event");
         EventEditView fragmentEventEditView = new EventEditView();
         getSupportFragmentManager().beginTransaction().
@@ -430,6 +431,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_content, eventSetPlaceView, FRAGMENT_PLACE_VIEW_TAG)
+                .addToBackStack(null)
                 .commit();
 
         eventSetPlaceView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -437,6 +439,26 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             public void onPlaceSelected(Place place) {
                 Log.d(LOG_TAG, "onPlaceSelected");
                 Log.d(LOG_TAG, "Name= " + place.getName());
+                Log.d(LOG_TAG, "Address= " + place.getAddress());
+                Log.d(LOG_TAG, "Phone= " + place.getPhoneNumber());
+                Log.d(LOG_TAG, "Rating= " + place.getRating());
+                Log.d(LOG_TAG, "Price level= " + place.getPriceLevel());
+                Log.d(LOG_TAG, "WebSite= " + place.getWebsiteUri());
+
+                EventEditView fragmentEventEditView = (EventEditView) getSupportFragmentManager()
+                        .findFragmentByTag(FRAGMENT_EDIT_VIEW_TAG);
+                /*
+                if (fragmentEventEditView == null) {
+                    fragmentEventEditView = new EventEditView();
+                }
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_content, fragmentEventEditView)
+                        .commit();
+                 */
+                getSupportFragmentManager().popBackStack();
+                fragmentEventEditView.setPlace(place.getName().toString());
+
             }
 
             @Override
@@ -449,6 +471,14 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        List<Fragment> listFragment = getSupportFragmentManager().getFragments();
+        /*for (Fragment fragment:listFragment) {
+            if (fragment != null)
+                Log.d(LOG_TAG, "Fragment: " + fragment.getTag());
+            else
+                Log.d(LOG_TAG, "Fragment: null");
+        }*/
 
         EventSetPlaceView eventSetPlaceView = (EventSetPlaceView) getSupportFragmentManager()
                 .findFragmentByTag(FRAGMENT_PLACE_VIEW_TAG);

@@ -43,6 +43,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
     TextView eventTitle;
     TextView startTime;
+    TextView location;
     TextView meetLocation;
     TextView eventDuration;
     TextView phoneNumber;
@@ -134,8 +135,8 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         View root = inflater.inflate(R.layout.event_detail_view, container, false);
         presenter.onPopulateDetailView(eventId);
 
-        eventTitle = (TextView) root.findViewById(R.id.event_title_text_view_event_detail_view);
         startTime = (TextView) root.findViewById(R.id.start_time_text_view_event_detail_view);
+        location = (TextView) root.findViewById(R.id.location_text_view_event_detail_view);
         meetLocation = (TextView) root.findViewById(R.id.meet_loc_text_view_event_detail_view);
         eventDuration = (TextView) root.findViewById(R.id.elapse_time_text_view_event_detail_view);
         phoneNumber = (TextView) root.findViewById(R.id.phone_text_view_event_detail_view);
@@ -206,10 +207,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     @Override
     public void onChangeEventTitle(String eventTitle) {
         if(eventTitle != null && !eventTitle.isEmpty()) {
-            this.eventTitle.setText(eventTitle);
             callback.onChangeToolbarToEventTitle(eventTitle);
-        } else {
-            this.eventTitle.setText(getResources().getString(R.string.null_field));
         }
     }
 
@@ -366,5 +364,12 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     public void onNotifySetDataChanged() {
         if (eventDetailAdapter != null)
             eventDetailAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onChangeLocation(String location) {
+        if (this.location != null) {
+            this.location.setText(location);
+        }
     }
 }

@@ -222,7 +222,9 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
             GuestEditView fragmentGuestAddView = new GuestEditView();
             fragmentGuestAddView.setArguments(args);
             getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG).addToBackStack(null).commit();
+                    replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 

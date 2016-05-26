@@ -57,6 +57,7 @@ public interface EventDetailMVP {
         void onChangeMeetLocation(String meetLocation);
         void onChangeEventDuration(String eventDuration);
         void onChangePhoneNumber(String phoneNumber);
+        void onChangeLocation(String location);
         void onChangeConfirmStatus(String confirmStatus);
         void onChangeEmptyGuestList();
         void onChangeNotes(String notes);

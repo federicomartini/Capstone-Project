@@ -14,6 +14,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import app.com.ttins.gettogether.common.gson.Guest;
 import app.com.ttins.gettogether.common.gson.Guests;
@@ -92,12 +93,23 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
         eventDataMap = eventDetailMap;
 
         if (view != null) {
+
+            String startTime = String.format(Locale.getDefault(), "%s:%s",
+                    this.eventDataMap.get(EventDetailLoader.Query.START_TIME_HOUR),
+                    this.eventDataMap.get(EventDetailLoader.Query.START_TIME_MINUTE));
+
+            String endTime = String.format(Locale.getDefault(), "%s:%s",
+                    this.eventDataMap.get(EventDetailLoader.Query.END_TIME_HOUR),
+                    this.eventDataMap.get(EventDetailLoader.Query.END_TIME_MINUTE));
+
             view.get().onChangeEventTitle(this.eventDataMap.get(EventDetailLoader.Query.TITLE));
-            view.get().onChangeEventDuration(this.eventDataMap.get(EventDetailLoader.Query.TITLE));
+            view.get().onChangeStartTimeText(startTime);
+            view.get().onChangeEventDuration(endTime);
+            view.get().onChangeLocation(this.eventDataMap.get(EventDetailLoader.Query.LOCATION));
             view.get().onChangeMeetLocation(this.eventDataMap.get(EventDetailLoader.Query.MEETING_LOCATION));
             view.get().onChangeNotes(this.eventDataMap.get(EventDetailLoader.Query.NOTES));
             view.get().onChangePhoneNumber(this.eventDataMap.get(EventDetailLoader.Query.PLACE_PHONE_NUMBER));
-            view.get().onChangeStartTimeText(this.eventDataMap.get(EventDetailLoader.Query.START_TIME_HOUR));
+
 
             view.get().onResetViewAdapter();
             view.get().onLoadFinished(guests);

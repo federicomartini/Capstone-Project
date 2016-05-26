@@ -12,11 +12,12 @@ import app.com.ttins.gettogether.eventedit.loader.EventEditLoader;
 
 public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditMVP.RequiredPresenterOps {
 
-    private static final String LOG_TAG = EventEditView.class.getSimpleName();
+    private static final String LOG_TAG = EventEditPresenter.class.getSimpleName();
 
     private static final int INSERT_DATA_NO_ERROR = 0;
     private static final int INSERT_DATA_TITLE_EMPTY_ERROR = 1;
     private static final int INSERT_DATA_LOCATION_EMPTY_ERROR = 2;
+    private static final int INSERT_DATA_START_DATE_EMPTY_ERROR = 3;
 
     public static final String START_DATE_DIALOG_TAG = "START_DATE_DIALOG_TAG";
     public static final String END_DATE_DIALOG_TAG = "END_DATE_DIALOG_TAG";
@@ -34,48 +35,29 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     }
 
     @Override
-    public void saveEvent(String title, String location, String meetingLocation, String phone) {
+    public void saveEvent(HashMap<Integer, String> dataMap) {
         int retCheck;
 
-        retCheck = areAllEventDataOk(title, location, meetingLocation, phone);
-
-        switch(retCheck) {
-            case INSERT_DATA_TITLE_EMPTY_ERROR:
-                view.get().onShowToast("Event Title field can't be empty");
-                break;
-            case INSERT_DATA_LOCATION_EMPTY_ERROR:
-                view.get().onShowToast("Event Location field can't be empty");
-                break;
-            default:
-                break;
-        }
+        retCheck = areAllEventDataOk(dataMap);
+        showToastOnCheckError(retCheck);
 
         if (retCheck == INSERT_DATA_NO_ERROR) {
-            model.saveEventData(title, location, meetingLocation, phone);
+            model.saveEventData(dataMap);
         }
     }
 
     @Override
-    public void saveEvent(Long eventId, String title, String location, String meetingLocation, String phone) {
+    public void saveEvent(Long eventId, HashMap<Integer, String> dataMap) {
         int retCheck;
 
-        retCheck = areAllEventDataOk(title, location, meetingLocation, phone);
-
-        switch(retCheck) {
-            case INSERT_DATA_TITLE_EMPTY_ERROR:
-                view.get().onShowToast("Event Title field can't be empty");
-                break;
-            case INSERT_DATA_LOCATION_EMPTY_ERROR:
-                view.get().onShowToast("Event Location field can't be empty");
-                break;
-            default:
-                break;
-        }
+        retCheck = areAllEventDataOk(dataMap);
+        showToastOnCheckError(retCheck);
 
         if (retCheck == INSERT_DATA_NO_ERROR) {
-            model.saveEventData(eventId, title, location, meetingLocation, phone);
+            model.saveEventData(eventId, dataMap);
         }
     }
+
 
     @Override
     public void onAttachView(Context context) {
@@ -89,12 +71,34 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
         model.onDetachView();
     }
 
-    private int areAllEventDataOk(String title, String location, String meetingLocation, String phone) {
+    private void showToastOnCheckError(int retCheck) {
+        if (retCheck > 0) {
+            switch(retCheck) {
+                case INSERT_DATA_TITLE_EMPTY_ERROR:
+                    view.get().onShowToast("Event Title field can't be empty");
+                    break;
+                case INSERT_DATA_LOCATION_EMPTY_ERROR:
+                    view.get().onShowToast("Event Location field can't be empty");
+                    break;
+                case INSERT_DATA_START_DATE_EMPTY_ERROR:
+                    view.get().onShowToast("Event Start Date field can't be empty");
+                    break;
+                default:
+                    view.get().onShowToast("Error while inserting a new event");
+                    break;
+            }
+        }
+    }
 
-        if (title.isEmpty()) {
+
+    private int areAllEventDataOk(HashMap<Integer, String> dataMap) {
+
+        if (dataMap.get(EventEditLoader.Query.TITLE).isEmpty()) {
             return INSERT_DATA_TITLE_EMPTY_ERROR;
-        } else if (location.isEmpty()) {
+        } else if (dataMap.get(EventEditLoader.Query.LOCATION).isEmpty()) {
             return INSERT_DATA_LOCATION_EMPTY_ERROR;
+        } else if (dataMap.get(EventEditLoader.Query.EVENT_DAY).isEmpty()) {
+            return INSERT_DATA_START_DATE_EMPTY_ERROR;
         }
 
         return 0;
@@ -177,5 +181,10 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     @Override
     public void onLocationClick() {
         view.get().onShowPlaceView();
+    }
+
+    @Override
+    public void onPlaceReceived(String placeName) {
+        view.get().onShowLocation(placeName);
     }
 }

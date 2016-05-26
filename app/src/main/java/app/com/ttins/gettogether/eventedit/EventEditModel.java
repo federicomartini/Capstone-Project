@@ -31,16 +31,16 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
     }
 
     @Override
-    public void saveEventData(String title, String location, String meetingLocation, String phone) {
+    public void saveEventData(HashMap<Integer, String> dataMap) {
 
         Uri retUri;
         ContentValues values = new ContentValues();
 
         if (viewContext != null) {
-            values.put(GetTogetherContract.Events.TITLE, title);
-            values.put(GetTogetherContract.Events.LOCATION, location);
-            values.put(GetTogetherContract.Events.MEETING_LOCATION, meetingLocation);
-            values.put(GetTogetherContract.Events.PLACE_PHONE_NUMBER, phone);
+            values.put(GetTogetherContract.Events.TITLE, dataMap.get(EventEditLoader.Query.TITLE));
+            values.put(GetTogetherContract.Events.LOCATION, dataMap.get(EventEditLoader.Query.LOCATION));
+            values.put(GetTogetherContract.Events.MEETING_LOCATION, dataMap.get(EventEditLoader.Query.MEETING_LOCATION));
+            values.put(GetTogetherContract.Events.PLACE_PHONE_NUMBER, dataMap.get(EventEditLoader.Query.PLACE_PHONE_NUMBER));
 
             retUri = viewContext.getContentResolver().insert(GetTogetherContract.Events.CONTENT_URI, values);
             if (retUri != null) {
@@ -55,16 +55,16 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
 
 
     @Override
-    public void saveEventData(Long eventId, String title, String location, String meetingLocation, String phone) {
+    public void saveEventData(Long eventId, HashMap<Integer, String> dataMap) {
 
         int rows;
         ContentValues values = new ContentValues();
 
         if (viewContext != null) {
-            values.put(GetTogetherContract.Events.TITLE, title);
-            values.put(GetTogetherContract.Events.LOCATION, location);
-            values.put(GetTogetherContract.Events.MEETING_LOCATION, meetingLocation);
-            values.put(GetTogetherContract.Events.PLACE_PHONE_NUMBER, phone);
+            values.put(GetTogetherContract.Events.TITLE, dataMap.get(EventEditLoader.Query.TITLE));
+            values.put(GetTogetherContract.Events.LOCATION, dataMap.get(EventEditLoader.Query.LOCATION));
+            values.put(GetTogetherContract.Events.MEETING_LOCATION, dataMap.get(EventEditLoader.Query.MEETING_LOCATION));
+            values.put(GetTogetherContract.Events.PLACE_PHONE_NUMBER, dataMap.get(EventEditLoader.Query.PLACE_PHONE_NUMBER));
 
             rows = viewContext.getContentResolver().update(GetTogetherContract.Events.CONTENT_URI,
                                                             values,

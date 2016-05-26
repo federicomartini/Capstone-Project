@@ -9,8 +9,8 @@ import java.util.HashMap;
 public interface EventEditMVP {
 
     interface PresenterOps {
-        void saveEvent(String title, String location, String meetingLocation, String phone);
-        void saveEvent(Long eventId, String title, String location, String meetingLocation, String phone);
+        void saveEvent(HashMap<Integer, String> dataMap);
+        void saveEvent(Long eventId, HashMap<Integer, String> dataMap);
         void onAttachView(Context context);
         void onDetachView();
         void initEventEditLoader(long id);
@@ -20,13 +20,14 @@ public interface EventEditMVP {
         void onEndDateTextClick();
         void onUpdateDateTimeFromDialog(String dialogTag, String message);
         void onLocationClick();
+        void onPlaceReceived(String placeName);
     }
 
     interface ModelOps {
         void onAttachView(Context context);
         void onDetachView();
-        void saveEventData(String title, String location, String meetingLocation, String phone);
-        void saveEventData(Long eventId, String title, String location, String meetingLocation, String phone);
+        void saveEventData(HashMap<Integer, String> dataMap);
+        void saveEventData(Long eventId, HashMap<Integer, String> dataMap);
         void initEventEditLoader(long id);
     }
 
@@ -55,6 +56,7 @@ public interface EventEditMVP {
         void onSetStartDate(String message);
         void onSetEndDate(String message);
         void onShowPlaceView();
+        void onShowLocation(String placeName);
     }
 
 }

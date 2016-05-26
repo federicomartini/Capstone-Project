@@ -11,8 +11,10 @@ import android.util.Log;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import app.com.ttins.gettogether.common.EventActivity;
+import app.com.ttins.gettogether.common.utils.DateTimeFormat;
 
 public class TimePickerDialogView extends DialogFragment implements TimePickerDialogMVP.RequestedViewOps,
         TimePickerDialog.OnTimeSetListener {
@@ -43,8 +45,8 @@ public class TimePickerDialogView extends DialogFragment implements TimePickerDi
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Log.d(LOG_TAG, "hh: " + hourOfDay + " - mm: " + minute);
-        String time = String.valueOf(hourOfDay + ":" + minute);
+
+        String time = DateTimeFormat.convertTime(hourOfDay, minute);
 
         if (callback != null) {
             callback.onTimeSet(getTag(), time);

@@ -10,12 +10,21 @@ import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
+
+import java.util.HashMap;
+
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.utils.DateTimeFormat;
+import app.com.ttins.gettogether.data.GetTogetherContract;
+import app.com.ttins.gettogether.eventedit.loader.EventEditLoader;
 import app.com.ttins.gettogether.eventsetplace.EventSetPlaceView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,11 +45,15 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @BindView(R.id.time_end_text_view_event_edit_view) EditText endTime;
     @BindView(R.id.date_start_text_view_event_edit_view) EditText startDate;
     @BindView(R.id.date_end_text_view_event_edit_view) EditText endDate;
+    @BindView(R.id.note_text_view_event_edit_view) EditText note;
+    String photoSrc = null;
+
     private EventEditMVP.PresenterOps presenter;
     private EventEditView.Callback callback;
     Unbinder unbinder;
     private boolean isNewEvent;
     private long eventId;
+    private String placeName;
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +76,14 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         presenter.onAttachView(getContext());
         getActivity().invalidateOptionsMenu();
         callback.onEventEditViewResumed();
+
+        if (placeName != null) {
+            Log.d(LOG_TAG, "Setting PlaceName onResumeView");
+            location.setText(this.placeName);
+            this.placeName = null;
+        }
     }
+
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -71,6 +91,9 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         Log.d(LOG_TAG, "onPrepareOptionsMenu");
         menu.findItem(R.id.guest_item_menu).setVisible(false);
         menu.findItem(R.id.event_edit_item_menu).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_add_guest).setVisible(false);
+        menu.findItem(R.id.action_remove_guest).setVisible(false);
     }
 
     @Override
@@ -98,6 +121,10 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         endTime = ButterKnife.findById(root, R.id.time_end_text_view_event_edit_view);
         startDate = ButterKnife.findById(root, R.id.date_start_text_view_event_edit_view);
         endDate = ButterKnife.findById(root, R.id.date_end_text_view_event_edit_view);
+        note = ButterKnife.findById(root, R.id.note_text_view_event_edit_view);
+
+
+        Log.d(LOG_TAG, "Location: " + location.getText().toString());
 
         location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,24 +177,31 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
 
     public void addEvent() {
         //TODO: add data to DB
-        String titleText;
-        String locationText;
-        String meetingLocationText;
-        String phoneNumber;
+        HashMap<Integer, String> dataMap = new HashMap<>();
 
-        titleText = eventTitle.getText().toString();
-        locationText = location.getText().toString();
-        meetingLocationText = meetingLocation.getText().toString();
-        phoneNumber = phone.getText().toString();
+        dataMap.put(EventEditLoader.Query.TITLE, eventTitle.getText().toString());
+        dataMap.put(EventEditLoader.Query.LOCATION, location.getText().toString());
+        dataMap.put(EventEditLoader.Query.MEETING_LOCATION, meetingLocation.getText().toString());
+        dataMap.put(EventEditLoader.Query.EVENT_DAY, DateTimeFormat.getStringDayFromDate(startDate.getText().toString()));
+        dataMap.put(EventEditLoader.Query.EVENT_MONTH, DateTimeFormat.getStringMonthFromDate(startDate.getText().toString()));
+        dataMap.put(EventEditLoader.Query.EVENT_YEAR, DateTimeFormat.getStringYearFromDate(startDate.getText().toString()));
+        //dataMap.put(EventEditLoader.Query.LOCATION, endDate.getText().toString());
+        dataMap.put(EventEditLoader.Query.START_TIME_HOUR, DateTimeFormat.getStringHoursFromTime(startTime.getText().toString()));
+        dataMap.put(EventEditLoader.Query.START_TIME_MINUTE, DateTimeFormat.getStringMinutesFromTime(startTime.getText().toString()));
+        dataMap.put(EventEditLoader.Query.END_TIME_HOUR, DateTimeFormat.getStringHoursFromTime(endTime.getText().toString()));
+        dataMap.put(EventEditLoader.Query.END_TIME_MINUTE, DateTimeFormat.getStringMinutesFromTime(endTime.getText().toString()));
+        dataMap.put(EventEditLoader.Query.PLACE_PHONE_NUMBER, phone.getText().toString());
+        dataMap.put(EventEditLoader.Query.NOTES, note.getText().toString());
+        dataMap.put(EventEditLoader.Query.PHOTO_PATH, photoSrc);
 
-        Log.d(LOG_TAG, "Title = " + titleText);
+        Log.d(LOG_TAG, "StartTimeHour: " + DateTimeFormat.getStringHoursFromTime(startTime.getText().toString()));
 
         if (isNewEvent) {
             Log.d(LOG_TAG, "Creating New Event");
-            presenter.saveEvent(titleText, locationText, meetingLocationText, phoneNumber);
+            presenter.saveEvent(dataMap);
         } else {
             Log.d(LOG_TAG, "Editing Event");
-            presenter.saveEvent(eventId, titleText, locationText, meetingLocationText, phoneNumber);
+            presenter.saveEvent(eventId, dataMap);
         }
 
     }
@@ -301,6 +335,25 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @Override
     public void onShowPlaceView() {
         callback.onShowPlaceView();
+    }
+
+    public void setPlace(String placeName) {
+        Log.d(LOG_TAG, "setPlace: " + placeName);
+        presenter.onPlaceReceived(placeName);
+    }
+
+    @Override
+    public void onShowLocation(String placeName) {
+        Log.d(LOG_TAG, "onShowLocation: " + placeName);
+        if (location != null && this.getView() != null) {
+            Log.d(LOG_TAG, "Setting PlaceName onShowLocation");
+            location.setText(placeName);
+            this.placeName = null;
+        } else {
+            Log.d(LOG_TAG, "Fetching PlaceName...");
+            this.placeName = placeName;
+        }
+
     }
 
     public interface Callback {

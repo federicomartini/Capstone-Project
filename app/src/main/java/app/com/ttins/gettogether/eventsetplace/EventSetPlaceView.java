@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +16,8 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+
+import app.com.ttins.gettogether.R;
 
 public class EventSetPlaceView extends SupportPlaceAutocompleteFragment implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -33,6 +36,16 @@ public class EventSetPlaceView extends SupportPlaceAutocompleteFragment implemen
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.guest_item_menu).setVisible(false);
+        menu.findItem(R.id.event_edit_item_menu).setVisible(false);
+        menu.findItem(R.id.action_remove_guest).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_add_guest).setVisible(false);
     }
 
     @Override
