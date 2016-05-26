@@ -21,6 +21,7 @@ public interface EventEditMVP {
         void onUpdateDateTimeFromDialog(String dialogTag, String message);
         void onLocationClick();
         void onPlaceReceived(String placeName);
+        void onEventPhotoIconClick();
     }
 
     interface ModelOps {
@@ -57,6 +58,7 @@ public interface EventEditMVP {
         void onSetEndDate(String message);
         void onShowPlaceView();
         void onShowLocation(String placeName);
+        void onShowGalleryForPicture();
     }
 
 }

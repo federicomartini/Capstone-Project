@@ -3,7 +3,10 @@ package app.com.ttins.gettogether.eventedit;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -15,10 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import app.com.ttins.gettogether.R;
@@ -36,6 +41,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     private static final String LOG_TAG = EventEditView.class.getSimpleName();
 
     public static final String FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG = "FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG";
+    private static final int SELECT_IMAGE_REQ_CODE = 1;
 
     @BindView(R.id.event_title_edit_text_event_edit_view) EditText eventTitle;
     @BindView(R.id.location_edit_text_event_edit_view) EditText location;
@@ -46,6 +52,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @BindView(R.id.date_start_text_view_event_edit_view) EditText startDate;
     @BindView(R.id.date_end_text_view_event_edit_view) EditText endDate;
     @BindView(R.id.note_text_view_event_edit_view) EditText note;
+    @BindView(R.id.image_icon_image_view) ImageView eventPhoto;
     String photoSrc = null;
 
     private EventEditMVP.PresenterOps presenter;
@@ -120,6 +127,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         startDate = ButterKnife.findById(root, R.id.date_start_text_view_event_edit_view);
         endDate = ButterKnife.findById(root, R.id.date_end_text_view_event_edit_view);
         note = ButterKnife.findById(root, R.id.note_text_view_event_edit_view);
+        eventPhoto = ButterKnife.findById(root, R.id.image_icon_image_view);
 
 
         Log.d(LOG_TAG, "Location: " + location.getText().toString());
@@ -160,6 +168,14 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             public void onClick(View v) {
                 Log.d(LOG_TAG, "endDate click");
                 presenter.onEndDateTextClick();
+            }
+        });
+
+        eventPhoto.setClickable(true);
+        eventPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onEventPhotoIconClick();
             }
         });
 
@@ -352,6 +368,34 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             this.placeName = placeName;
         }
 
+    }
+
+    @Override
+    public void onShowGalleryForPicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE_REQ_CODE);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_IMAGE_REQ_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media
+                                .getBitmap(getActivity().getContentResolver(), data.getData());
+                        Log.d(LOG_TAG, "Bitmap received: " + data.getDataString());
+                        photoSrc = data.getDataString();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public interface Callback {

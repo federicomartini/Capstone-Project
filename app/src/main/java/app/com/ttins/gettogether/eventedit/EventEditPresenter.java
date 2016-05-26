@@ -187,4 +187,11 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     public void onPlaceReceived(String placeName) {
         view.get().onShowLocation(placeName);
     }
+
+    @Override
+    public void onEventPhotoIconClick() {
+        if (view != null) {
+            view.get().onShowGalleryForPicture();
+        }
+    }
 }
