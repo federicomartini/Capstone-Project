@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 
 import java.util.HashMap;
+import java.util.List;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.GuestStateMaintainer;
@@ -197,7 +198,8 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         fragmentGuestDetailView.setArguments(args);
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentGuestDetailView, FRAGMENT_DETAIL_VIEW_TAG)
-                .addToBackStack(null).commit();
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -257,6 +259,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_content, fragmentMapView, FRAGMENT_MAP_VIEW_TAG)
+                .addToBackStack(null)
                 .commit();
 
     }
@@ -264,13 +267,22 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onMapViewGone() {
         Log.d(LOG_TAG, "onMapViewGone");
-        getSupportFragmentManager().popBackStack();
+        //getSupportFragmentManager().popBackStack();
     }
 
     @Override
     public void onBackPressed() {
         Log.d(LOG_TAG, "onBackPressed");
         super.onBackPressed();
+
+        List<Fragment> listFragment = getSupportFragmentManager().getFragments();
+        for (Fragment fragment:listFragment) {
+            if (fragment != null)
+                Log.d(LOG_TAG, "Fragment: " + fragment.getTag());
+            else
+                Log.d(LOG_TAG, "Fragment: null");
+        }
+
         GuestSetMapLocationView fragmentMapView = (GuestSetMapLocationView) getSupportFragmentManager()
                 .findFragmentByTag(FRAGMENT_MAP_VIEW_TAG);
 

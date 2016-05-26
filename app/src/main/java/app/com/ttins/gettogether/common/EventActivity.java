@@ -472,8 +472,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onBackPressed() {
         super.onBackPressed();
 
-        List<Fragment> listFragment = getSupportFragmentManager().getFragments();
-        /*for (Fragment fragment:listFragment) {
+        /*  List<Fragment> listFragment = getSupportFragmentManager().getFragments();
+            for (Fragment fragment:listFragment) {
             if (fragment != null)
                 Log.d(LOG_TAG, "Fragment: " + fragment.getTag());
             else
