@@ -72,5 +72,6 @@ public interface EventDetailMVP {
         void onLoadFinished(Guests guests);
         void onResetViewAdapter();
         void onNotifySetDataChanged();
+        void onGuestAlreadyInList(String guestName);
     }
 }

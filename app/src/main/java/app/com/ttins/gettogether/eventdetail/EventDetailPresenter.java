@@ -44,6 +44,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     boolean pendingShowView = false;
     HashMap<Integer, String> pendingEventDetailMap;
     Guests pendingGuests;
+    String guestNameToastPending = null;
 
     public EventDetailPresenter(EventDetailMVP.RequiredViewOps view) {
         if (this.model == null) {
@@ -71,6 +72,12 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
         if (pendingShowView) {
             onEventLoadFinished(pendingEventDetailMap, pendingGuests);
             loaderPendingRequest = false;
+        }
+
+        if(guestNameToastPending != null && !guestNameToastPending.isEmpty() ) {
+            Log.d(LOG_TAG, "onAttachView guestNameToastPending");
+            sendToastToActivity(guestNameToastPending);
+            guestNameToastPending = null;
         }
 
         //this.view.get().onShowEmptyRecyclerView();
@@ -251,7 +258,18 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                 model.onSaveGuestList(eventId, idJsonList);
             } else {
                 Log.d(LOG_TAG, "Guest " + guestId + " already in List");
+                sendToastToActivity(String.valueOf(guestId));
             }
+        }
+    }
+
+    private void sendToastToActivity(String guestName) {
+        Log.d(LOG_TAG, "sendToastToActivity");
+        if (view != null) {
+            view.get().onGuestAlreadyInList(guestName);
+        } else {
+            Log.d(LOG_TAG, "View is null");
+            guestNameToastPending = guestName;
         }
     }
 
@@ -284,6 +302,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     public void onLoadFinished(String guestList) {
         Log.d(LOG_TAG, "onLoadFinished: guestId = " + addGuestId);
         boolean guestFound = false;
+        String guestFoundName = "";
         Gson gson = new Gson();
         Guests guests = new Guests();
         List<Guest> listOfGuest = gson.fromJson(guestList,
@@ -298,6 +317,8 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                         Log.d(LOG_TAG, "Guest ID Found");
                         guestFound = true;
                         addGuestId = GUEST_ID_NULL;
+                        guestFoundName = String.valueOf(guest.getId());
+                        break;
                     }
                 }
             }
@@ -313,6 +334,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                 model.onUpdateGuestList(idJsonList);
             } else {
                 Log.d(LOG_TAG, "Guest ID Found");
+                sendToastToActivity(String.valueOf(guestFoundName));
                 model.onGetDataForView(guests);
                 localGuestList = guests;
             }

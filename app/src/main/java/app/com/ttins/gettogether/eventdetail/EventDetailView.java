@@ -294,12 +294,6 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         emptyGuestList.setVisibility(View.GONE);
     }
 
-    public interface Callback {
-        void onChangeToolbarToEventTitle(String eventTitle);
-        void onReceiveIdEditDetailView(long id);
-        void onEventDetailViewResumed();
-    }
-
     @Override
     public void onSetRecyclerViewAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
@@ -371,5 +365,17 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         if (this.location != null) {
             this.location.setText(location);
         }
+    }
+
+    @Override
+    public void onGuestAlreadyInList(String guestName) {
+        callback.onShowEventDetailViewToast(guestName + " already in list");
+    }
+
+    public interface Callback {
+        void onChangeToolbarToEventTitle(String eventTitle);
+        void onReceiveIdEditDetailView(long id);
+        void onEventDetailViewResumed();
+        void onShowEventDetailViewToast(String message);
     }
 }

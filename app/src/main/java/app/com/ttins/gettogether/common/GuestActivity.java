@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.HashMap;
@@ -41,10 +42,30 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     private final GuestStateMaintainer stateMaintainer =
             new GuestStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                break;
+            case R.id.guest_item_menu:
+                //presenter.guestMenuItemClick();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -133,6 +154,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onSetFabToAddGuestStatus() {
         if (fab != null) {
+            fab.setVisibility(View.VISIBLE);
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person_add_white_36dp));
         }
     }
@@ -140,6 +162,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onSetFabToAddGuestConfirmStatus() {
         if (fab != null) {
+            fab.setVisibility(View.VISIBLE);
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_white_36dp));
         }
     }
@@ -161,6 +184,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     public void onGuestListViewResume() {
         presenter.guestListViewResume();
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_activity));
+        fab.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -206,6 +230,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     public void onSetFabToGuestDetailStatus() {
         if (fab != null) {
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_mode_edit_white_24dp));
+            fab.setVisibility(View.VISIBLE);
         }
     }
 
@@ -233,6 +258,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onGuestEditViewResumed() {
         presenter.guestEditViewResume();
+        fab.setVisibility(View.VISIBLE);
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
     }
 
@@ -267,6 +293,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public void onMapViewGone() {
         Log.d(LOG_TAG, "onMapViewGone");
+        fab.setVisibility(View.VISIBLE);
         //getSupportFragmentManager().popBackStack();
     }
 
@@ -289,5 +316,16 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         if (fragmentMapView != null) {
             getSupportFragmentManager().beginTransaction().remove(fragmentMapView).commit();
         }
+    }
+
+    @Override
+    public void onMapViewResume() {
+        presenter.onMapViewResume();
+    }
+
+    @Override
+    public void onSetFabToMapViewStatus() {
+        Log.d(LOG_TAG, "onSetFabToMapViewStatus");
+        fab.setVisibility(View.GONE);
     }
 }

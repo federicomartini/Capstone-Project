@@ -41,8 +41,8 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
                 onAddEventConfirmFabClick();
                 break;
             case FAB_STATUS_GUEST:
-            case FAB_STATUS_GUEST_OPENED:
-            case FAB_STATUS_GUEST_CLOSED:
+            //case FAB_STATUS_GUEST_OPENED:
+            //case FAB_STATUS_GUEST_CLOSED:
                 onGuestFabClick();
                 break;
             default:
@@ -64,12 +64,14 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     private void onGuestFabClick() {
         switch(fabStatus) {
             case FAB_STATUS_GUEST:
-            case FAB_STATUS_GUEST_CLOSED:
+                view.get().onShowGuestHandlerView();
+                break;
+            /*case FAB_STATUS_GUEST_CLOSED:
                 setFabStatus(FAB_STATUS_GUEST_OPENED);
                 break;
             case FAB_STATUS_GUEST_OPENED:
                 setFabStatus(FAB_STATUS_GUEST_CLOSED);
-                break;
+                break;*/
             default:
                 Log.d(LOG_TAG, "Unknown click event");
                 break;
@@ -77,7 +79,7 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     }
 
     private void setFabStatus(int fabStatus) {
-        forceCloseStatus(fabStatus);
+        //forceCloseStatus(fabStatus);
 
         this.fabStatus = fabStatus;
         switch (fabStatus) {
@@ -90,14 +92,14 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
             case FAB_STATUS_GUEST:
                 view.get().onSetFabToGuestStatus();
                 break;
-            case FAB_STATUS_GUEST_OPENED:
+            /*case FAB_STATUS_GUEST_OPENED:
                 view.get().onSetFabToGuestStatus();
                 view.get().onOpenFabGuestAnimation();
                 break;
             case FAB_STATUS_GUEST_CLOSED:
                 view.get().onSetFabToGuestStatus();
-                view.get().onCloseFabGuestAnimation();
-                break;
+                //view.get().onCloseFabGuestAnimation();
+                break;*/
             case FAB_STATUS_ADD_GUEST_LIST:
                 view.get().onsetFabToAddGuestToListStatus();
                 break;
@@ -107,13 +109,13 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
         Log.d(LOG_TAG, "fabStatus: " + fabStatus);
     }
 
-    private void forceCloseStatus(int fabStatus) {
+    /*private void forceCloseStatus(int fabStatus) {
         if(this.fabStatus == FAB_STATUS_GUEST_OPENED) {
             if (fabStatus != this.fabStatus ) {
                 view.get().onCloseFabGuestAnimation();
             }
         }
-    }
+    }*/
 
 
     /**

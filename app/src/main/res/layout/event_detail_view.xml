@@ -141,6 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_crop_square_black_36dp"
+                android:background="@color/background_white"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
                 android:padding="@dimen/medium_margin_material_design"/>

@@ -11,6 +11,7 @@ public interface GuestMVP {
         void guestDetailViewResume();
         void onGuestDataSaved();
         void onGuestItemClick(long id);
+        void onMapViewResume();
     }
 
     interface ModelOps {
@@ -25,6 +26,7 @@ public interface GuestMVP {
         void onSetFabToAddGuestStatus();
         void onSetFabToAddGuestConfirmStatus();
         void onSetFabToGuestDetailStatus();
+        void onSetFabToMapViewStatus();
         void onShowGuestEditView();
         void onShowGuestListView();
         void onSaveGuestDataRequest();

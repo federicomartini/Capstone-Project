@@ -43,15 +43,24 @@ public class GuestSetMapLocationView extends SupportMapFragment implements OnMap
         }
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+
+        if (args.containsKey(FRAG_MAP_ADDRESS_ARG)) {
+            address = args.getString(FRAG_MAP_ADDRESS_ARG);
+        } else {
+            address = null;
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        callback.onMapViewResume();
     }
 
     void setUpMapIfNeeded() {
@@ -150,6 +159,7 @@ public class GuestSetMapLocationView extends SupportMapFragment implements OnMap
 
     public interface Callback {
         void onMapViewGone();
+        void onMapViewResume();
     }
 
 

@@ -64,31 +64,18 @@
     
     <include layout="@layout/fragment_content"/>
 
-    <RelativeLayout
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_event_event_activity"
+        app:fabSize="normal"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_gravity="bottom|end">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_guest_add_event_activity"
-            app:fabSize="mini"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_person_add_white_36dp"
-            android:layout_above="@+id/fab_event_event_activity"
-            android:layout_centerHorizontal="true"
-            android:visibility="invisible"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_event_event_activity"
-            app:fabSize="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/fab_margin"
-            android:layout_alignParentBottom="true"/>
-
-    </RelativeLayout>
 
 
 

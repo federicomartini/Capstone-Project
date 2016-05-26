@@ -17,8 +17,6 @@
     <string name="no_data_available">No data available</string>
 
     <!-- ########## Event List Overflow Menu ########## -->
-    <string name="action_add_guest">Add Guest</string>
-    <string name="action_remove_guest">Remove Guest</string>
 
     <!-- ########## Event Edit View Labels ########## -->
     <string name="image_label_event_edit_view">Image</string>

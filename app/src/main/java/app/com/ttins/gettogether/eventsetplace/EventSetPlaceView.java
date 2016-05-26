@@ -43,9 +43,7 @@ public class EventSetPlaceView extends SupportPlaceAutocompleteFragment implemen
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.guest_item_menu).setVisible(false);
         menu.findItem(R.id.event_edit_item_menu).setVisible(false);
-        menu.findItem(R.id.action_remove_guest).setVisible(false);
         menu.findItem(R.id.action_settings).setVisible(false);
-        menu.findItem(R.id.action_add_guest).setVisible(false);
     }
 
     @Override

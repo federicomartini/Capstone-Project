@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -68,7 +69,6 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
         startMVPOps();
 
-        fabGuestAdd = (FloatingActionButton) findViewById(R.id.fab_guest_add_event_activity);
         fab = (FloatingActionButton) findViewById(R.id.fab_event_event_activity);
 
         if (fab != null) {
@@ -153,6 +153,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -172,10 +173,6 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.action_add_guest:
-                break;
-            case R.id.action_remove_guest:
-                break;
             case R.id.action_settings:
                 break;
             case R.id.guest_item_menu:
@@ -287,7 +284,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         if (fab != null) {
             fab.setVisibility(View.VISIBLE);
             fab.setImageDrawable(ContextCompat.getDrawable(this.getBaseContext(),
-                    R.drawable.ic_person_white_36dp));
+                    R.drawable.ic_person_add_white_36dp));
         } else {
             Log.d(LOG_TAG, "Error setting FAB drawables: FAB is null");
         }
@@ -332,7 +329,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onEventEditViewResumed() {
         presenter.eventEditViewResume();
-        collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.event_edit_menu));
     }
 
     @Override
@@ -487,5 +484,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             getSupportFragmentManager().beginTransaction().remove(eventSetPlaceView).commit();
         }
 
+    }
+
+    @Override
+    public void onShowEventDetailViewToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

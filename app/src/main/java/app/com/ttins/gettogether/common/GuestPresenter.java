@@ -12,6 +12,7 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
     private static final int FAB_STATUS_ADD_GUEST_CONFIRM = 1;
     private static final int FAB_GUEST_DETAIL = 2;
     private static final int FAB_GUEST_EDIT_DETAIL = 3;
+    private static final int FAB_GUEST_MAP = 4;
 
 
 
@@ -81,15 +82,15 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
                 onAddGuestConfirmFabClick();
                 break;
             case FAB_GUEST_DETAIL:
-                onEditGuestFabClick();
+                onDetailGuestFabClick();
                 break;
             default:
                 break;
         }
     }
 
-    void onEditGuestFabClick() {
-        Log.d(LOG_TAG, "onEditGuestFabClick");
+    void onDetailGuestFabClick() {
+        Log.d(LOG_TAG, "onDetailGuestFabClick");
         view.get().onShowGuestEditDetailView();
     }
 
@@ -133,5 +134,12 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
     public void guestDetailViewResume() {
         Log.d(LOG_TAG, "GuestDetailView resumed");
         setFabStatus(FAB_GUEST_DETAIL);
+    }
+
+    @Override
+    public void onMapViewResume() {
+        if (view != null) {
+            view.get().onSetFabToMapViewStatus();
+        }
     }
 }
