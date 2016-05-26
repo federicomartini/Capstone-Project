@@ -117,6 +117,10 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             view.get().onChangeNotes(this.eventDataMap.get(EventDetailLoader.Query.NOTES));
             view.get().onChangePhoneNumber(this.eventDataMap.get(EventDetailLoader.Query.PLACE_PHONE_NUMBER));
 
+            String photoPath = this.eventDataMap.get(EventDetailLoader.Query.PHOTO_PATH);
+            if ( photoPath != null && !photoPath.isEmpty()) {
+                view.get().onChangeEventPhoto(photoPath);
+            }
 
             view.get().onResetViewAdapter();
             view.get().onLoadFinished(guests);

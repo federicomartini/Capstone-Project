@@ -58,6 +58,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout itemLayout;
+        public String photoUri;
         public TextView guestName;
         public TextView note;
 
@@ -377,5 +378,10 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         void onReceiveIdEditDetailView(long id);
         void onEventDetailViewResumed();
         void onShowEventDetailViewToast(String message);
+    }
+
+    @Override
+    public void onChangeEventPhoto(String photoUri) {
+        Log.d(LOG_TAG, "onChangeEventPhoto: " + photoUri);
     }
 }

@@ -73,5 +73,6 @@ public interface EventDetailMVP {
         void onResetViewAdapter();
         void onNotifySetDataChanged();
         void onGuestAlreadyInList(String guestName);
+        void onChangeEventPhoto(String photoUri);
     }
 }
