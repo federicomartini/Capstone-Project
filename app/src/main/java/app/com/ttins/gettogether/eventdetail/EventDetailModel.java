@@ -88,7 +88,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
             Log.d(LOG_TAG, "onLoadFinished photoPath: " + cursor.getString(EventDetailLoader.Query.PHOTO_PATH));
 
-            /*Log.d(LOG_TAG, "_ID = " + dataMap.get(EventDetailLoader.Query._ID) + ", " +
+            Log.d(LOG_TAG, "_ID = " + dataMap.get(EventDetailLoader.Query._ID) + ", " +
                     "CONFIRMATION_STATUS = " + dataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS) + ", " +
                     "TITLE = " + dataMap.get(EventDetailLoader.Query.TITLE) + ", " +
                     "END_TIME_HOUR = " + dataMap.get(EventDetailLoader.Query.END_TIME_HOUR) + ", " +
@@ -106,7 +106,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
                     "PLACE_PHONE_NUMBER = " + dataMap.get(EventDetailLoader.Query.PLACE_PHONE_NUMBER) + ", " +
                     "START_TIME_HOUR = " + dataMap.get(EventDetailLoader.Query.START_TIME_HOUR) + ", " +
                     "START_TIME_MINUTE = " + dataMap.get(EventDetailLoader.Query.START_TIME_MINUTE)
-            );*/
+            );
         }
 
         switch(loader.getId()) {

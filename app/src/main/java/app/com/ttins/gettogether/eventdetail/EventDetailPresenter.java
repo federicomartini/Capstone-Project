@@ -105,13 +105,25 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                     this.eventDataMap.get(EventDetailLoader.Query.START_TIME_HOUR),
                     this.eventDataMap.get(EventDetailLoader.Query.START_TIME_MINUTE));
 
+            Log.d(LOG_TAG, "startTime = " + startTime);
+
             String endTime = String.format(Locale.getDefault(), "%s:%s",
                     this.eventDataMap.get(EventDetailLoader.Query.END_TIME_HOUR),
                     this.eventDataMap.get(EventDetailLoader.Query.END_TIME_MINUTE));
 
+            Log.d(LOG_TAG, "endTime = " + endTime);
+
             view.get().onChangeEventTitle(this.eventDataMap.get(EventDetailLoader.Query.TITLE));
-            view.get().onChangeStartTimeText(startTime);
-            view.get().onChangeEventDuration(endTime);
+
+            if(startTime.length() >= 4) {
+                view.get().onChangeStartTimeText(startTime);
+            }
+
+            if (endTime.length() >= 4) {
+                view.get().onChangeEventDuration(endTime);
+            }
+
+
             view.get().onChangeLocation(this.eventDataMap.get(EventDetailLoader.Query.LOCATION));
             view.get().onChangeMeetLocation(this.eventDataMap.get(EventDetailLoader.Query.MEETING_LOCATION));
             view.get().onChangeNotes(this.eventDataMap.get(EventDetailLoader.Query.NOTES));
@@ -123,6 +135,12 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                 view.get().onChangeEventPhoto(photoPath);
             } else {
                 Log.d(LOG_TAG, "onEventLoadFinished: photoPath is empty or null");
+            }
+
+            String notes = eventDataMap.get((EventDetailLoader.Query.NOTES));
+
+            if (notes != null && notes.length() > 0) {
+                view.get().onChangeNotes(notes);
             }
 
             view.get().onResetViewAdapter();

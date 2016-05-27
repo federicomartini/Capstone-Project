@@ -7,7 +7,9 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Locale;
 
+import app.com.ttins.gettogether.common.utils.DateTimeFormat;
 import app.com.ttins.gettogether.eventedit.loader.EventEditLoader;
 
 public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditMVP.RequiredPresenterOps {
@@ -27,6 +29,10 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     private WeakReference<EventEditMVP.RequiredViewOps> view;
     private EventEditMVP.ModelOps model;
     private Context viewContext;
+
+    private String startTimePending = null;
+    private String endTimePending;
+    private String toolbarPhotoPending;
 
     public EventEditPresenter(EventEditMVP.RequiredViewOps view) {
         this.view = new WeakReference<>(view);
@@ -63,6 +69,13 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     public void onAttachView(Context context) {
         this.viewContext = context;
         model.onAttachView(context);
+
+        if (startTimePending != null) {
+            view.get().onChangeStartTimeText(startTimePending);
+            startTimePending = null;
+        }
+
+
     }
 
     @Override
@@ -131,15 +144,47 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     public void onEventLoaderFinished(HashMap<Integer, String> dataMap) {
         Log.d(LOG_TAG, "onEventLoadFinished");
 
-        HashMap<Integer, String> eventDataMap = dataMap;
-
         if (view != null) {
-            view.get().onChangeEventTitle(eventDataMap.get(EventEditLoader.Query.TITLE));
-            view.get().onChangeLocationText(eventDataMap.get(EventEditLoader.Query.LOCATION));
-            view.get().onChangeMeetLocation(eventDataMap.get(EventEditLoader.Query.MEETING_LOCATION));
-            view.get().onChangeNotes(eventDataMap.get(EventEditLoader.Query.NOTES));
-            view.get().onChangePhoneNumber(eventDataMap.get(EventEditLoader.Query.PLACE_PHONE_NUMBER));
-            view.get().onChangeStartTimeText(eventDataMap.get(EventEditLoader.Query.START_TIME_HOUR));
+            view.get().onChangeEventTitle(dataMap.get(EventEditLoader.Query.TITLE));
+            view.get().onChangeLocationText(dataMap.get(EventEditLoader.Query.LOCATION));
+            view.get().onChangeMeetLocation(dataMap.get(EventEditLoader.Query.MEETING_LOCATION));
+            view.get().onChangeNotes(dataMap.get(EventEditLoader.Query.NOTES));
+            view.get().onChangePhoneNumber(dataMap.get(EventEditLoader.Query.PLACE_PHONE_NUMBER));
+
+            String startTime = String.format(Locale.getDefault(), "%s:%s",
+                    dataMap.get(EventEditLoader.Query.START_TIME_HOUR),
+                    dataMap.get(EventEditLoader.Query.START_TIME_MINUTE));
+
+            Log.d(LOG_TAG, "StartTime: " + startTime);
+
+            String endTime = String.format(Locale.getDefault(), "%s:%s",
+                    dataMap.get(EventEditLoader.Query.END_TIME_HOUR),
+                    dataMap.get(EventEditLoader.Query.END_TIME_MINUTE));
+
+            if (startTime.length() > 0) {
+                if (view != null) {
+                    view.get().onChangeStartTimeText(startTime);
+                    startTimePending = null;
+                } else {
+                    startTimePending = startTime;
+                }
+
+            }
+
+
+            String startDate = DateTimeFormat.convertDate(dataMap.get(EventEditLoader.Query.EVENT_DAY),
+                    dataMap.get(EventEditLoader.Query.EVENT_MONTH),
+                    dataMap.get(EventEditLoader.Query.EVENT_YEAR));
+
+            if (startDate.length() > 0) {
+                view.get().onChangeStartDateText(startDate);
+            }
+
+            String photoUri = dataMap.get(EventEditLoader.Query.PHOTO_PATH);
+            if ( photoUri != null && photoUri.length() > 0) {
+                view.get().onChangeEventPhoto(photoUri);
+            }
+
         }
     }
 

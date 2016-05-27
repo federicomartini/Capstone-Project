@@ -27,7 +27,7 @@
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Example Text"
+                android:text="@string/null_field"
                 android:layout_toEndOf="@+id/map_image_event_detail_view"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -37,7 +37,7 @@
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Example Text"
+                android:text="@string/null_field"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/start_time_event_detail_view"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -72,7 +72,7 @@
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Example Text"
+                android:text="@string/null_field"
                 android:layout_toEndOf="@+id/meet_location_image_event_detail_view"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -82,7 +82,7 @@
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Example Text"
+                android:text="@string/null_field"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/elapse_time_event_detail_view"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -117,7 +117,7 @@
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Example Text"
+                android:text="@string/null_field"
                 android:layout_toEndOf="@+id/phone_image_event_detail_view"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -151,7 +151,7 @@
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Not Confirmed"
+                android:text="@string/null_field"
                 android:layout_toEndOf="@+id/confirm_image_button_event_detail_view"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -182,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/SingleLineTextView"
-                android:text="Guests List"
+                android:text="@string/guest_list_item_menu"
                 android:layout_toEndOf="@+id/guest_book_image_event_detail_view"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -237,7 +237,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Notes"
+                android:text="@string/notes_label_detail_text_view"
                 android:layout_toEndOf="@+id/note_image_event_detail_view"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/medium_margin_material_design"/>

@@ -50,6 +50,8 @@ public interface EventEditMVP {
         void onChangePhoneNumber(String phoneNumber);
         void onChangeStartTimeText(String startTime);
         void onChangeLocationText(String location);
+        void onChangeStartDateText(String startDate);
+        void onChangeEventPhoto(String photoUri);
         void onShowSetTimeDialog(String dialogTag);
         void onShowSetDateDialog(String dialogTag);
         void onSetStartTime(String message);

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.util.Log;
@@ -22,11 +23,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
 import app.com.ttins.gettogether.common.utils.DateTimeFormat;
 import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventedit.loader.EventEditLoader;
@@ -53,7 +56,11 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @BindView(R.id.date_end_text_view_event_edit_view) EditText endDate;
     @BindView(R.id.note_text_view_event_edit_view) EditText note;
     @BindView(R.id.image_icon_image_view) ImageView eventPhoto;
+    @BindView(R.id.square_image_view_event_view)
+        ThreeTwoImageView toolBarImage;
+
     String photoSrc = null;
+    String toolbarPhotoPending = null;
 
     private EventEditMVP.PresenterOps presenter;
     private EventEditView.Callback callback;
@@ -88,6 +95,11 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             Log.d(LOG_TAG, "Setting PlaceName onResumeView");
             location.setText(this.placeName);
             this.placeName = null;
+        }
+
+        if (toolbarPhotoPending != null) {
+            callback.onShowPictureEditViewToolbar(toolbarPhotoPending);
+            toolbarPhotoPending = null;
         }
     }
 
@@ -128,6 +140,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         endDate = ButterKnife.findById(root, R.id.date_end_text_view_event_edit_view);
         note = ButterKnife.findById(root, R.id.note_text_view_event_edit_view);
         eventPhoto = ButterKnife.findById(root, R.id.image_icon_image_view);
+        toolBarImage = ButterKnife.findById(root, R.id.square_image_view_event_view);
 
 
         Log.d(LOG_TAG, "Location: " + location.getText().toString());
@@ -276,9 +289,9 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @Override
     public void onChangeNotes(String notes) {
         if (notes != null && !notes.isEmpty()) {
-            //this.notes.setText(notes);
+            this.note.setText(notes);
         } else {
-            //this.notes.setText(getResources().getString(R.string.null_field));
+            this.note.setText(getResources().getString(R.string.null_field));
         }
     }
 
@@ -294,9 +307,9 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @Override
     public void onChangeStartTimeText(String startTime) {
         if (startTime != null && !startTime.isEmpty()) {
-            //this.startTime.setText(startTime);
+            this.startTime.setText(startTime);
         } else {
-            //this.startTime.setText(getResources().getString(R.string.null_field));
+            this.startTime.setText(getResources().getString(R.string.null_field));
         }
     }
 
@@ -399,6 +412,25 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             }
         }
     }
+
+
+    @Override
+    public void onChangeEventPhoto(String photoUri) {
+        if (toolBarImage != null) {
+            callback.onShowPictureEditViewToolbar(photoUri);
+        } else {
+            toolbarPhotoPending = photoUri;
+        }
+
+    }
+
+
+    @Override
+    public void onChangeStartDateText(String startDate) {
+        if (startDate != null && !startDate.isEmpty())
+            this.startDate.setText(startDate);
+    }
+
 
     public interface Callback {
         void onEventSaved();
