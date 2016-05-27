@@ -4,6 +4,9 @@ package app.com.ttins.gettogether.common;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,17 +25,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.gson.Event;
 import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
 import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
+import app.com.ttins.gettogether.common.utils.Permissions;
 import app.com.ttins.gettogether.datepickerdialog.DatePickerDialogView;
 import app.com.ttins.gettogether.eventdetail.EventDetailView;
 import app.com.ttins.gettogether.eventedit.EventEditView;
@@ -41,6 +54,7 @@ import app.com.ttins.gettogether.eventlist.EventListView;
 import app.com.ttins.gettogether.eventsetplace.EventSetPlaceView;
 import app.com.ttins.gettogether.timepickerdialog.TimePickerDialogView;
 import butterknife.ButterKnife;
+
 
 public class EventActivity extends AppCompatActivity implements EventMVP.RequestedViewOps,
         EventListView.Callback, EventEditView.Callback, EventDetailView.Callback,
@@ -65,6 +79,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     private AppBarLayout appBarLayout;
     private final EventStateMaintainer stateMaintainer =
             new EventStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
+    private String photoUriPermission = null;
+    private String toolbarPhotoUriPending = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +94,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         toolbarEventPhoto = (ThreeTwoImageView) findViewById(R.id.square_image_view_event_view);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout_event_activity);
         ButterKnife.bind(this);
+
+
 
         startMVPOps();
 
@@ -115,32 +133,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-
-            case MY_MANAGE_DOCUMENTS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    Log.d(LOG_TAG, "Permission granted: MANAGE_DOCUMENTS");
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
-    /**
+   /**
      * Initialize and restart the Presenter.
      * This method should be called after {@link AppCompatActivity#onCreate(Bundle)}
      */
@@ -194,6 +187,12 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         Log.d(LOG_TAG, "onResume");
         super.onResume();
         presenter.initFabStatus();
+
+        if (toolbarPhotoUriPending != null) {
+            Log.d(LOG_TAG, "setting pending Toolbar Photo " + toolbarPhotoUriPending);
+            Glide
+            toolbarPhotoUriPending = null;
+        }
     }
 
     @Override
@@ -526,46 +525,76 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     }
 
     @Override
-    public void onSetToolbarPhotoBackground(String photoUri) {
+    public void onSetToolbarPhotoBackground(final String photoUri) {
         Log.d(LOG_TAG, "onSetToolbarPhotoBackground photoUri: " + photoUri);
 
-        Picasso.with(this)
-                .load(photoUri)
-                .into(toolbarEventPhoto, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(LOG_TAG, "Picasso load success!");
-                    }
+        if(Permissions.checkPermission(this)) {
+            if (toolbarEventPhoto != null) {
+                Log.d(LOG_TAG, "onSetToolbarPhotoBackground: Permission OK!");
+                Glide.with(this).load(photoUri).into(toolbarEventPhoto);
+            } else {
+                Log.d(LOG_TAG, "toolbarEventPhoto is null");
 
-                    @Override
-                    public void onError() {
-                        Log.d(LOG_TAG, "Picasso load fail!");
+            }
+            photoUriPermission = null;
+        } else {
+            photoUriPermission = photoUri;
+        }
 
-                    }
+    }
 
-
-                });
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(LOG_TAG, "onRequestPermissionsResult...");
+        switch(requestCode) {
+            case Permissions.MY_PERMISSIONS_REQUEST_MANAGE_DOCUMENTS:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(LOG_TAG, "Picasso loading photo: " + photoUriPermission);
+                    Glide.with(this).load(photoUriPermission).into(toolbarEventPhoto);
+                } else {
+                    Log.d(LOG_TAG, "onRequestPermissionsResult: Permission denied");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    photoUriPermission = null;
+                }
+                break;
+            default:
+                Log.d(LOG_TAG, "RequestCode unknown");
+                break;
+        }
     }
 
     @Override
     public void onShowPictureEditViewToolbar(String photoUri) {
         Log.d(LOG_TAG, "onShowPictureEditViewToolbar photoUri: " + photoUri);
 
-        Picasso.with(this)
-                .load(photoUri)
-                .into(toolbarEventPhoto, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(LOG_TAG, "Picasso load success!");
-                    }
+        if(Permissions.checkPermission(this)) {
+            Log.d(LOG_TAG, "onShowPictureEditViewToolbar: Permissions OK!");
+            Glide.with(this)
+                    .load(photoUri)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            Log.i(LOG_TAG, "onException: " + e);
+                            return false;
+                        }
 
-                    @Override
-                    public void onError() {
-                        Log.d(LOG_TAG, "Picasso load fail!");
-                    }
-                });
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(toolbarEventPhoto);
+
+            photoUriPermission = null;
+        } else {
+            photoUriPermission = photoUri;
+        }
+
 
     }
+
 
 }

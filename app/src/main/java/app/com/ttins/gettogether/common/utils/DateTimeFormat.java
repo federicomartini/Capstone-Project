@@ -45,7 +45,7 @@ public class DateTimeFormat {
     public static String getStringHoursFromTime(String time) {
         String hours = "";
 
-        if (time != null && !time.isEmpty()) {
+        if (time != null && !time.isEmpty() && time.compareTo(":") != 0) {
             String[] tokens = time.split(TIME_DELIMITER);
             hours = tokens[HOURS_TIME_POSITION];
         }
@@ -69,7 +69,7 @@ public class DateTimeFormat {
     public static String getStringMinutesFromTime(String time) {
         String minutes = "";
 
-        if (time != null && !time.isEmpty()) {
+        if (time != null && !time.isEmpty() && time.compareTo(":") != 0) {
             String[] tokens = time.split(TIME_DELIMITER);
             minutes = tokens[MINUTE_TIME_POSITION];
         }

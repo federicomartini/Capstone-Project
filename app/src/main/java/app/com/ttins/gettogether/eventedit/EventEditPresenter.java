@@ -31,8 +31,7 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     private Context viewContext;
 
     private String startTimePending = null;
-    private String endTimePending;
-    private String toolbarPhotoPending;
+    private String toolbarPhotoPending = null;
 
     public EventEditPresenter(EventEditMVP.RequiredViewOps view) {
         this.view = new WeakReference<>(view);
@@ -73,6 +72,12 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
         if (startTimePending != null) {
             view.get().onChangeStartTimeText(startTimePending);
             startTimePending = null;
+        }
+
+        if (toolbarPhotoPending != null) {
+            Log.d(LOG_TAG, "onAttachView:toolbarPhotoPending = " + toolbarPhotoPending);
+            view.get().onChangeEventPhoto(toolbarPhotoPending);
+            toolbarPhotoPending = null;
         }
 
 
@@ -181,8 +186,16 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
             }
 
             String photoUri = dataMap.get(EventEditLoader.Query.PHOTO_PATH);
+            Log.d(LOG_TAG, "onEventLoaderFinished:photoUri = " + photoUri);
             if ( photoUri != null && photoUri.length() > 0) {
-                view.get().onChangeEventPhoto(photoUri);
+                Log.d(LOG_TAG, "PHOTO_PATH = " + photoUri);
+                if (view != null) {
+                    view.get().onChangeEventPhoto(photoUri);
+                } else {
+                    Log.d(LOG_TAG, "View is null... pending");
+                    toolbarPhotoPending = photoUri;
+                }
+
             }
 
         }

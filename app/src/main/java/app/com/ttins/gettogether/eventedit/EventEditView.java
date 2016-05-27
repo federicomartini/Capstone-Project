@@ -4,9 +4,11 @@ package app.com.ttins.gettogether.eventedit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -22,15 +24,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.places.Place;
-import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
 import java.util.HashMap;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
 import app.com.ttins.gettogether.common.utils.DateTimeFormat;
+import app.com.ttins.gettogether.common.utils.FilePath;
+import app.com.ttins.gettogether.common.utils.Permissions;
 import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventedit.loader.EventEditLoader;
 import app.com.ttins.gettogether.eventsetplace.EventSetPlaceView;
@@ -87,6 +88,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(LOG_TAG, "onResume");
         presenter.onAttachView(getContext());
         getActivity().invalidateOptionsMenu();
         callback.onEventEditViewResumed();
@@ -98,6 +100,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         }
 
         if (toolbarPhotoPending != null) {
+            Log.d(LOG_TAG, "onChangeEventPhoto call pending photo for Toolbar: " + toolbarPhotoPending);
             callback.onShowPictureEditViewToolbar(toolbarPhotoPending);
             toolbarPhotoPending = null;
         }
@@ -141,9 +144,6 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         note = ButterKnife.findById(root, R.id.note_text_view_event_edit_view);
         eventPhoto = ButterKnife.findById(root, R.id.image_icon_image_view);
         toolBarImage = ButterKnife.findById(root, R.id.square_image_view_event_view);
-
-
-        Log.d(LOG_TAG, "Location: " + location.getText().toString());
 
         location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +219,11 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         dataMap.put(EventEditLoader.Query.END_TIME_MINUTE, DateTimeFormat.getStringMinutesFromTime(endTime.getText().toString()));
         dataMap.put(EventEditLoader.Query.PLACE_PHONE_NUMBER, phone.getText().toString());
         dataMap.put(EventEditLoader.Query.NOTES, note.getText().toString());
-        dataMap.put(EventEditLoader.Query.PHOTO_PATH, photoSrc);
+
+        if (photoSrc == null || !photoSrc.isEmpty()) {
+            dataMap.put(EventEditLoader.Query.PHOTO_PATH, photoSrc);
+        }
+
 
         Log.d(LOG_TAG, "StartTimeHour: " + DateTimeFormat.getStringHoursFromTime(startTime.getText().toString()));
         Log.d(LOG_TAG, "Saving photo uri: " + photoSrc);
@@ -386,14 +390,48 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
 
     @Override
     public void onShowGalleryForPicture() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE_REQ_CODE);
+        //Intent intent = new Intent();
+        //intent.setType("image/*");
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
+        //startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE_REQ_CODE);
+        Log.d(LOG_TAG, "onShowGalleryForPicture");
+        if (Permissions.checkPermission(getContext())) {
+            Log.d(LOG_TAG, "Permission granted!");
+            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, SELECT_IMAGE_REQ_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(LOG_TAG, "onRequestPermissionsResult...");
+        switch(requestCode) {
+            case Permissions.MY_PERMISSIONS_REQUEST_MANAGE_DOCUMENTS:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                // permission was granted, yay! Do the
+                // contacts-related task you need to do.
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    photoPickerIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, SELECT_IMAGE_REQ_CODE);
+
+            } else {
+                Log.d(LOG_TAG, "onRequestPermissionsResult: Permission denied");
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+                break;
+            default:
+                break;
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(LOG_TAG, "onActivityResult...");
         if (requestCode == SELECT_IMAGE_REQ_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
@@ -401,11 +439,16 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
                         Bitmap bitmap = MediaStore.Images.Media
                                 .getBitmap(getActivity().getContentResolver(), data.getData());
                         Log.d(LOG_TAG, "Bitmap received: " + data.getDataString());
-                        photoSrc = data.getDataString();
+                        photoSrc = data.getData().toString();
+                        //photoSrc = FilePath.getPath(getContext(), data.getData());
+                        Log.d(LOG_TAG, "onActivityResult.photoSrc = " + photoSrc);
+                        toolbarPhotoPending = null;
                         callback.onShowPictureEditViewToolbar(photoSrc);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    Log.d(LOG_TAG, "Bitmap is null!");
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
@@ -416,9 +459,12 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
 
     @Override
     public void onChangeEventPhoto(String photoUri) {
+        Log.d(LOG_TAG, "onChangeEventPhoto");
         if (toolBarImage != null) {
+            Log.d(LOG_TAG, "onChangeEventPhoto photo: " + photoUri);
             callback.onShowPictureEditViewToolbar(photoUri);
         } else {
+            Log.d(LOG_TAG, "onChangeEventPhoto view is null. toolbarPhotoPending: " + photoUri);
             toolbarPhotoPending = photoUri;
         }
 

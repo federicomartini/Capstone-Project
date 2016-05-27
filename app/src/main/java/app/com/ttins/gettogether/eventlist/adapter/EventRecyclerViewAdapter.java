@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.utils.Permissions;
 import app.com.ttins.gettogether.eventlist.EventListView;
 import app.com.ttins.gettogether.eventlist.loader.EventLoader;
 
@@ -20,13 +21,16 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
     private Cursor cursor;
     private OnClickItemListener listener;
     private Context context;
+    private boolean loadPhotoPermission = false;
 
 
-    public EventRecyclerViewAdapter(Context context, Cursor cursor, OnClickItemListener listener) {
+    public EventRecyclerViewAdapter(Context context, Cursor cursor, boolean loadPhotoPermission, OnClickItemListener listener) {
         this.cursor = cursor;
         this.listener = listener;
         this.context = context;
+        this.loadPhotoPermission = loadPhotoPermission;
     }
+
 
     @Override
     public long getItemId(int position) {
@@ -67,10 +71,10 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
                 }
             });
 
-            Picasso.with(context)
-                    .load(cursor.getString(EventLoader.Query.PHOTO_PATH))
-                    .into(holder.thumbnailView);
-
+            if (loadPhotoPermission) {
+                Glide.with(context).load(cursor.getString(EventLoader.Query.PHOTO_PATH))
+                        .into(holder.thumbnailView);
+            }
         } else {
             Log.d(LOG_TAG, "cursor is null");
         }

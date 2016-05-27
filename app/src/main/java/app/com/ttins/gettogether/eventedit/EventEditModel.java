@@ -85,7 +85,11 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
             values.put(GetTogetherContract.Events.EVENT_MONTH, dataMap.get(EventEditLoader.Query.EVENT_MONTH));
             values.put(GetTogetherContract.Events.EVENT_YEAR, dataMap.get(EventEditLoader.Query.EVENT_YEAR));
             values.put(GetTogetherContract.Events.NOTES, dataMap.get(EventEditLoader.Query.NOTES));
-            values.put(GetTogetherContract.Events.PHOTO_PATH, dataMap.get(EventEditLoader.Query.PHOTO_PATH));
+
+            String photoPath = dataMap.get(EventEditLoader.Query.PHOTO_PATH);
+            if (photoPath != null && !photoPath.isEmpty()) {
+                values.put(GetTogetherContract.Events.PHOTO_PATH, dataMap.get(EventEditLoader.Query.PHOTO_PATH));
+            }
             Log.d(LOG_TAG, "saveEventData Photo Path: " + dataMap.get(EventEditLoader.Query.PHOTO_PATH));
             values.put(GetTogetherContract.Events.PLACE_NAME, dataMap.get(EventEditLoader.Query.PLACE_NAME));
 

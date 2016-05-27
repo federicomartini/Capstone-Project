@@ -4,9 +4,11 @@ package app.com.ttins.gettogether.eventlist;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.utils.Permissions;
 import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventlist.adapter.EventRecyclerViewAdapter;
 import app.com.ttins.gettogether.eventlist.loader.EventLoader;
@@ -42,6 +45,8 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
     Callback callback;
     Unbinder unbinder;
     EventRecyclerViewAdapter eventRecyclerViewAdapter;
+    boolean loadPhotoPermission = false;
+    Cursor cursor;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -123,44 +128,150 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
             emptyView.setVisibility(View.GONE);
         }
 
-        if (eventRecyclerViewAdapter == null) {
-            eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(), cursor, new EventRecyclerViewAdapter.OnClickItemListener() {
+            if(Permissions.checkPermission(getContext())) {
+                Log.d(LOG_TAG, "PERMISSION OK");
+                loadPhotoPermission = true;
+                    if (eventRecyclerViewAdapter == null) {
+                        Log.d(LOG_TAG, "eventRecyclerViewAdapter is null");
+                        eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(),
+                            cursor,
+                            loadPhotoPermission,
+                            new EventRecyclerViewAdapter.OnClickItemListener() {
 
-                @Override
-                public void onClick(long id, String eventTitle) {
-                    callback.onEventItemClick(id, eventTitle);
-                }
-
-                @Override
-                public void onLongClick(final long id, String title) {
-                    Log.d(LOG_TAG, "onLongClick received");
-
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("Delete Event")
-                            .setMessage("Want to delete event \"" + title + "\" ?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
-                                            GetTogetherContract.Events._ID + " = ?",
-                                            new String[]{String.valueOf(id)});
-                                    eventRecyclerViewAdapter = null;
+                                public void onClick(long id, String eventTitle) {
+                                    callback.onEventItemClick(id, eventTitle);
+                                }
+
+                                @Override
+                                public void onLongClick(final long id, String title) {
+                                    Log.d(LOG_TAG, "onLongClick received");
+
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setTitle("Delete Event")
+                                            .setMessage("Want to delete event \"" + title + "\" ?")
+                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
+                                                            GetTogetherContract.Events._ID + " = ?",
+                                                            new String[]{String.valueOf(id)});
+                                                    eventRecyclerViewAdapter = null;
+                                                }
+                                            });
+                                    builder.create().show();
                                 }
                             });
-                    builder.create().show();
                 }
-            });
-        }
 
-        recyclerView.setAdapter(eventRecyclerViewAdapter);
+                recyclerView.setAdapter(eventRecyclerViewAdapter);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
-                columnCount,
-                StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
+                        columnCount,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+            } else {
+                Log.d(LOG_TAG, "Saving cursor waiting for permission...");
+                this.cursor = cursor;
+            }
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(LOG_TAG, "onRequestPermissionsResult");
+        switch(requestCode) {
+            case Permissions.MY_PERMISSIONS_REQUEST_MANAGE_DOCUMENTS:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(LOG_TAG, "PERMISSION_GRANTED");
+                    loadPhotoPermission = true;
+                    if (eventRecyclerViewAdapter == null) {
+                        eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(),
+                                this.cursor,
+                                loadPhotoPermission,
+                                new EventRecyclerViewAdapter.OnClickItemListener() {
+
+                                    @Override
+                                    public void onClick(long id, String eventTitle) {
+                                        callback.onEventItemClick(id, eventTitle);
+                                    }
+
+                                    @Override
+                                    public void onLongClick(final long id, String title) {
+                                        Log.d(LOG_TAG, "onLongClick received");
+
+                                        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                        builder.setTitle("Delete Event")
+                                                .setMessage("Want to delete event \"" + title + "\" ?")
+                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
+                                                                GetTogetherContract.Events._ID + " = ?",
+                                                                new String[]{String.valueOf(id)});
+                                                        eventRecyclerViewAdapter = null;
+                                                    }
+                                                });
+                                        builder.create().show();
+                                    }
+                                });
+                    }
+                    recyclerView.setAdapter(eventRecyclerViewAdapter);
+
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
+                            columnCount,
+                            StaggeredGridLayoutManager.VERTICAL);
+                    recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+                } else {
+                    Log.d(LOG_TAG, "onRequestPermissionsResult: Permission denied");
+                    loadPhotoPermission = false;
+                    if (eventRecyclerViewAdapter == null) {
+                        eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(),
+                                this.cursor,
+                                loadPhotoPermission,
+                                new EventRecyclerViewAdapter.OnClickItemListener() {
+
+                                    @Override
+                                    public void onClick(long id, String eventTitle) {
+                                        callback.onEventItemClick(id, eventTitle);
+                                    }
+
+                                    @Override
+                                    public void onLongClick(final long id, String title) {
+                                        Log.d(LOG_TAG, "onLongClick received");
+
+                                        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                        builder.setTitle("Delete Event")
+                                                .setMessage("Want to delete event \"" + title + "\" ?")
+                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
+                                                                GetTogetherContract.Events._ID + " = ?",
+                                                                new String[]{String.valueOf(id)});
+                                                        eventRecyclerViewAdapter = null;
+                                                    }
+                                                });
+                                        builder.create().show();
+                                    }
+                                });
+                    }
+                    recyclerView.setAdapter(eventRecyclerViewAdapter);
+
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
+                            columnCount,
+                            StaggeredGridLayoutManager.VERTICAL);
+                    recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
