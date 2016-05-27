@@ -119,7 +119,10 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
             String photoPath = this.eventDataMap.get(EventDetailLoader.Query.PHOTO_PATH);
             if ( photoPath != null && !photoPath.isEmpty()) {
+                Log.d(LOG_TAG, "onEventLoadFinishedphoto: Path: " + photoPath);
                 view.get().onChangeEventPhoto(photoPath);
+            } else {
+                Log.d(LOG_TAG, "onEventLoadFinished: photoPath is empty or null");
             }
 
             view.get().onResetViewAdapter();

@@ -15,7 +15,6 @@ import android.util.Log;
 import java.util.HashMap;
 
 import app.com.ttins.gettogether.data.GetTogetherContract;
-import app.com.ttins.gettogether.eventdetail.loader.EventDetailLoader;
 import app.com.ttins.gettogether.eventedit.loader.EventEditLoader;
 
 public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.LoaderCallbacks<Cursor> {
@@ -39,8 +38,20 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
         if (viewContext != null) {
             values.put(GetTogetherContract.Events.TITLE, dataMap.get(EventEditLoader.Query.TITLE));
             values.put(GetTogetherContract.Events.LOCATION, dataMap.get(EventEditLoader.Query.LOCATION));
+            Log.d(LOG_TAG, "saveEventData Location: " + dataMap.get(EventEditLoader.Query.LOCATION));
             values.put(GetTogetherContract.Events.MEETING_LOCATION, dataMap.get(EventEditLoader.Query.MEETING_LOCATION));
             values.put(GetTogetherContract.Events.PLACE_PHONE_NUMBER, dataMap.get(EventEditLoader.Query.PLACE_PHONE_NUMBER));
+            values.put(GetTogetherContract.Events.START_TIME_HOUR, dataMap.get(EventEditLoader.Query.START_TIME_HOUR));
+            values.put(GetTogetherContract.Events.START_TIME_MINUTE, dataMap.get(EventEditLoader.Query.START_TIME_MINUTE));
+            values.put(GetTogetherContract.Events.END_TIME_HOUR, dataMap.get(EventEditLoader.Query.END_TIME_HOUR));
+            values.put(GetTogetherContract.Events.END_TIME_MINUTE, dataMap.get(EventEditLoader.Query.END_TIME_MINUTE));
+            values.put(GetTogetherContract.Events.EVENT_DAY, dataMap.get(EventEditLoader.Query.EVENT_DAY));
+            values.put(GetTogetherContract.Events.EVENT_MONTH, dataMap.get(EventEditLoader.Query.EVENT_MONTH));
+            values.put(GetTogetherContract.Events.EVENT_YEAR, dataMap.get(EventEditLoader.Query.EVENT_YEAR));
+            values.put(GetTogetherContract.Events.NOTES, dataMap.get(EventEditLoader.Query.NOTES));
+            values.put(GetTogetherContract.Events.PHOTO_PATH, dataMap.get(EventEditLoader.Query.PHOTO_PATH));
+            Log.d(LOG_TAG, "saveEventData Photo Path: " + dataMap.get(EventEditLoader.Query.PHOTO_PATH));
+            values.put(GetTogetherContract.Events.PLACE_NAME, dataMap.get(EventEditLoader.Query.PLACE_NAME));
 
             retUri = viewContext.getContentResolver().insert(GetTogetherContract.Events.CONTENT_URI, values);
             if (retUri != null) {
@@ -63,8 +74,20 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
         if (viewContext != null) {
             values.put(GetTogetherContract.Events.TITLE, dataMap.get(EventEditLoader.Query.TITLE));
             values.put(GetTogetherContract.Events.LOCATION, dataMap.get(EventEditLoader.Query.LOCATION));
+            Log.d(LOG_TAG, "saveEventData Location " + EventEditLoader.Query.LOCATION + ": " + dataMap.get(EventEditLoader.Query.LOCATION));
             values.put(GetTogetherContract.Events.MEETING_LOCATION, dataMap.get(EventEditLoader.Query.MEETING_LOCATION));
             values.put(GetTogetherContract.Events.PLACE_PHONE_NUMBER, dataMap.get(EventEditLoader.Query.PLACE_PHONE_NUMBER));
+            values.put(GetTogetherContract.Events.START_TIME_HOUR, dataMap.get(EventEditLoader.Query.START_TIME_HOUR));
+            values.put(GetTogetherContract.Events.START_TIME_MINUTE, dataMap.get(EventEditLoader.Query.START_TIME_MINUTE));
+            values.put(GetTogetherContract.Events.END_TIME_HOUR, dataMap.get(EventEditLoader.Query.END_TIME_HOUR));
+            values.put(GetTogetherContract.Events.END_TIME_MINUTE, dataMap.get(EventEditLoader.Query.END_TIME_MINUTE));
+            values.put(GetTogetherContract.Events.EVENT_DAY, dataMap.get(EventEditLoader.Query.EVENT_DAY));
+            values.put(GetTogetherContract.Events.EVENT_MONTH, dataMap.get(EventEditLoader.Query.EVENT_MONTH));
+            values.put(GetTogetherContract.Events.EVENT_YEAR, dataMap.get(EventEditLoader.Query.EVENT_YEAR));
+            values.put(GetTogetherContract.Events.NOTES, dataMap.get(EventEditLoader.Query.NOTES));
+            values.put(GetTogetherContract.Events.PHOTO_PATH, dataMap.get(EventEditLoader.Query.PHOTO_PATH));
+            Log.d(LOG_TAG, "saveEventData Photo Path: " + dataMap.get(EventEditLoader.Query.PHOTO_PATH));
+            values.put(GetTogetherContract.Events.PLACE_NAME, dataMap.get(EventEditLoader.Query.PLACE_NAME));
 
             rows = viewContext.getContentResolver().update(GetTogetherContract.Events.CONTENT_URI,
                                                             values,
@@ -99,7 +122,7 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (presenter.onContextViewRequired() != null) {
-            return EventDetailLoader.eventDetailFromId(presenter.onContextViewRequired(), eventEditDetailId);
+            return EventEditLoader.eventEditItemFromId(presenter.onContextViewRequired(), eventEditDetailId);
         } else {
             Log.d(LOG_TAG, "onCreateLoader failed because of View is null!");
         }
@@ -122,9 +145,11 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
             dataMap.put(EventEditLoader.Query.EVENT_YEAR, cursor.getString(EventEditLoader.Query.EVENT_YEAR));
             dataMap.put(EventEditLoader.Query.GUEST_LIST, cursor.getString(EventEditLoader.Query.GUEST_LIST));
             dataMap.put(EventEditLoader.Query.LOCATION, cursor.getString(EventEditLoader.Query.LOCATION));
+            Log.d(LOG_TAG, "onLoadFinished Location " + EventEditLoader.Query.LOCATION + ": " + cursor.getString(EventEditLoader.Query.LOCATION));
             dataMap.put(EventEditLoader.Query.MEETING_LOCATION, cursor.getString(EventEditLoader.Query.MEETING_LOCATION));
             dataMap.put(EventEditLoader.Query.NOTES, cursor.getString(EventEditLoader.Query.NOTES));
             dataMap.put(EventEditLoader.Query.PHOTO_PATH, cursor.getString(EventEditLoader.Query.PHOTO_PATH));
+            Log.d(LOG_TAG, "onLoadFinished Photo Path: " + cursor.getString(EventEditLoader.Query.PHOTO_PATH));
             dataMap.put(EventEditLoader.Query.PLACE_NAME, cursor.getString(EventEditLoader.Query.PLACE_NAME));
             dataMap.put(EventEditLoader.Query.PLACE_PHONE_NUMBER, cursor.getString(EventEditLoader.Query.PLACE_PHONE_NUMBER));
             dataMap.put(EventEditLoader.Query.START_TIME_HOUR, cursor.getString(EventEditLoader.Query.START_TIME_HOUR));

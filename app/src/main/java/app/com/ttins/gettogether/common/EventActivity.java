@@ -1,12 +1,17 @@
 package app.com.ttins.gettogether.common;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,11 +27,12 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-
-import java.util.List;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.EventStateMaintainer;
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
 import app.com.ttins.gettogether.datepickerdialog.DatePickerDialogView;
 import app.com.ttins.gettogether.eventdetail.EventDetailView;
 import app.com.ttins.gettogether.eventedit.EventEditView;
@@ -48,11 +54,15 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     private static final String FRAGMENT_GUEST_HANDLER_VIEW_TAG = "FRAGMENT_GUEST_HANDLER_VIEW_TAG";
     private static final String FRAGMENT_PLACE_VIEW_TAG = "FRAGMENT_PLACE_VIEW_TAG";
 
+    private static final int MY_MANAGE_DOCUMENTS = 1;
+
     private EventMVP.PresenterOps presenter;
-    private FloatingActionButton fab, fabGuestAdd;
+    private ThreeTwoImageView toolbarEventPhoto;
+    private FloatingActionButton fab;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Animation fab_guest_open, fab_guest_close;
+    private AppBarLayout appBarLayout;
     private final EventStateMaintainer stateMaintainer =
             new EventStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
 
@@ -65,9 +75,12 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fab_guest_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_open);
         fab_guest_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_close);
         setSupportActionBar(toolbar);
+        toolbarEventPhoto = (ThreeTwoImageView) findViewById(R.id.square_image_view_event_view);
+        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout_event_activity);
         ButterKnife.bind(this);
 
         startMVPOps();
+
 
         fab = (FloatingActionButton) findViewById(R.id.fab_event_event_activity);
 
@@ -80,20 +93,51 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                 }
             });
 
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.MANAGE_DOCUMENTS) != PackageManager.PERMISSION_GRANTED ) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.MANAGE_DOCUMENTS)) {
+                    Toast.makeText(this,"should show explanation", Toast.LENGTH_LONG).show();
+                }
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.MANAGE_DOCUMENTS},
+                        MY_MANAGE_DOCUMENTS);
+            }
+
+
+
+
+
         } else {
             Log.d(LOG_TAG, "FAB setOnClickListener failed: FAB is null");
         }
 
-        if (fabGuestAdd != null) {
-            fabGuestAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(LOG_TAG, "fabGuestAdd onClick");
-                    presenter.onFabAddGuestClick();
-                }
-            });
-        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+
+            case MY_MANAGE_DOCUMENTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Log.d(LOG_TAG, "Permission granted: MANAGE_DOCUMENTS");
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     /**
@@ -147,6 +191,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onResume() {
+        Log.d(LOG_TAG, "onResume");
         super.onResume();
         presenter.initFabStatus();
     }
@@ -187,6 +232,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onEventListViewResume() {
         Log.d(LOG_TAG, "onEventListViewresume");
+        toolbarEventPhoto.setImageBitmap(null);
         presenter.eventListViewResume();
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
 
@@ -232,8 +278,13 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         EventListView fragmentEventListView = new EventListView();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG)
-                .addToBackStack(null)
+                //.addToBackStack(null)
                 .commit();
+
+        FragmentManager fm = getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
 
     }
 
@@ -293,23 +344,6 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public void onChangeToolbarToEventTitle(String eventTitle) {
         collapsingToolbarLayout.setTitle(eventTitle);
-    }
-
-    @Override
-    public void onOpenFabGuestAnimation() {
-        Log.d(LOG_TAG, "onOpenFabGuestAnimation");
-        fabGuestAdd.setVisibility(View.VISIBLE);
-        fabGuestAdd.setClickable(true);
-        fabGuestAdd.startAnimation(fab_guest_open);
-
-    }
-
-    @Override
-    public void onCloseFabGuestAnimation() {
-        Log.d(LOG_TAG, "onCloseFabGuestAnimation");
-        fabGuestAdd.setVisibility(View.GONE);
-        fabGuestAdd.startAnimation(fab_guest_close);
-        fabGuestAdd.setClickable(false);
     }
 
     @Override
@@ -490,4 +524,48 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onShowEventDetailViewToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onSetToolbarPhotoBackground(String photoUri) {
+        Log.d(LOG_TAG, "onSetToolbarPhotoBackground photoUri: " + photoUri);
+
+        Picasso.with(this)
+                .load(photoUri)
+                .into(toolbarEventPhoto, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(LOG_TAG, "Picasso load success!");
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.d(LOG_TAG, "Picasso load fail!");
+
+                    }
+
+
+                });
+
+    }
+
+    @Override
+    public void onShowPictureEditViewToolbar(String photoUri) {
+        Log.d(LOG_TAG, "onShowPictureEditViewToolbar photoUri: " + photoUri);
+
+        Picasso.with(this)
+                .load(photoUri)
+                .into(toolbarEventPhoto, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(LOG_TAG, "Picasso load success!");
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.d(LOG_TAG, "Picasso load fail!");
+                    }
+                });
+
+    }
+
 }

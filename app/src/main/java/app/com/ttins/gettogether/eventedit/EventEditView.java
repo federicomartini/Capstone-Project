@@ -209,6 +209,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         dataMap.put(EventEditLoader.Query.PHOTO_PATH, photoSrc);
 
         Log.d(LOG_TAG, "StartTimeHour: " + DateTimeFormat.getStringHoursFromTime(startTime.getText().toString()));
+        Log.d(LOG_TAG, "Saving photo uri: " + photoSrc);
 
         if (isNewEvent) {
             Log.d(LOG_TAG, "Creating New Event");
@@ -388,6 +389,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
                                 .getBitmap(getActivity().getContentResolver(), data.getData());
                         Log.d(LOG_TAG, "Bitmap received: " + data.getDataString());
                         photoSrc = data.getDataString();
+                        callback.onShowPictureEditViewToolbar(photoSrc);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -404,6 +406,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         void onShowPlaceView();
         void onShowTimePickerDialog(String dialogTag);
         void onShowDatePickerDialog(String dialogTag);
+        void onShowPictureEditViewToolbar(String photoUri);
     }
 
 

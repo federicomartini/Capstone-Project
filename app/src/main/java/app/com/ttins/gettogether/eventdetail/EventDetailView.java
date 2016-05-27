@@ -373,15 +373,18 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         callback.onShowEventDetailViewToast(guestName + " already in list");
     }
 
+    @Override
+    public void onChangeEventPhoto(String photoUri) {
+        Log.d(LOG_TAG, "onChangeEventPhoto: " + photoUri);
+        callback.onSetToolbarPhotoBackground(photoUri);
+    }
+
     public interface Callback {
         void onChangeToolbarToEventTitle(String eventTitle);
         void onReceiveIdEditDetailView(long id);
         void onEventDetailViewResumed();
         void onShowEventDetailViewToast(String message);
+        void onSetToolbarPhotoBackground(String photoUri);
     }
 
-    @Override
-    public void onChangeEventPhoto(String photoUri) {
-        Log.d(LOG_TAG, "onChangeEventPhoto: " + photoUri);
-    }
 }

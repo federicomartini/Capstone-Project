@@ -86,6 +86,8 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             dataMap.put(EventDetailLoader.Query.START_TIME_HOUR, cursor.getString(EventDetailLoader.Query.START_TIME_HOUR));
             dataMap.put(EventDetailLoader.Query.START_TIME_MINUTE, cursor.getString(EventDetailLoader.Query.START_TIME_MINUTE));
 
+            Log.d(LOG_TAG, "onLoadFinished photoPath: " + cursor.getString(EventDetailLoader.Query.PHOTO_PATH));
+
             /*Log.d(LOG_TAG, "_ID = " + dataMap.get(EventDetailLoader.Query._ID) + ", " +
                     "CONFIRMATION_STATUS = " + dataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS) + ", " +
                     "TITLE = " + dataMap.get(EventDetailLoader.Query.TITLE) + ", " +

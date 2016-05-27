@@ -36,8 +36,6 @@ public interface EventMVP {
         void onsetFabToAddGuestToListStatus();
         void onSaveEventDataRequest();
         void onShowEventDetailView(long id);
-        void onOpenFabGuestAnimation();
-        void onCloseFabGuestAnimation();
         void onOpenGuestActivity();
         void onShowGuestHandlerView();
         void onShowEventGuestRemoveView();

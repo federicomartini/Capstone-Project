@@ -180,6 +180,11 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     @Override
     public void eventDetailViewResume() {
         setFabStatus(FAB_STATUS_GUEST);
+        setToolbarPhoto();
+    }
+
+    private void setToolbarPhoto() {
+
     }
 
     @Override

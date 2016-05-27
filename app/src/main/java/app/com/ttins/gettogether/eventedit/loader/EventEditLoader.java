@@ -13,11 +13,11 @@ public class EventEditLoader extends CursorLoader {
         super(context, uri, Query.PROJECTION, null, null, null);
     }
 
-    public static EventEditLoader allGuestEditItems(Context context) {
+    public static EventEditLoader allEventEditItems(Context context) {
         return new EventEditLoader(context, GetTogetherContract.Events.buildEventsUri());
     }
 
-    public static EventEditLoader guestEditItemFromId(Context context, long id) {
+    public static EventEditLoader eventEditItemFromId(Context context, long id) {
         return new EventEditLoader(context, GetTogetherContract.Events.buildEventsUri(id));
     }
 
@@ -41,7 +41,6 @@ public class EventEditLoader extends CursorLoader {
                 GetTogetherContract.Events.CONFIRMATION_STATUS,
                 GetTogetherContract.Events.GUEST_LIST,
                 GetTogetherContract.Events.NOTES,
-                GetTogetherContract.Events.PATH_EVENTS,
                 GetTogetherContract.Events.ATTENDEE_NUMBER
         };
 
