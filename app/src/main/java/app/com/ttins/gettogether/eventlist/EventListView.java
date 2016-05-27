@@ -124,7 +124,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
         }
 
         if (eventRecyclerViewAdapter == null) {
-            eventRecyclerViewAdapter = new EventRecyclerViewAdapter(cursor, new EventRecyclerViewAdapter.OnClickItemListener() {
+            eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(), cursor, new EventRecyclerViewAdapter.OnClickItemListener() {
 
                 @Override
                 public void onClick(long id, String eventTitle) {

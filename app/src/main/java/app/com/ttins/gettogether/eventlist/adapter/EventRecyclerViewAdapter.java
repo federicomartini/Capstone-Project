@@ -1,11 +1,14 @@
 package app.com.ttins.gettogether.eventlist.adapter;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.squareup.picasso.Picasso;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.eventlist.EventListView;
@@ -16,11 +19,13 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
     private static final String LOG_TAG = EventRecyclerViewAdapter.class.getSimpleName();
     private Cursor cursor;
     private OnClickItemListener listener;
+    private Context context;
 
 
-    public EventRecyclerViewAdapter(Cursor cursor, OnClickItemListener listener) {
+    public EventRecyclerViewAdapter(Context context, Cursor cursor, OnClickItemListener listener) {
         this.cursor = cursor;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -61,6 +66,10 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
                     return true;
                 }
             });
+
+            Picasso.with(context)
+                    .load(cursor.getString(EventLoader.Query.PHOTO_PATH))
+                    .into(holder.thumbnailView);
 
         } else {
             Log.d(LOG_TAG, "cursor is null");
