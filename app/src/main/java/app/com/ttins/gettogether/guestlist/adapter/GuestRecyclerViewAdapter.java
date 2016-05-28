@@ -1,11 +1,14 @@
 package app.com.ttins.gettogether.guestlist.adapter;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.guestlist.GuestListView;
@@ -18,10 +21,12 @@ public class GuestRecyclerViewAdapter extends RecyclerView.Adapter<GuestListView
 
     Cursor cursor;
     OnClickItemListener listener;
+    Context context;
 
-    public GuestRecyclerViewAdapter (Cursor cursor, OnClickItemListener listener) {
+    public GuestRecyclerViewAdapter (Context context, Cursor cursor, OnClickItemListener listener) {
         this.cursor = cursor;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -55,6 +60,9 @@ public class GuestRecyclerViewAdapter extends RecyclerView.Adapter<GuestListView
 
             holder.guestName.setText((cursor.getString(GuestLoader.Query.NAME)));
             holder.id = getItemId(position);
+            Glide.with(context)
+                    .load(cursor.getString(GuestLoader.Query.PHOTO_PATH))
+                    .into(holder.photo);
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override

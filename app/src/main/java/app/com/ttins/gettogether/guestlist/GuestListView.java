@@ -73,7 +73,7 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
         }
 
         if (guestRecyclerViewAdapter == null) {
-            guestRecyclerViewAdapter = new GuestRecyclerViewAdapter(cursor, new GuestRecyclerViewAdapter.OnClickItemListener() {
+            guestRecyclerViewAdapter = new GuestRecyclerViewAdapter(getContext(), cursor, new GuestRecyclerViewAdapter.OnClickItemListener() {
                 @Override
                 public void onClick(long id, String guestName) {
                     callback.onGuestItemClick(id, guestName);
