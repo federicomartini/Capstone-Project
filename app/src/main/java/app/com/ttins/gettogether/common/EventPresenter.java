@@ -160,6 +160,12 @@ public class EventPresenter implements EventMVP.PresenterOps, EventMVP.Requested
     }
 
     @Override
+    public void onEventDataEdited(long id) {
+        view.get().onShowEventEditedDetailView(id);
+        setFabStatus(FAB_STATUS_ADD_GUEST_LIST);
+    }
+
+    @Override
     public void onEventLongClick() {
 
     }

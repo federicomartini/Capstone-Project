@@ -22,6 +22,8 @@ public interface EventEditMVP {
         void onLocationClick();
         void onPlaceReceived(String placeName);
         void onEventPhotoIconClick();
+        void onNewEventReceived();
+        void onEditEventReceived(long id);
     }
 
     interface ModelOps {
@@ -42,6 +44,7 @@ public interface EventEditMVP {
     interface RequiredViewOps {
         void onShowToast(String message);
         void onEventSaved();
+        void onEventEdited(long id);
         void onLoadInitReady(LoaderManager.LoaderCallbacks loaderClass);
         Context onContextViewRequired();
         void onChangeEventTitle(String eventTitle);

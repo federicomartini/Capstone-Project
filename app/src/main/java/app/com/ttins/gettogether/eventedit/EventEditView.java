@@ -128,8 +128,10 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             Log.d(LOG_TAG, "onCreateView with args: Id = " + args.getLong(FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG));
             presenter.initEventEditLoader(args.getLong(FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG));
             eventId = args.getLong(FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG);
+            presenter.onEditEventReceived(eventId);
             isNewEvent = false;
         } else {
+            presenter.onNewEventReceived();
             isNewEvent = true;
         }
 
@@ -246,6 +248,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @Override
     public void onEventSaved() {
         callback.onEventSaved();
+        isNewEvent = false;
     }
 
     @Override
@@ -439,8 +442,8 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
                         Bitmap bitmap = MediaStore.Images.Media
                                 .getBitmap(getActivity().getContentResolver(), data.getData());
                         Log.d(LOG_TAG, "Bitmap received: " + data.getDataString());
-                        photoSrc = data.getData().toString();
-                        //photoSrc = FilePath.getPath(getContext(), data.getData());
+                        //photoSrc = data.getData().toString();
+                        photoSrc = FilePath.getPath(getContext(), data.getData());
                         Log.d(LOG_TAG, "onActivityResult.photoSrc = " + photoSrc);
                         toolbarPhotoPending = null;
                         callback.onShowPictureEditViewToolbar(photoSrc);
@@ -477,9 +480,14 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             this.startDate.setText(startDate);
     }
 
+    @Override
+    public void onEventEdited(long id) {
+        callback.onEventEdited(id);
+    }
 
     public interface Callback {
         void onEventSaved();
+        void onEventEdited(long id);
         void onEventEditViewResumed();
         void onShowPlaceView();
         void onShowTimePickerDialog(String dialogTag);

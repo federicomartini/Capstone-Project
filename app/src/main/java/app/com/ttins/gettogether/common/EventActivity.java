@@ -243,9 +243,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onEventListViewResume() {
         Log.d(LOG_TAG, "onEventListViewResume");
         toolbarEventPhoto.setImageBitmap(null);
+        removeAnyFragmentAndTransactions();
         presenter.eventListViewResume();
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
-
     }
 
     @Override
@@ -277,7 +277,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         EventEditView fragmentEventEditView = new EventEditView();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG)
-                .addToBackStack(null)
+                //.addToBackStack(null)
                 .commit();
 
     }
@@ -302,6 +302,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG)
                 .commit();
+
+        Log.d(LOG_TAG, "Setting toolbar Image to null");
+        toolbarEventPhoto.setImageBitmap(null);
 
     }
 
@@ -331,6 +334,11 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     }
 
     @Override
+    public void onEventEdited(long id) {
+        presenter.onEventDataEdited(id);
+    }
+
+    @Override
     public void onShowEventDetailView(long id) {
         Log.d(LOG_TAG, "onShowEventDetailView");
 
@@ -345,6 +353,23 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                 .addToBackStack(null)
                 .commit();
 
+    }
+
+    @Override
+    public void onShowEventEditedDetailView(long id) {
+        Log.d(LOG_TAG, "onShowEventDetailView");
+
+        getSupportFragmentManager().popBackStack();
+
+        Bundle args = new Bundle();
+        EventDetailView fragmentEventDetailView = new EventDetailView();
+
+        args.putLong("FRAG_EVENT_DETAIL_EVENT_ID", id);
+
+        fragmentEventDetailView.setArguments(args);
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
+                .commit();
     }
 
     @Override
@@ -534,6 +559,30 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         if (eventSetPlaceView != null) {
             getSupportFragmentManager().beginTransaction().remove(eventSetPlaceView).commit();
         }
+
+    }
+
+    void removeAnyFragmentAndTransactions() {
+        EventEditView fragmentEditView = (EventEditView) getSupportFragmentManager()
+                .findFragmentByTag(FRAGMENT_EDIT_VIEW_TAG);
+        EventDetailView fragmentDetailView = (EventDetailView) getSupportFragmentManager()
+                .findFragmentByTag(FRAGMENT_DETAIL_VIEW_TAG);
+        EventSetPlaceView eventSetPlaceView = (EventSetPlaceView) getSupportFragmentManager()
+                .findFragmentByTag(FRAGMENT_PLACE_VIEW_TAG);
+
+        if (fragmentEditView != null) {
+            getSupportFragmentManager().beginTransaction().remove(fragmentEditView).commit();
+        }
+
+        if (fragmentDetailView != null) {
+            getSupportFragmentManager().beginTransaction().remove(fragmentDetailView).commit();
+        }
+
+        if (eventSetPlaceView != null) {
+            getSupportFragmentManager().beginTransaction().remove(eventSetPlaceView).commit();
+        }
+
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
     }
 

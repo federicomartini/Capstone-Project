@@ -10,6 +10,7 @@ public interface EventMVP {
         void onConfigurationChanged(EventMVP.RequestedViewOps view);
         void onDestroy(boolean isChangingConfig);
         void onEventDataSaved();
+        void onEventDataEdited(long id);
         void onEventItemClick(long id);
         void guestMenuItemClick();
         void eventEditViewResume();
@@ -36,6 +37,7 @@ public interface EventMVP {
         void onsetFabToAddGuestToListStatus();
         void onSaveEventDataRequest();
         void onShowEventDetailView(long id);
+        void onShowEventEditedDetailView(long id);
         void onOpenGuestActivity();
         void onShowGuestHandlerView();
         void onShowEventGuestRemoveView();

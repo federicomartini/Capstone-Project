@@ -32,6 +32,8 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
 
     private String startTimePending = null;
     private String toolbarPhotoPending = null;
+    private boolean isEditEvent = false;
+    private long editEventId;
 
     public EventEditPresenter(EventEditMVP.RequiredViewOps view) {
         this.view = new WeakReference<>(view);
@@ -124,7 +126,11 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
 
     @Override
     public void onEventSaved() {
-        view.get().onEventSaved();
+        if (isEditEvent)
+            view.get().onEventEdited(editEventId);
+        else
+            view.get().onEventSaved();
+
     }
 
     @Override
@@ -243,5 +249,16 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
         if (view != null) {
             view.get().onShowGalleryForPicture();
         }
+    }
+
+    @Override
+    public void onNewEventReceived() {
+        isEditEvent = false;
+    }
+
+    @Override
+    public void onEditEventReceived(long id) {
+        isEditEvent = true;
+        editEventId = id;
     }
 }

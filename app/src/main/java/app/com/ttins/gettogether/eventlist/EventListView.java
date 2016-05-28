@@ -88,7 +88,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
             callback.onEventListViewResume();
         }
 
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
