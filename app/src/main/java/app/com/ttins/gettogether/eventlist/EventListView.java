@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
 import app.com.ttins.gettogether.common.utils.Permissions;
 import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventlist.adapter.EventRecyclerViewAdapter;
@@ -52,7 +53,7 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.thumbnail) public ImageView thumbnailView;
+        @BindView(R.id.thumbnail) public ThreeTwoImageView thumbnailView;
         @BindView(R.id.event_title) public TextView titleView;
         @BindView(R.id.card_view_list_item_event) public CardView cardView;
         public long id;

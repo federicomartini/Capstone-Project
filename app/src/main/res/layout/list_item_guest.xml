@@ -2,8 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view_list_item_guest"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/medium_margin_material_design"
     android:layout_marginEnd="@dimen/medium_margin_material_design"
     android:layout_marginTop="@dimen/medium_margin_material_design"
@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
+        <app.com.ttins.gettogether.common.ui.ThreeTwoImageView
             android:id="@+id/guest_photo_item_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

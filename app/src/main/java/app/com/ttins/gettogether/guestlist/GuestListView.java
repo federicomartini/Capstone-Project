@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
 import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.guestlist.adapter.GuestRecyclerViewAdapter;
 import app.com.ttins.gettogether.guestlist.loader.GuestLoader;
@@ -41,14 +42,14 @@ public class GuestListView extends Fragment implements LoaderManager.LoaderCallb
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView guestName;
-        public ImageView photo;
+        public ThreeTwoImageView photo;
         public CardView cardView;
         public long id;
 
         public ViewHolder (View view) {
             super(view);
             guestName = (TextView) view.findViewById(R.id.guest_name_item_list);
-            photo = (ImageView) view.findViewById(R.id.guest_photo_item_list);
+            photo = (ThreeTwoImageView) view.findViewById(R.id.guest_photo_item_list);
             cardView = (CardView) view.findViewById(R.id.card_view_list_item_guest);
         }
     }
