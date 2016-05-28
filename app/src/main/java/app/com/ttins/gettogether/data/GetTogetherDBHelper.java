@@ -10,6 +10,16 @@ public class GetTogetherDBHelper extends SQLiteOpenHelper {
 
     private static final String LOG_TAG = GetTogetherDBHelper.class.getSimpleName();
 
+    private static GetTogetherDBHelper instance;
+
+    public static synchronized GetTogetherDBHelper getInstance(Context context) {
+
+        if (instance == null) {
+            instance = new GetTogetherDBHelper(context.getApplicationContext());
+        }
+        return instance;
+    }
+
     public GetTogetherDBHelper(Context context) {
         super(context, GetTogetherContract.DATABASE_NAME, null, GetTogetherContract.DATABASE_VERSIONE);
     }

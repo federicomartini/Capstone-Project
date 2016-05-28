@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -53,14 +54,36 @@ public class EventEditModel implements EventEditMVP.ModelOps, LoaderManager.Load
             Log.d(LOG_TAG, "saveEventData Photo Path: " + dataMap.get(EventEditLoader.Query.PHOTO_PATH));
             values.put(GetTogetherContract.Events.PLACE_NAME, dataMap.get(EventEditLoader.Query.PLACE_NAME));
 
-            retUri = viewContext.getContentResolver().insert(GetTogetherContract.Events.CONTENT_URI, values);
+            /*retUri = viewContext.getContentResolver().insert(GetTogetherContract.Events.CONTENT_URI, values);
             if (retUri != null) {
                 Log.d(LOG_TAG, "Uri created: " + retUri.toString());
                 presenter.onEventSaved();
             } else {
                 Log.d(LOG_TAG, "Uri returned after insert is null! ");
-            }
+            }*/
 
+            AsyncTask asyncTask = new AsyncTask();
+            asyncTask.execute(values);
+
+        }
+    }
+
+    public class AsyncTask extends android.os.AsyncTask<ContentValues, Void, Uri> {
+        @Override
+        protected Uri doInBackground(ContentValues... params) {
+            return viewContext.getContentResolver().insert(GetTogetherContract.Events.CONTENT_URI, params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Uri uri) {
+            super.onPostExecute(uri);
+
+            if (uri != null) {
+                Log.d(LOG_TAG, "Uri created: " + uri.toString());
+                presenter.onEventSaved();
+            } else {
+                Log.d(LOG_TAG, "Uri returned after insert is null! ");
+            }
         }
     }
 

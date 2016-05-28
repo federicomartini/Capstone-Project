@@ -126,7 +126,7 @@ public class GetTogetherProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        getTogetherDBHelper = new GetTogetherDBHelper(getContext());
+        getTogetherDBHelper = GetTogetherDBHelper.getInstance(getContext());
         return true;
     }
 

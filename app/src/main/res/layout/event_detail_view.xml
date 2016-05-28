@@ -78,17 +78,17 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
-                android:id="@+id/elapse_time_text_view_event_detail_view"
+                android:id="@+id/event_date_text_view_event_detail_view"
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/null_field"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/elapse_time_event_detail_view"
+                android:layout_toStartOf="@+id/event_date_image_event_detail_view"
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <ImageView
-                android:id="@+id/elapse_time_event_detail_view"
+                android:id="@+id/event_date_image_event_detail_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_timelapse_black_36dp"

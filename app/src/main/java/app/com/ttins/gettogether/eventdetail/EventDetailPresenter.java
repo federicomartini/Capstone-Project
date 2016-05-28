@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Locale;
 
 import app.com.ttins.gettogether.common.gson.Guest;
 import app.com.ttins.gettogether.common.gson.Guests;
+import app.com.ttins.gettogether.common.utils.DateTimeFormat;
 import app.com.ttins.gettogether.eventdetail.loader.EventDetailLoader;
 
 
@@ -101,28 +103,20 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
         if (view != null) {
 
-            String startTime = String.format(Locale.getDefault(), "%s:%s",
-                    this.eventDataMap.get(EventDetailLoader.Query.START_TIME_HOUR),
+            String startTime = DateTimeFormat.convertTime(this.eventDataMap.get(EventDetailLoader.Query.START_TIME_HOUR),
                     this.eventDataMap.get(EventDetailLoader.Query.START_TIME_MINUTE));
 
-            Log.d(LOG_TAG, "startTime = " + startTime);
+            String eventDate = DateTimeFormat.convertDate(this.eventDataMap.get(EventDetailLoader.Query.EVENT_DAY),
+                                        this.eventDataMap.get(EventDetailLoader.Query.EVENT_MONTH),
+                                        this.eventDataMap.get(EventDetailLoader.Query.EVENT_YEAR));
 
-            String endTime = String.format(Locale.getDefault(), "%s:%s",
-                    this.eventDataMap.get(EventDetailLoader.Query.END_TIME_HOUR),
-                    this.eventDataMap.get(EventDetailLoader.Query.END_TIME_MINUTE));
-
-            Log.d(LOG_TAG, "endTime = " + endTime);
+            view.get().onChangeEventDate(eventDate);
 
             view.get().onChangeEventTitle(this.eventDataMap.get(EventDetailLoader.Query.TITLE));
 
             if(startTime.length() >= 4) {
                 view.get().onChangeStartTimeText(startTime);
             }
-
-            if (endTime.length() >= 4) {
-                view.get().onChangeEventDuration(endTime);
-            }
-
 
             view.get().onChangeLocation(this.eventDataMap.get(EventDetailLoader.Query.LOCATION));
             view.get().onChangeMeetLocation(this.eventDataMap.get(EventDetailLoader.Query.MEETING_LOCATION));
@@ -148,16 +142,12 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             if (guests != null && guests.getGuests() != null && guests.getGuests().size() > 0) {
                 Log.d(LOG_TAG, "onEventLoadFinished: guest list OK");
                 view.get().onShowRecyclerView();
-                view.get().onSetRecyclerViewAdapter();
+                view.get().onSetRecyclerViewAdapter(guests);
             } else {
                 Log.d(LOG_TAG, "onEventLoadFinished: guest list fail!");
                 view.get().onShowEmptyRecyclerView();
             }
-            /*if (this.eventDataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS).compareTo(EVENT_STATUS_CONFIRMED) == 0) {
-                confirmButtonStatus = true;
-            } else {
-                confirmButtonStatus = false;
-            }*/
+
             pendingShowView = false;
             pendingGuests = null;
             pendingEventDetailMap = null;
@@ -224,15 +214,15 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
     }
 
-    @Override
+    /*@Override
     public void guestListHandler(String guestList) {
         Log.d(LOG_TAG, "onGuestListReceived");
         Gson gson = new Gson();
         List<Guest> guests = gson.fromJson(guestList,
                 new TypeToken<List<Guest>>(){}.getType());
-        /*for (Guest guest: guests) {
+        for (Guest guest: guests) {
             Log.d(LOG_TAG, "id = " + guest.getId() + " - note: " + guest.getNote());
-        }*/
+        }
         if (guests != null && guests.size() >= 0) {
             Log.d(LOG_TAG, "Guest List - Last Id = " + guests.get(guests.size() - 1).getId()
                     + " lenght = " + guests.size());
@@ -241,9 +231,9 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
         //view.get().onNotifySetDataChanged();
 
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void guestListHandler(long guestId, long eventId, String guestList) {
         Log.d(LOG_TAG, "guestListHandler");
         Gson gson = new Gson();
@@ -252,12 +242,12 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             //Log.d(LOG_TAG, "Guest List is NULL");
         }
 
-        if (guestList == null || guestList.isEmpty()) {
-            List<Guest> listGuest = new ArrayList<>();
-            listGuest.add(new Guest(guestId, ""));
-            /*listGuest.add(new Guest(Long.getLong("8"), "pizza"));
-            listGuest.add(new Guest(Long.getLong("10"), "pasta"));
-            listGuest.add(new Guest(Long.getLong("12"), "panino"));*/
+        //if (guestList == null || guestList.isEmpty()) {
+            //List<Guest> listGuest = new ArrayList<>();
+            //listGuest.add(new Guest(guestId, ""));
+            //listGuest.add(new Guest(Long.getLong("8"), "pizza"));
+            //listGuest.add(new Guest(Long.getLong("10"), "pasta"));
+            //listGuest.add(new Guest(Long.getLong("12"), "panino"));
             String idJsonList = gson.toJson(listGuest);
             //Log.d(LOG_TAG, "Json: " + idJsonList);
 
@@ -286,7 +276,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                 sendToastToActivity(String.valueOf(guestId));
             }
         }
-    }
+    }*/
 
     private void sendToastToActivity(String guestName) {
         Log.d(LOG_TAG, "sendToastToActivity");
@@ -325,7 +315,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
 
     @Override
     public void onLoadFinished(String guestList) {
-        Log.d(LOG_TAG, "onLoadFinished: guestId = " + addGuestId);
+        Log.d(LOG_TAG, "onLoadFinished: guestId = " + addGuestId + "to list: " + guestList);
         boolean guestFound = false;
         String guestFoundName = "";
         Gson gson = new Gson();
@@ -381,9 +371,10 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
         model.onGetDataForView(guests);
         localGuestList = guests;
 
-        for (Guest guest:guests.getGuests()) {
+
+        /*for (Guest guest:guests.getGuests()) {
             Log.d(LOG_TAG, "Guest Id = " + guest.getId());
-        }
+        }*/
     }
 
     @Override

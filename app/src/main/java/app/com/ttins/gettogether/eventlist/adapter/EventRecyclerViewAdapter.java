@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 
 import app.com.ttins.gettogether.R;
-import app.com.ttins.gettogether.common.utils.Permissions;
 import app.com.ttins.gettogether.eventlist.EventListView;
 import app.com.ttins.gettogether.eventlist.loader.EventLoader;
 
@@ -31,6 +30,11 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
         this.loadPhotoPermission = loadPhotoPermission;
     }
 
+    public void swapEvents(Cursor cursor){
+        Log.d(LOG_TAG, "SwapEvents...");
+        this.cursor = cursor;
+        notifyDataSetChanged();
+    }
 
     @Override
     public long getItemId(int position) {
@@ -51,6 +55,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
     public void onBindViewHolder(final EventListView.ViewHolder holder, final int position) {
 
         if(cursor != null) {
+
             cursor.moveToPosition(position);
 
             holder.titleView.setText(cursor.getString(EventLoader.Query.TITLE));
@@ -72,7 +77,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventListView
             });
 
             if (loadPhotoPermission) {
-                Glide.with(context).load(cursor.getString(EventLoader.Query.PHOTO_PATH))
+                Log.d(LOG_TAG, "ID: " + position + " Photo Path: " + cursor.getString(EventLoader.Query.PHOTO_PATH));
+                Glide.with(context).load(cursor.getString(EventLoader.Query.PHOTO_PATH)).skipMemoryCache(true)
                         .into(holder.thumbnailView);
             }
         } else {

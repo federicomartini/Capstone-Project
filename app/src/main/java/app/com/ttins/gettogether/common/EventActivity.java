@@ -15,6 +15,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.gson.Event;
@@ -108,6 +110,15 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                 public void onClick(View v) {
                     Log.d(LOG_TAG, "fab onClick");
                     presenter.onFabClick();
+
+                    List<Fragment> fragments = getSupportFragmentManager().getFragments();
+                    for (Fragment fragment:fragments) {
+                        if (fragment != null)
+                            Log.d(LOG_TAG, "Fragment Tag: " + fragment.getTag());
+                        else
+                            Log.d(LOG_TAG, "Fragment Tag: null");
+                    }
+
                 }
             });
 
@@ -230,7 +241,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onEventListViewResume() {
-        Log.d(LOG_TAG, "onEventListViewresume");
+        Log.d(LOG_TAG, "onEventListViewResume");
         toolbarEventPhoto.setImageBitmap(null);
         presenter.eventListViewResume();
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
@@ -273,17 +284,24 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onShowEventListView() {
+        Log.d(LOG_TAG, "onShowEventListView");
+
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment fragment:fragments) {
+            if (fragment != null) {
+                Log.d(LOG_TAG, "Fragment " + fragment.getTag() + " removed");
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+        }
+
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
+
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
         EventListView fragmentEventListView = new EventListView();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG)
-                //.addToBackStack(null)
                 .commit();
-
-        FragmentManager fm = getSupportFragmentManager();
-        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-            fm.popBackStack();
-        }
 
     }
 

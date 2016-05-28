@@ -4,6 +4,7 @@ package app.com.ttins.gettogether.eventdetail;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -157,15 +158,16 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         //guestListAddId = id;
     }
 
-    @Override
+    /*@Override
     public void onSaveGuestList(long eventId, String guestList) {
-        Log.d(LOG_TAG, "Save new Guest on EVENT ID = " + eventId);
+        Log.d(LOG_TAG, "Save new Guest on EVENT ID = " + eventId + " - GuestList: " + guestList);
         ContentValues values = new ContentValues();
         values.put(GetTogetherContract.Events.GUEST_LIST, guestList);
         int rows = 0;
 
         if (this.context != null) {
             isSaveGuestPending = false;
+            //pendingGuestList = null;
             rows = context.getContentResolver().update(
                     GetTogetherContract.Events.buildEventsUri(eventId),
                     values,
@@ -191,14 +193,14 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         }
 
         //Log.d(LOG_TAG, "Rows: " + rows + " - Save guest list: " + guestList);
-    }
+    }*/
 
     @Override
     public void onAttachContext(Context context) {
         this.context = context;
 
         if(isSaveGuestPending) {
-            onSaveGuestList(pendingEventId, pendingGuestList);
+            //onSaveGuestList(pendingEventId, pendingGuestList);
             onUpdateGuestList(pendingGuestList);
         }
     }
@@ -215,21 +217,22 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
 
     @Override
     public void onUpdateGuestList(String guestList) {
-        Log.d(LOG_TAG, "onAddGuestToList");
-        Log.d(LOG_TAG, "Updating DB Event guest list: " + guestList);
+        Log.d(LOG_TAG, "onAddGuestToList Updating DB Event guest list: " + guestList);
+        Log.d(LOG_TAG, "onAddGuestToList pendingGuestList = " + pendingGuestList);
         ContentValues values = new ContentValues();
         values.put(GetTogetherContract.Events.GUEST_LIST, guestList);
         int rows = 0;
 
         if (this.context != null) {
             isSaveGuestPending = false;
-            rows = context.getContentResolver().update(
+            //pendingGuestList = null;
+            /*rows = context.getContentResolver().update(
                     GetTogetherContract.Events.buildEventsUri(eventId),
                     values,
                     GetTogetherContract.Events._ID + " = ? ",
                     new String[]{String.valueOf(eventId)}
             );
-            Log.d(LOG_TAG, "onAddGuestToList updated");
+            Log.d(LOG_TAG, "onAddGuestToList updated - rows updated: " + rows);
 
             Gson gson = new Gson();
             List<Guest> listOfGuest = gson.fromJson(guestList,
@@ -237,7 +240,10 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             Guests guests = new Guests();
             guests.setGuests(listOfGuest);
 
-            presenter.onGuestListUpdated(guests);
+            presenter.onGuestListUpdated(guests);*/
+
+            AsyncTaskUpdate asyncTaskUpdate = new AsyncTaskUpdate();
+            asyncTaskUpdate.execute(guestList);
 
         } else {
             Log.d(LOG_TAG, "onAddGuestToList pending");
@@ -250,6 +256,39 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         //presenter.onEventLoadFinished(dataMap, guests);
         //Log.d(LOG_TAG, "Rows: " + rows + " - Save guest list: " + guestList);
 
+    }
+
+    public class AsyncTaskUpdate extends AsyncTask<String, Void, Integer> {
+
+        ContentValues values;
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            values = new ContentValues();
+            values.put(GetTogetherContract.Events.GUEST_LIST, params[0]);
+
+            return context.getContentResolver().update(
+                    GetTogetherContract.Events.buildEventsUri(eventId),
+                    values,
+                    GetTogetherContract.Events._ID + " = ? ",
+                    new String[]{String.valueOf(eventId)});
+        }
+
+        @Override
+        protected void onPostExecute(Integer rows) {
+            super.onPostExecute(rows);
+            Log.d(LOG_TAG, "onAddGuestToList updated - rows updated: " + rows);
+
+            Gson gson = new Gson();
+            List<Guest> listOfGuest = gson
+                    .fromJson(values.get(GetTogetherContract.Events.GUEST_LIST).toString(),
+                    new TypeToken<List<Guest>>(){}.getType());
+                    Guests guests = new Guests();
+                    guests.setGuests(listOfGuest);
+
+            presenter.onGuestListUpdated(guests);
+
+        }
     }
 
     @Override

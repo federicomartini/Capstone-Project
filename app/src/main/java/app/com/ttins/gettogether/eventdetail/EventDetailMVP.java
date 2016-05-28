@@ -32,7 +32,7 @@ public interface EventDetailMVP {
         void getEventData(long id);
         void initLoader();
         void onEventAddGuestReceived(long id);
-        void onSaveGuestList(long eventId, String guestList);
+        /*void onSaveGuestList(long eventId, String guestList);*/
         void onGetGuestList();
         void onUpdateGuestList(String guestList);
         void onGetDataForView(Guests guests);
@@ -43,8 +43,8 @@ public interface EventDetailMVP {
         Context onContextViewRequired();
         void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass);
         void onRestartLoaderRequest(LoaderManager.LoaderCallbacks<Cursor> loaderClass, int loaderId);
-        void guestListHandler(long guestId, long eventId, String guestList);
-        void guestListHandler(String guestList);
+        //void guestListHandler(long guestId, long eventId, String guestList);
+        //void guestListHandler(String guestList);
         void onDestroyLoader(int loaderId);
         void onNotifySetDataChanged();
         void onLoadFinished(String guests);
@@ -55,7 +55,7 @@ public interface EventDetailMVP {
         void onChangeEventTitle(String eventTitle);
         void onChangeStartTimeText(String startTime);
         void onChangeMeetLocation(String meetLocation);
-        void onChangeEventDuration(String eventDuration);
+        void onChangeEventDate(String eventDate);
         void onChangePhoneNumber(String phoneNumber);
         void onChangeLocation(String location);
         void onChangeConfirmStatus(String confirmStatus);
@@ -68,7 +68,7 @@ public interface EventDetailMVP {
         void onDestroyLoader(int loaderId);
         void onShowEmptyRecyclerView();
         void onShowRecyclerView();
-        void onSetRecyclerViewAdapter();
+        void onSetRecyclerViewAdapter(Guests guests);
         void onLoadFinished(Guests guests);
         void onResetViewAdapter();
         void onNotifySetDataChanged();

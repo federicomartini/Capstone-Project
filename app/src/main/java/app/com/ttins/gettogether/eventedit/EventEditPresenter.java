@@ -156,15 +156,8 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
             view.get().onChangeNotes(dataMap.get(EventEditLoader.Query.NOTES));
             view.get().onChangePhoneNumber(dataMap.get(EventEditLoader.Query.PLACE_PHONE_NUMBER));
 
-            String startTime = String.format(Locale.getDefault(), "%s:%s",
-                    dataMap.get(EventEditLoader.Query.START_TIME_HOUR),
+            String startTime = DateTimeFormat.convertTime(dataMap.get(EventEditLoader.Query.START_TIME_HOUR),
                     dataMap.get(EventEditLoader.Query.START_TIME_MINUTE));
-
-            Log.d(LOG_TAG, "StartTime: " + startTime);
-
-            String endTime = String.format(Locale.getDefault(), "%s:%s",
-                    dataMap.get(EventEditLoader.Query.END_TIME_HOUR),
-                    dataMap.get(EventEditLoader.Query.END_TIME_MINUTE));
 
             if (startTime.length() > 0) {
                 if (view != null) {
@@ -173,7 +166,6 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
                 } else {
                     startTimePending = startTime;
                 }
-
             }
 
 

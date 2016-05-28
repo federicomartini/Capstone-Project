@@ -45,7 +45,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     TextView startTime;
     TextView location;
     TextView meetLocation;
-    TextView eventDuration;
+    TextView eventDate;
     TextView phoneNumber;
     TextView confirmStatus;
     TextView emptyGuestList;
@@ -139,7 +139,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         startTime = (TextView) root.findViewById(R.id.start_time_text_view_event_detail_view);
         location = (TextView) root.findViewById(R.id.location_text_view_event_detail_view);
         meetLocation = (TextView) root.findViewById(R.id.meet_loc_text_view_event_detail_view);
-        eventDuration = (TextView) root.findViewById(R.id.elapse_time_text_view_event_detail_view);
+        eventDate = (TextView) root.findViewById(R.id.event_date_text_view_event_detail_view);
         phoneNumber = (TextView) root.findViewById(R.id.phone_text_view_event_detail_view);
         confirmStatus = (TextView) root.findViewById(R.id.confirm_status_text_view_event_detail_view);
         emptyGuestList = (TextView) root.findViewById(R.id.empty_guest_list_text_view_event_detail_view);
@@ -197,11 +197,11 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     }
 
     @Override
-    public void onChangeEventDuration(String eventDuration) {
-        if (eventDuration != null && !eventDuration.isEmpty()) {
-            this.eventDuration.setText(eventDuration);
+    public void onChangeEventDate(String eventDate) {
+        if (eventDate != null && !eventDate.isEmpty()) {
+            this.eventDate.setText(eventDate);
         } else {
-            this.eventDuration.setText(getResources().getString(R.string.null_field));
+            this.eventDate.setText(getResources().getString(R.string.null_field));
         }
     }
 
@@ -296,12 +296,13 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     }
 
     @Override
-    public void onSetRecyclerViewAdapter() {
+    public void onSetRecyclerViewAdapter(Guests guests) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
 
         if(recyclerView.hasPendingAdapterUpdates()) {
             Log.d(LOG_TAG, "recyclerView hasPendingAdapterUpdates");
+            eventDetailAdapter.swapGuests(guests);
             eventDetailAdapter.notifyDataSetChanged();
         }
 

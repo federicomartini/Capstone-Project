@@ -7,11 +7,13 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -128,53 +130,58 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
             emptyView.setVisibility(View.GONE);
         }
 
-            if(Permissions.checkPermission(getContext())) {
-                Log.d(LOG_TAG, "PERMISSION OK");
-                loadPhotoPermission = true;
-                    if (eventRecyclerViewAdapter == null) {
-                        Log.d(LOG_TAG, "eventRecyclerViewAdapter is null");
-                        eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(),
-                            cursor,
-                            loadPhotoPermission,
-                            new EventRecyclerViewAdapter.OnClickItemListener() {
+        if(Permissions.checkPermission(getContext())) {
+            Log.d(LOG_TAG, "PERMISSION OK");
+            loadPhotoPermission = true;
+                if (eventRecyclerViewAdapter == null) {
+                    Log.d(LOG_TAG, "eventRecyclerViewAdapter is null");
 
-                                @Override
-                                public void onClick(long id, String eventTitle) {
-                                    callback.onEventItemClick(id, eventTitle);
-                                }
+                    eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(),
+                        cursor,
+                        loadPhotoPermission,
+                        new EventRecyclerViewAdapter.OnClickItemListener() {
 
-                                @Override
-                                public void onLongClick(final long id, String title) {
-                                    Log.d(LOG_TAG, "onLongClick received");
+                            @Override
+                            public void onClick(long id, String eventTitle) {
+                                callback.onEventItemClick(id, eventTitle);
+                            }
 
-                                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                    builder.setTitle("Delete Event")
-                                            .setMessage("Want to delete event \"" + title + "\" ?")
-                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
-                                                            GetTogetherContract.Events._ID + " = ?",
-                                                            new String[]{String.valueOf(id)});
-                                                    eventRecyclerViewAdapter = null;
-                                                }
-                                            });
-                                    builder.create().show();
-                                }
-                            });
-                }
+                            @Override
+                            public void onLongClick(final long id, String title) {
+                                Log.d(LOG_TAG, "onLongClick received");
 
-                recyclerView.setAdapter(eventRecyclerViewAdapter);
-
-                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
-                        columnCount,
-                        StaggeredGridLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(staggeredGridLayoutManager);
-
-            } else {
-                Log.d(LOG_TAG, "Saving cursor waiting for permission...");
-                this.cursor = cursor;
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setTitle("Delete Event")
+                                        .setMessage("Want to delete event \"" + title + "\" ?")
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
+                                                        GetTogetherContract.Events._ID + " = ?",
+                                                        new String[]{String.valueOf(id)});
+                                                //eventRecyclerViewAdapter.notifyDataSetChanged();
+                                                //onRestartLoader();
+                                                AsyncTaskDelete asyncTaskDelete = new AsyncTaskDelete();
+                                                asyncTaskDelete.execute(id);
+                                            }
+                                        });
+                                builder.create().show();
+                            }
+                        });
             }
+            eventRecyclerViewAdapter.swapEvents(cursor);
+            recyclerView.setAdapter(eventRecyclerViewAdapter);
+
+            StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
+                    columnCount,
+                    StaggeredGridLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+
+        } else {
+            Log.d(LOG_TAG, "Saving cursor waiting for permission...");
+            this.cursor = cursor;
+        }
 
     }
 
@@ -212,13 +219,17 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
                                                         getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
                                                                 GetTogetherContract.Events._ID + " = ?",
                                                                 new String[]{String.valueOf(id)});
-                                                        eventRecyclerViewAdapter = null;
+                                                        //eventRecyclerViewAdapter = null;
+                                                        //onRestartLoader();
+                                                        AsyncTaskDelete asyncTaskDelete = new AsyncTaskDelete();
+                                                        asyncTaskDelete.execute(id);
                                                     }
                                                 });
                                         builder.create().show();
                                     }
                                 });
                     }
+                    eventRecyclerViewAdapter.swapEvents(cursor);
                     recyclerView.setAdapter(eventRecyclerViewAdapter);
 
                     StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
@@ -250,16 +261,20 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
                                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
+                                                        /*getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
                                                                 GetTogetherContract.Events._ID + " = ?",
                                                                 new String[]{String.valueOf(id)});
-                                                        eventRecyclerViewAdapter = null;
+                                                        //eventRecyclerViewAdapter = null;
+                                                        onRestartLoader();*/
+                                                        AsyncTaskDelete asyncTaskDelete = new AsyncTaskDelete();
+                                                        asyncTaskDelete.execute(id);
                                                     }
                                                 });
                                         builder.create().show();
                                     }
                                 });
                     }
+                    eventRecyclerViewAdapter.swapEvents(cursor);
                     recyclerView.setAdapter(eventRecyclerViewAdapter);
 
                     StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
@@ -271,6 +286,36 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
             default:
                 break;
         }
+    }
+
+
+    public class AsyncTaskDelete extends AsyncTask<Long, Void, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(Long... params) {
+            int rows = getActivity().getContentResolver().delete(GetTogetherContract.Events.CONTENT_URI,
+                    GetTogetherContract.Events._ID + " = ?",
+                    new String[]{String.valueOf(params[0])});
+
+            return rows;
+        }
+
+        @Override
+        protected void onPostExecute(Integer rows) {
+            super.onPostExecute(rows);
+            if (rows > 0)
+                onRestartLoader();
+        }
+    }
+
+
+    private void onRestartLoader() {
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override

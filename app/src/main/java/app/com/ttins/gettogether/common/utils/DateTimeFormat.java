@@ -22,7 +22,7 @@ public class DateTimeFormat {
 
     public static String convertTime(String hours, String minutes) {
 
-        if(hours == null || minutes == null) {
+        if(hours == null || hours.isEmpty() || minutes == null || minutes.isEmpty()) {
             return "";
         }
 
@@ -85,7 +85,8 @@ public class DateTimeFormat {
 
     public static String convertDate(String day, String month, String year) {
 
-        if (day == null || month == null || year == null) {
+        if (day == null || day.isEmpty() || month == null || month.isEmpty() ||
+                year == null || year.isEmpty()) {
             return null;
         }
 
