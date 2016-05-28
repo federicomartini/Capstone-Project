@@ -31,10 +31,8 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
     HashMap<Integer, String> dataMap;
     EventDetailMVP.RequiredPresenterOps presenter;
     long eventId;
-    long guestListAddId;
     private Context context;
     boolean isSaveGuestPending;
-    long pendingEventId;
     String pendingGuestList;
 
     public EventDetailModel(EventDetailMVP.RequiredPresenterOps presenter) {
@@ -108,6 +106,8 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
                     "START_TIME_HOUR = " + dataMap.get(EventDetailLoader.Query.START_TIME_HOUR) + ", " +
                     "START_TIME_MINUTE = " + dataMap.get(EventDetailLoader.Query.START_TIME_MINUTE)
             );
+        } else {
+            Log.d(LOG_TAG, "onLoadFinished no first item");
         }
 
         switch(loader.getId()) {
@@ -135,8 +135,8 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         Guests guests = new Guests();
         guests.setGuests(guestList);
 
-        Log.d(LOG_TAG, "onLoadFinished - Guest List: " + cursor.getString(EventDetailLoader.Query.GUEST_LIST));
-        presenter.onLoadFinished(cursor.getString(EventDetailLoader.Query.GUEST_LIST));
+        Log.d(LOG_TAG, "onLoadFinished - Guest List: " + dataMap.get(EventDetailLoader.Query.GUEST_LIST));
+        presenter.onLoadFinished(dataMap.get(EventDetailLoader.Query.GUEST_LIST));
         //presenter.onEventLoadFinished(dataMap, guests);
     }
 
@@ -199,7 +199,7 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
     public void onAttachContext(Context context) {
         this.context = context;
 
-        if(isSaveGuestPending) {
+        if(pendingGuestList != null) {
             //onSaveGuestList(pendingEventId, pendingGuestList);
             onUpdateGuestList(pendingGuestList);
         }
@@ -221,26 +221,10 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
         Log.d(LOG_TAG, "onAddGuestToList pendingGuestList = " + pendingGuestList);
         ContentValues values = new ContentValues();
         values.put(GetTogetherContract.Events.GUEST_LIST, guestList);
-        int rows = 0;
 
         if (this.context != null) {
             isSaveGuestPending = false;
-            //pendingGuestList = null;
-            /*rows = context.getContentResolver().update(
-                    GetTogetherContract.Events.buildEventsUri(eventId),
-                    values,
-                    GetTogetherContract.Events._ID + " = ? ",
-                    new String[]{String.valueOf(eventId)}
-            );
-            Log.d(LOG_TAG, "onAddGuestToList updated - rows updated: " + rows);
-
-            Gson gson = new Gson();
-            List<Guest> listOfGuest = gson.fromJson(guestList,
-                    new TypeToken<List<Guest>>(){}.getType());
-            Guests guests = new Guests();
-            guests.setGuests(listOfGuest);
-
-            presenter.onGuestListUpdated(guests);*/
+            pendingGuestList = null;
 
             AsyncTaskUpdate asyncTaskUpdate = new AsyncTaskUpdate();
             asyncTaskUpdate.execute(guestList);
@@ -249,7 +233,6 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
             Log.d(LOG_TAG, "onAddGuestToList pending");
             //Log.d(LOG_TAG, "onSaveGuestList PENDING: " + guestList);
             isSaveGuestPending = true;
-            pendingEventId = eventId;
             pendingGuestList = guestList;
         }
 
@@ -286,6 +269,8 @@ public class EventDetailModel implements EventDetailMVP.ModelOps, LoaderManager.
                     Guests guests = new Guests();
                     guests.setGuests(listOfGuest);
 
+            Log.d(LOG_TAG, "onAddGuestToList: onPostExecute: Guest listupdated: " + values.get(GetTogetherContract.Events.GUEST_LIST).toString());
+            initLoader();
             presenter.onGuestListUpdated(guests);
 
         }

@@ -388,11 +388,13 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                 Log.d(LOG_TAG, "Item to delete found (" + id + ")");
                 break;
             }
+            Log.d(LOG_TAG, "I am here");
             posToRemove++;
         }
 
         listOfGuest.remove(posToRemove);
         String idJsonList = gson.toJson(listOfGuest);
+        Log.d(LOG_TAG, "JsonList after remove: " + idJsonList);
         model.onUpdateGuestList(idJsonList);
     }
 }

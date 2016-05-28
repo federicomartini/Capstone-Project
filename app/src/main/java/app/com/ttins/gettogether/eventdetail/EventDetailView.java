@@ -324,7 +324,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
 
                 @Override
                 public void onLongItemClick(final long id) {
-                    Log.d(LOG_TAG, "onLongItemClick Received by View");
+                    Log.d(LOG_TAG, "onLongItemClick Received by View -> " + id);
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("Delete Event")
                             .setMessage("Want to delete guest \"" + id + "\" from the event ?")
