@@ -12,6 +12,9 @@ public interface GuestMVP {
         void onGuestDataSaved();
         void onGuestItemClick(long id);
         void onMapViewResume();
+        void onGuestImageReceived(String photoSrc);
+        void onAttachView(GuestMVP.RequestedViewOps view);
+        void onDetachView();
     }
 
     interface ModelOps {
@@ -32,5 +35,6 @@ public interface GuestMVP {
         void onSaveGuestDataRequest();
         void onShowGuestDetailView(long id);
         void onShowGuestEditDetailView();
+        void onShowGuestPhoto(String photoSrc);
     }
 }

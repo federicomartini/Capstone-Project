@@ -49,7 +49,7 @@ public class GuestDetailModel implements GuestDetailMVP.ModelOps, LoaderManager.
             dataMap.put(GuestDetailLoader.Query.NAME, cursor.getString(GuestDetailLoader.Query.NAME));
             dataMap.put(GuestDetailLoader.Query.PHONE_NUMBER, cursor.getString(GuestDetailLoader.Query.PHONE_NUMBER));
             dataMap.put(GuestDetailLoader.Query.ADDRESS, cursor.getString(GuestDetailLoader.Query.ADDRESS));
-            //dataMap.put(GuestDetailLoader.Query.PHOTO_PATH, cursor.getString(GuestDetailLoader.Query.PHOTO_PATH));
+            dataMap.put(GuestDetailLoader.Query.PHOTO_PATH, cursor.getString(GuestDetailLoader.Query.PHOTO_PATH));
         }
 
         presenter.onGuestLoadFinished(dataMap);

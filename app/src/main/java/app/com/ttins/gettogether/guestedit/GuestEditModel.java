@@ -20,7 +20,7 @@ public class GuestEditModel implements GuestEditMVP.ModelOps {
     }
 
     @Override
-    public void saveGuestData(Long id, String guestName, String phoneNumber, String address) {
+    public void saveGuestData(Long id, String guestName, String phoneNumber, String address, String photoSrc) {
         int rows;
         ContentValues values = new ContentValues();
 
@@ -28,6 +28,7 @@ public class GuestEditModel implements GuestEditMVP.ModelOps {
             values.put(GetTogetherContract.Guests.NAME, guestName);
             values.put(GetTogetherContract.Guests.PHONE_NUMBER, phoneNumber);
             values.put(GetTogetherContract.Guests.ADDRESS, address);
+            values.put(GetTogetherContract.Guests.PHOTO_PATH, photoSrc);
 
             rows = viewContext.getContentResolver().update(GetTogetherContract.Guests.CONTENT_URI,
                                                             values,
@@ -44,7 +45,7 @@ public class GuestEditModel implements GuestEditMVP.ModelOps {
     }
 
     @Override
-    public void saveGuestData(String guestName, String phoneNumber, String address) {
+    public void saveGuestData(String guestName, String phoneNumber, String address, String photoSrc) {
 
         Uri retUri;
         ContentValues values = new ContentValues();
@@ -53,6 +54,7 @@ public class GuestEditModel implements GuestEditMVP.ModelOps {
             values.put(GetTogetherContract.Guests.NAME, guestName);
             values.put(GetTogetherContract.Guests.PHONE_NUMBER, phoneNumber);
             values.put(GetTogetherContract.Guests.ADDRESS, address);
+            values.put(GetTogetherContract.Guests.PHOTO_PATH, photoSrc);
 
             retUri = viewContext.getContentResolver().insert(GetTogetherContract.Guests.CONTENT_URI, values);
             if (retUri != null) {

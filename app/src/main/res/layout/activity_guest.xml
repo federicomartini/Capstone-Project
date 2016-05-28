@@ -21,6 +21,43 @@
             app:expandedTitleMarginStart="@dimen/collapsing_toolbar_layout_expanded_title_margin_start"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/photo_background_protection">
+
+                <app.com.ttins.gettogether.common.ui.ThreeTwoImageView
+                    android:id="@+id/square_image_view_guest_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/photo_background_protection"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/guest_name_text_view_guest_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textStyle="bold"
+                        android:lineSpacingMultiplier="0.9" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_guest_activity"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -29,36 +66,11 @@
                 app:contentInsetStart="@dimen/collapsing_toolbar_layout_expanded_title_margin_start"
                 app:layout_collapseMode="pin"/>
 
-            <ImageView
-                android:id="@+id/photo_bg_protection_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/photo_background_protection"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:gravity="bottom"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/guest_name_text_view_guest_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textStyle="bold"
-                    android:lineSpacingMultiplier="0.9" />
-
-            </LinearLayout>
-
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/fragment_content"/>
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_guest_add_guest_activity"

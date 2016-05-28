@@ -15,6 +15,7 @@ public class GuestEditPresenter implements GuestEditMVP.PresenterOps, GuestEditM
     WeakReference<GuestEditMVP.RequestedViewOps> view;
     GuestEditMVP.ModelOps model;
     Context viewContext;
+    boolean isShowGalleryPending = false;
 
     public GuestEditPresenter(GuestEditMVP.RequestedViewOps view) {
         this.view = new WeakReference<>(view);
@@ -22,10 +23,10 @@ public class GuestEditPresenter implements GuestEditMVP.PresenterOps, GuestEditM
     }
 
     @Override
-    public void saveGuest(Long id, String guestName, String phoneNumber, String address) {
+    public void saveGuest(Long id, String guestName, String phoneNumber, String address, String photoSrc) {
         int retCheck;
 
-        retCheck = areAllGuestDataOk(guestName, phoneNumber, address);
+        retCheck = areAllGuestDataOk(guestName, phoneNumber, address, photoSrc);
 
         switch(retCheck) {
             case INSERT_DATA_NAME_EMPTY_ERROR:
@@ -36,15 +37,15 @@ public class GuestEditPresenter implements GuestEditMVP.PresenterOps, GuestEditM
         }
 
         if (retCheck == INSERT_DATA_NO_ERROR) {
-            model.saveGuestData(id, guestName, phoneNumber, address);
+            model.saveGuestData(id, guestName, phoneNumber, address, photoSrc);
         }
     }
 
     @Override
-    public void saveGuest(String guestName, String phoneNumber, String address) {
+    public void saveGuest(String guestName, String phoneNumber, String address, String photoSrc) {
         int retCheck;
 
-        retCheck = areAllGuestDataOk(guestName, phoneNumber, address);
+        retCheck = areAllGuestDataOk(guestName, phoneNumber, address, photoSrc);
 
         switch(retCheck) {
             case INSERT_DATA_NAME_EMPTY_ERROR:
@@ -55,11 +56,12 @@ public class GuestEditPresenter implements GuestEditMVP.PresenterOps, GuestEditM
         }
 
         if (retCheck == INSERT_DATA_NO_ERROR) {
-            model.saveGuestData(guestName, phoneNumber, address);
+            model.saveGuestData(guestName, phoneNumber, address, photoSrc);
         }
     }
 
-    private int areAllGuestDataOk(String guestName, String phoneNumber, String address) {
+    private int areAllGuestDataOk(String guestName, String phoneNumber,
+                                  String address, String photoSrc) {
 
         if (guestName.isEmpty()) {
             return INSERT_DATA_NAME_EMPTY_ERROR;
@@ -72,6 +74,11 @@ public class GuestEditPresenter implements GuestEditMVP.PresenterOps, GuestEditM
     public void onAttachView(Context context) {
         this.viewContext = context;
         model.onAttachView(context);
+
+        if (isShowGalleryPending) {
+            view.get().onShowGalleryForPicture();
+            isShowGalleryPending = false;
+        }
     }
 
     @Override
@@ -85,4 +92,12 @@ public class GuestEditPresenter implements GuestEditMVP.PresenterOps, GuestEditM
         view.get().onGuestSaved();
     }
 
+    @Override
+    public void onPhotoClick() {
+        if (view != null) {
+            view.get().onShowGalleryForPicture();
+        } else {
+            isShowGalleryPending = true;
+        }
+    }
 }

@@ -32,6 +32,7 @@ public interface GuestDetailMVP {
         void onChangeGuestName(String guestName);
         void onChangePhoneNumber(String phoneNumber);
         void onChangeAddress(String address);
+        void onChangeGuestPhoto(String photoSrc);
         void onSendAddressToActivity(String address);
     }
 }

@@ -20,9 +20,11 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
     GuestMVP.ModelOps model;
     boolean isChangingConfig;
     int fabStatus;
+    String photoSrcPending = null;
+    boolean isShowGuestDetailPending = false;
+    long guestDetailPendingId;
 
-    public GuestPresenter(GuestMVP.RequestedViewOps view) {
-        this.view = new WeakReference<>(view);
+    public GuestPresenter() {
         this.model = new GuestModel(this);
     }
 
@@ -50,6 +52,29 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
     }
 
     @Override
+    public void onAttachView(GuestMVP.RequestedViewOps view) {
+        this.view = new WeakReference<>(view);
+
+        Log.d(LOG_TAG, "onAttachView");
+
+        if (photoSrcPending != null) {
+            Log.d(LOG_TAG, "Loading pending guest photo: " + photoSrcPending);
+            this.view.get().onShowGuestPhoto(photoSrcPending);
+        }
+
+        if (isShowGuestDetailPending) {
+            isShowGuestDetailPending = false;
+            this.view.get().onShowGuestDetailView(guestDetailPendingId);
+            setFabStatus(FAB_GUEST_DETAIL);
+        }
+    }
+
+    @Override
+    public void onDetachView() {
+        this.view = null;
+    }
+
+    @Override
     public void initFabStatus() {
         setFabStatus(this.fabStatus);
     }
@@ -57,18 +82,23 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
     private void setFabStatus(int fabStatus) {
 
         this.fabStatus = fabStatus;
-        switch (fabStatus) {
-            case FAB_STATUS_ADD_GUEST:
-                view.get().onSetFabToAddGuestStatus();
-                break;
-            case FAB_STATUS_ADD_GUEST_CONFIRM:
-                view.get().onSetFabToAddGuestConfirmStatus();
-                break;
-            case FAB_GUEST_DETAIL:
-                view.get().onSetFabToGuestDetailStatus();
-            default:
-                break;
+        if (view != null) {
+            switch (fabStatus) {
+                case FAB_STATUS_ADD_GUEST:
+                    view.get().onSetFabToAddGuestStatus();
+                    break;
+                case FAB_STATUS_ADD_GUEST_CONFIRM:
+                    view.get().onSetFabToAddGuestConfirmStatus();
+                    break;
+                case FAB_GUEST_DETAIL:
+                    view.get().onSetFabToGuestDetailStatus();
+                default:
+                    break;
+            }
+        } else {
+            Log.d(LOG_TAG, "setFabStatus: view is null...");
         }
+
         Log.d(LOG_TAG, "fabStatus: " + fabStatus);
     }
 
@@ -120,8 +150,15 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
     @Override
     public void onGuestItemClick(long id) {
         Log.d(LOG_TAG, "onGuestItemClick");
-        view.get().onShowGuestDetailView(id);
-        setFabStatus(FAB_GUEST_DETAIL);
+        if (view != null) {
+            view.get().onShowGuestDetailView(id);
+            setFabStatus(FAB_GUEST_DETAIL);
+        } else {
+            Log.d(LOG_TAG, "View is null... isShowGuestDetailPending");
+            isShowGuestDetailPending = true;
+            guestDetailPendingId = id;
+        }
+
     }
 
     @Override
@@ -140,6 +177,17 @@ public class GuestPresenter implements GuestMVP.PresenterOps, GuestMVP.Requested
     public void onMapViewResume() {
         if (view != null) {
             view.get().onSetFabToMapViewStatus();
+        }
+    }
+
+    @Override
+    public void onGuestImageReceived(String photoSrc) {
+        if (view != null) {
+            view.get().onShowGuestPhoto(photoSrc);
+            photoSrcPending = null;
+        } else {
+            Log.d(LOG_TAG, "onGuestImageReceived: view null. photoSrcPending set to: " + photoSrc);
+            photoSrcPending = photoSrc;
         }
     }
 }

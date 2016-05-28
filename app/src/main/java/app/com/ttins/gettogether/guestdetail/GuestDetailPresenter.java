@@ -63,13 +63,15 @@ public class GuestDetailPresenter implements GuestDetailMVP.PresenterOps, GuestD
             view.get().onChangeGuestName(this.guestDataMap.get(GuestDetailLoader.Query.NAME));
             view.get().onChangePhoneNumber(this.guestDataMap.get(GuestDetailLoader.Query.PHONE_NUMBER));
             view.get().onChangeAddress(this.guestDataMap.get(GuestDetailLoader.Query.ADDRESS));
-
+            view.get().onChangeGuestPhoto(this.guestDataMap.get(GuestDetailLoader.Query.PHOTO_PATH));
 
             /*if (this.eventDataMap.get(EventDetailLoader.Query.CONFIRMATION_STATUS).compareTo(EVENT_STATUS_CONFIRMED) == 0) {
                 confirmButtonStatus = true;
             } else {
                 confirmButtonStatus = false;
             }*/
+        } else {
+            Log.d(LOG_TAG, "onGuestLoadFinished: View is null...");
         }
     }
 

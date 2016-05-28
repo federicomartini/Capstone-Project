@@ -17,15 +17,17 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
 
 public class GuestDetailView extends Fragment implements GuestDetailMVP.RequestedViewOps {
 
     private static final String LOG_TAG = GuestDetailView.class.getSimpleName();
 
-    public static final String FRAG_GUEST_ID_ARG = "FRAG_GUEST_ID_ARG ";
+    public static final String FRAG_GUEST_ID_ARG = "FRAG_GUEST_ID_ARG";
     public static final String FRAG_GUEST_NAME_ARG = "FRAG_GUEST_NAME_ARG";
     public static final String FRAG_PHONE_ARG = "FRAG_PHONE_ARG";
-    public static final String FRAG_ADDRESS_ARG = "FRAG_ADDRESS_ARG ";
+    public static final String FRAG_ADDRESS_ARG = "FRAG_ADDRESS_ARG";
+    public static final String FRAG_PHOTO_PATH_ARG = "FRAG_PHOTO_PATH_ARG";
 
     GuestDetailMVP.PresenterOps presenter;
     long guestId;
@@ -33,6 +35,7 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
     TextView phoneNumber;
     TextView address;
     ImageView mapImage;
+    String guestPhotoPath = null;
     Callback callback;
 
     public void onAttach(Context context) {
@@ -64,6 +67,10 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
         presenter.onAttachView(this);
         presenter.initLoader();
         callback.onGuestDetailViewResumed();
+        if (guestPhotoPath != null) {
+            Log.d(LOG_TAG, "onResume: Loading temporary photoSrc: " + guestPhotoPath);
+            callback.onShowPictureDetailViewToolbar(guestPhotoPath);
+        }
     }
 
     @Nullable
@@ -137,6 +144,7 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
         args.putString(FRAG_GUEST_NAME_ARG, guestName);
         args.putString(FRAG_PHONE_ARG, phoneNumber.getText().toString());
         args.putString(FRAG_ADDRESS_ARG, address.getText().toString());
+        args.putString(FRAG_PHOTO_PATH_ARG, guestPhotoPath);
 
         return args;
     }
@@ -147,9 +155,17 @@ public class GuestDetailView extends Fragment implements GuestDetailMVP.Requeste
         callback.onAddressForMap(address);
     }
 
+    @Override
+    public void onChangeGuestPhoto(String photoSrc) {
+        Log.d(LOG_TAG, "onChangeGuestPhoto: " + photoSrc);
+        callback.onShowPictureDetailViewToolbar(photoSrc);
+        guestPhotoPath = photoSrc;
+    }
+
     public interface Callback {
         void onChangeToolbarTitleToGuestName(String guestName);
         void onGuestDetailViewResumed();
         void onAddressForMap(String address);
+        void onShowPictureDetailViewToolbar(String photoSrc);
     }
 }

@@ -1,7 +1,9 @@
 package app.com.ttins.gettogether.common;
 
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,12 +15,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 import java.util.List;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.persistence.GuestStateMaintainer;
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
+import app.com.ttins.gettogether.common.utils.Permissions;
 import app.com.ttins.gettogether.guestdetail.GuestDetailView;
 import app.com.ttins.gettogether.guestedit.GuestEditView;
 import app.com.ttins.gettogether.guestlist.GuestListView;
@@ -37,8 +44,11 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    TextView guestName;
     FloatingActionButton fab;
+    ThreeTwoImageView guestImage;
     GuestMVP.PresenterOps presenter;
+    String photoGuestPathPermission = null;
     private final GuestStateMaintainer stateMaintainer =
             new GuestStateMaintainer( this.getSupportFragmentManager(), LOG_TAG );
 
@@ -72,6 +82,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     protected void onResume() {
         super.onResume();
         presenter.initFabStatus();
+        presenter.onAttachView(this);
     }
 
     @Override
@@ -82,6 +93,9 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         toolbar = (Toolbar) findViewById(R.id.toolbar_guest_activity);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout_guest_activity);
         fab = (FloatingActionButton) findViewById(R.id.fab_guest_add_guest_activity);
+        guestName = (TextView) findViewById(R.id.guest_name_text_view_guest_activity);
+        guestImage = (ThreeTwoImageView) findViewById(R.id.square_image_view_guest_view);
+
         setSupportActionBar(toolbar);
 
         startMVPOps();
@@ -119,7 +133,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
      */
     private void initialize(GuestMVP.RequestedViewOps view)
             throws InstantiationException, IllegalAccessException{
-        presenter = new GuestPresenter(view);
+        presenter = new GuestPresenter();
         GuestListView fragmentGuestListView = new GuestListView();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_content, fragmentGuestListView).commit();
         stateMaintainer.put(GuestMVP.PresenterOps.class.getSimpleName(), presenter);
@@ -144,6 +158,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     protected void onPause() {
         super.onPause();
+        presenter.onDetachView();
     }
 
     @Override
@@ -177,6 +192,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
 
     @Override
     public void onGuestItemClick(long id, String guestName) {
+        Log.d(LOG_TAG, "onGuestItemClick");
         presenter.onGuestItemClick(id);
     }
 
@@ -184,6 +200,7 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     public void onGuestListViewResume() {
         presenter.guestListViewResume();
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_activity));
+        guestImage.setImageBitmap(null);
         fab.setVisibility(View.VISIBLE);
     }
 
@@ -203,7 +220,9 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
 
     @Override
     public void onShowGuestListView() {
+        Log.d(LOG_TAG, "onShowGuestListView");
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_activity));
+        guestImage.setImageBitmap(null);
         GuestListView fragmentGuestListView = new GuestListView();
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction().
@@ -327,5 +346,57 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     public void onSetFabToMapViewStatus() {
         Log.d(LOG_TAG, "onSetFabToMapViewStatus");
         fab.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onShowPictureEditViewToolbar(String photoSrc) {
+        Log.d(LOG_TAG, "onShowPictureEditViewToolbar photoSrc: " + photoSrc);
+        presenter.onGuestImageReceived(photoSrc);
+    }
+
+    @Override
+    public void onShowGuestPhoto(String photoSrc) {
+        Log.d(LOG_TAG, "onShowGuestPhoto photoSrc: " + photoSrc);
+
+        if(Permissions.checkPermission(this)) {
+            if (guestImage != null) {
+                Log.d(LOG_TAG, "onShowGuestPhoto: Permission OK!");
+                Glide.with(this).load(photoSrc).into(guestImage);
+            } else {
+                Log.d(LOG_TAG, "guestImage is null");
+
+            }
+            photoGuestPathPermission = null;
+        } else {
+            photoGuestPathPermission = photoSrc;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(LOG_TAG, "onRequestPermissionsResult...");
+        switch(requestCode) {
+            case Permissions.MY_PERMISSIONS_REQUEST_MANAGE_DOCUMENTS:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(LOG_TAG, "Glide loading photo: " + photoGuestPathPermission);
+                    Glide.with(this).load(photoGuestPathPermission).into(guestImage);
+                } else {
+                    Log.d(LOG_TAG, "onRequestPermissionsResult: Permission denied");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    photoGuestPathPermission = null;
+                }
+                break;
+            default:
+                Log.d(LOG_TAG, "RequestCode unknown");
+                break;
+        }
+    }
+
+    @Override
+    public void onShowPictureDetailViewToolbar(String photoSrc) {
+        presenter.onGuestImageReceived(photoSrc);
     }
 }
