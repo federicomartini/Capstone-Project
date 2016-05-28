@@ -73,6 +73,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new EventEditPresenter(this);
+        setRetainInstance(true);
         setHasOptionsMenu(true);
     }
 
@@ -99,11 +100,16 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             this.placeName = null;
         }
 
-        if (toolbarPhotoPending != null) {
+        if (photoSrc != null) {
+            callback.onShowPictureEditViewToolbar(photoSrc);
+        } else if (toolbarPhotoPending != null) {
             Log.d(LOG_TAG, "onChangeEventPhoto call pending photo for Toolbar: " + toolbarPhotoPending);
+            Log.d(LOG_TAG, "onChangeEventPhoto photoSrc: " + photoSrc);
             callback.onShowPictureEditViewToolbar(toolbarPhotoPending);
             toolbarPhotoPending = null;
         }
+
+
     }
 
 
