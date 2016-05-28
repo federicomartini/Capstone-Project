@@ -70,6 +70,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     private static final String FRAGMENT_GUEST_HANDLER_VIEW_TAG = "FRAGMENT_GUEST_HANDLER_VIEW_TAG";
     private static final String FRAGMENT_PLACE_VIEW_TAG = "FRAGMENT_PLACE_VIEW_TAG";
 
+    public static final String EVENT_DETAIL = "app.com.ttins.gettogether.common.EventActivity.MATCH_DETAIL";
+
     private static final int MY_MANAGE_DOCUMENTS = 1;
 
     private EventMVP.PresenterOps presenter;
@@ -203,6 +205,15 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             Log.d(LOG_TAG, "setting pending Toolbar Photo " + toolbarPhotoUriPending);
             Glide
             toolbarPhotoUriPending = null;
+        }
+
+        Intent intent = getIntent();
+
+        if (intent.hasExtra(EVENT_DETAIL)) {
+            long eventId = intent.getLongExtra(EVENT_DETAIL, 0);
+            intent.removeExtra(EVENT_DETAIL);
+
+            onShowEventDetailView(eventId);
         }
     }
 
@@ -352,7 +363,6 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                 replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
                 .addToBackStack(null)
                 .commit();
-
     }
 
     @Override
