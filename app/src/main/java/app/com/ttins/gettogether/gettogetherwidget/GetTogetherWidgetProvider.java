@@ -33,9 +33,11 @@ public class GetTogetherWidgetProvider extends AppWidgetProvider {
     }
 
     public static void updateWidget(Context context) {
+        Log.d(LOG_TAG, "updateWidget request");
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, GetTogetherWidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.events_list_view_widget);
+
     }
 
     @Override
@@ -66,23 +68,14 @@ public class GetTogetherWidgetProvider extends AppWidgetProvider {
             eventDetailsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(eventDetailsIntent);
             Log.d(LOG_TAG, "Widget CLICK_ACTION");
-        } else if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE) ||
+        } else if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE) &&
                 intent.getAction().equals(EXTRA_REFRESH)) {
             Log.d(LOG_TAG, "Widget ACTION_APPWIDGET_UPDATE");
             final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             final ComponentName cn = new ComponentName(context, GetTogetherWidgetProvider.class);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(cn),
                     R.id.events_list_view_widget);
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.gettogether_widget_layout);
         }
-
-        final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        final ComponentName cn = new ComponentName(context, GetTogetherWidgetProvider.class);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(cn),
-                R.id.events_list_view_widget);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(cn);
-
-        onUpdate(context, appWidgetManager, appWidgetIds);
 
         Log.d(LOG_TAG, "onReceive");
     }

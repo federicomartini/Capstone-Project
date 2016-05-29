@@ -29,7 +29,7 @@ public class DateTimeFormat {
             return "";
         }
 
-        return String.format(Locale.getDefault(), "%s:%s", hours, minutes);
+        return String.format(Locale.getDefault(), "%02d:%02d", Integer.parseInt(hours), Integer.parseInt(minutes));
     }
 
     public static int getHoursFromTime(String time) {

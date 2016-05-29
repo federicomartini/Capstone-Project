@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -47,18 +48,17 @@ public class GetTogetherWidgetService extends RemoteViewsService{
         Context context;
 
         public GetTogetherRemoveViewsFactory(Context context, Intent intent) {
+            Log.d(LOG_TAG, "GetTogetherRemoveViewsFactory constructor");
             this.context = context;
         }
-
-
-
 
         @Override
         public void onCreate() {
             //AsyncTaskQuery asyncTaskQuery = new AsyncTaskQuery();
             //asyncTaskQuery.execute();
+            Log.d(LOG_TAG, "GetTogetherRemoveViewsFactory onCreate");
 
-            Cursor cursor = getContentResolver().query(GetTogetherContract.Events.buildEventsUri(),
+            /*Cursor cursor = getContentResolver().query(GetTogetherContract.Events.buildEventsUri(),
                     null,
                     null,
                     null,
@@ -94,7 +94,7 @@ public class GetTogetherWidgetService extends RemoteViewsService{
                     }
                 }
                 cursor.close();
-            }
+            }*/
 
             Log.d(LOG_TAG, "Widget data updated");
         }
@@ -146,6 +146,7 @@ public class GetTogetherWidgetService extends RemoteViewsService{
 
         @Override
         public int getCount() {
+            Log.d(LOG_TAG, "getCount = " + events.size());
             return events.size();
         }
 
@@ -156,7 +157,7 @@ public class GetTogetherWidgetService extends RemoteViewsService{
 
         @Override
         public RemoteViews getViewAt(final int position) {
-            Log.d(LOG_TAG, "getViewAt: " + position);
+            Log.d(LOG_TAG, "updateWidget getViewAt: " + position);
             RemoteViews remote = new RemoteViews(context.getPackageName(), R.layout.gettogether_widget_item_layout);
             remote.setTextViewText(R.id.event_title_text_view_widget_item_layout, events.get(position).getEventTitle());
             remote.setTextViewText(R.id.date_text_view_widget_item_layout, events.get(position).getEventDate());
@@ -206,6 +207,52 @@ public class GetTogetherWidgetService extends RemoteViewsService{
 
         @Override
         public void onDataSetChanged() {
+            Log.d(LOG_TAG, "onDataSetChanged");
+
+            final long token = Binder.clearCallingIdentity();
+            try {
+                Cursor cursor = getContentResolver().query(GetTogetherContract.Events.buildEventsUri(),
+                        null,
+                        null,
+                        null,
+                        null);
+
+                if (cursor != null) {
+                    if(cursor.moveToFirst()) {
+                        events.clear();
+                        while(!cursor.isAfterLast()) {
+                            Event event = new Event();
+
+                            event.setEventId((long) cursor.getInt(cursor.getColumnIndex(GetTogetherContract.Events._ID)));
+
+                            String date = DateTimeFormat.convertDate(cursor.getString(cursor.getColumnIndex(GetTogetherContract.Events.EVENT_DAY)),
+                                    cursor.getString(cursor.getColumnIndex(GetTogetherContract.Events.EVENT_MONTH)),
+                                    cursor.getString(cursor.getColumnIndex(GetTogetherContract.Events.EVENT_YEAR)));
+
+                            event.setEventDate(date);
+
+                            String time = DateTimeFormat.convertTime(cursor.getString(cursor.getColumnIndex(GetTogetherContract.Events.START_TIME_HOUR)),
+                                    cursor.getString(cursor.getColumnIndex(GetTogetherContract.Events.START_TIME_MINUTE)));
+
+                            event.setEventTime(time);
+
+                            event.setEventTitle(cursor.getString(cursor.getColumnIndex(GetTogetherContract.Events.TITLE)));
+
+                            event.setEventPhotoPath(cursor.getString(cursor.getColumnIndex(GetTogetherContract.Events.PHOTO_PATH)));
+
+
+                            Log.d(LOG_TAG, "ID = " + event.getEventId() + "Title = " + event.getEventTitle() + " - Date = " + event.getEventDate() + " - Time = " + event.getEventTime());
+                            events.add(event);
+
+                            cursor.moveToNext();
+                        }
+                    }
+                    cursor.close();
+                }
+
+            } finally {
+                Binder.restoreCallingIdentity(token);
+            }
 
         }
 

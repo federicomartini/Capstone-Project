@@ -4,6 +4,8 @@ package app.com.ttins.gettogether.common;
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -216,7 +218,18 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             onShowEventDetailView(eventId);
         }
 
+        //broadcastForWidget();
         GetTogetherWidgetProvider.updateWidget(this);
+    }
+
+    private void broadcastForWidget() {
+        Intent updateIntent = new Intent(this, GetTogetherWidgetProvider.class);
+        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+        // since it seems the onUpdate() is only fired on that:
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), GetTogetherWidgetProvider.class));
+        updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(updateIntent);
     }
 
     @Override
@@ -343,13 +356,13 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onEventSaved() {
-        GetTogetherWidgetProvider.updateWidget(this);
+        GetTogetherWidgetProvider.updateWidget(getApplicationContext());
         presenter.onEventDataSaved();
     }
 
     @Override
     public void onEventEdited(long id) {
-        GetTogetherWidgetProvider.updateWidget(this);
+        GetTogetherWidgetProvider.updateWidget(getApplicationContext());
         presenter.onEventDataEdited(id);
     }
 
