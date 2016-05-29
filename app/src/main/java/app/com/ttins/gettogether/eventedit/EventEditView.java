@@ -26,6 +26,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.mikhaellopez.circularimageview.CircularImageView;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -56,7 +59,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @BindView(R.id.start_time_text_view_event_detail_view) Button startTime;
     @BindView(R.id.date_start_text_view_event_edit_view) Button startDate;
     @BindView(R.id.note_text_view_event_edit_view) EditText note;
-    @BindView(R.id.image_icon_image_view) ImageView eventPhoto;
+    @BindView(R.id.image_icon_image_view) CircularImageView eventPhoto;
     @BindView(R.id.square_image_view_event_view)
         ThreeTwoImageView toolBarImage;
 
@@ -102,10 +105,12 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
 
         if (photoSrc != null) {
             callback.onShowPictureEditViewToolbar(photoSrc);
+            Glide.with(this).load(photoSrc).into(eventPhoto);
         } else if (toolbarPhotoPending != null) {
             Log.d(LOG_TAG, "onChangeEventPhoto call pending photo for Toolbar: " + toolbarPhotoPending);
             Log.d(LOG_TAG, "onChangeEventPhoto photoSrc: " + photoSrc);
             callback.onShowPictureEditViewToolbar(toolbarPhotoPending);
+            Glide.with(this).load(toolbarPhotoPending).into(eventPhoto);
             toolbarPhotoPending = null;
         }
 
@@ -433,6 +438,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
                         Log.d(LOG_TAG, "onActivityResult.photoSrc = " + photoSrc);
                         toolbarPhotoPending = null;
                         callback.onShowPictureEditViewToolbar(photoSrc);
+                        Glide.with(this).load(photoSrc).into(eventPhoto);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -452,6 +458,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         if (toolBarImage != null) {
             Log.d(LOG_TAG, "onChangeEventPhoto photo: " + photoUri);
             callback.onShowPictureEditViewToolbar(photoUri);
+            Glide.with(this).load(toolbarPhotoPending).into(eventPhoto);
         } else {
             Log.d(LOG_TAG, "onChangeEventPhoto view is null. toolbarPhotoPending: " + photoUri);
             toolbarPhotoPending = photoUri;

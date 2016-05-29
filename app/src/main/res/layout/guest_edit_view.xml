@@ -44,19 +44,23 @@
             android:text="@string/gender_label_guest_edit_view"
             android:padding="@dimen/medium_margin_material_design" /-->
 
-        <app.com.ttins.gettogether.common.ui.ThreeTwoImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/image_view_guest_edit_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="8dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="1"
+            app:civ_shadow_color="@color/cardview_shadow_end_color"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:contentDescription="@string/guest_photo_icon_content_description"
             app:layout_row="0"
-            app:layout_rowSpan="3"
+            app:layout_rowSpan="6"
             app:layout_column="2"
-            app:layout_gravity="center_horizontal"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_person_black_36dp"
-            android:fitsSystemWindows="true"
-            android:adjustViewBounds="true"
+            app:layout_gravity="top|end"
+            android:src="@drawable/ic_photo_camera_white_48dp"
+            android:background="@color/background_white"
+            android:tint="@color/colorPrimary"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design"/>
 
@@ -103,6 +107,7 @@
             app:layout_row="3"
             app:layout_column="0"
             android:src="@drawable/ic_phone_black_36dp"
+            android:tint="@color/colorPrimary"
             android:padding="@dimen/medium_margin_material_design"
             android:layout_marginBottom="@dimen/large_margin_material_design"/>
 
@@ -136,6 +141,7 @@
             android:contentDescription="@string/guest_address_icon_content_description"
             app:layout_row="5"
             app:layout_column="0"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_map_black_36dp"
 />
 

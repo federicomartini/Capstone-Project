@@ -14,13 +14,16 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.IOException;
 
@@ -43,7 +46,7 @@ public class GuestEditView extends Fragment implements GuestEditMVP.RequestedVie
     Callback callback;
     long id;
     boolean isNewGuest;
-    ThreeTwoImageView guestImage;
+    CircularImageView guestImage;
 
 
     @Override
@@ -100,6 +103,9 @@ public class GuestEditView extends Fragment implements GuestEditMVP.RequestedVie
         callback.onGuestEditViewResumed();
         if (this.photoSrc != null) {
             Log.d(LOG_TAG, "onResume onShowPictureEditViewToolbar: " + this.photoSrc);
+            Glide.with(this)
+                    .load(photoSrc)
+                    .into(guestImage);
             callback.onShowPictureEditViewToolbar(this.photoSrc);
         } else {
             Log.d(LOG_TAG, "onResume photoSrc is null...");
@@ -119,7 +125,7 @@ public class GuestEditView extends Fragment implements GuestEditMVP.RequestedVie
         guestName = (TextView) root.findViewById(R.id.guest_name_edit_text_guest_edit_view);
         phoneNumber = (TextView) root.findViewById(R.id.phone_edit_text_guest_edit_view);
         address = (TextView) root.findViewById(R.id.address_edit_text_guest_edit_view);
-        guestImage = (ThreeTwoImageView) root.findViewById(R.id.image_view_guest_edit_view);
+        guestImage = (CircularImageView) root.findViewById(R.id.image_view_guest_edit_view);
 
         loadArguments(getArguments());
 
@@ -234,6 +240,9 @@ public class GuestEditView extends Fragment implements GuestEditMVP.RequestedVie
                         Log.d(LOG_TAG, "onShowPictureEditViewToolbar onActivityResult.photoSrc = " + photoSrc);
                         //toolbarPhotoPending = null;
                         //callback.onShowPictureEditViewToolbar(photoSrc);
+                        Glide.with(this)
+                                .load(photoSrc)
+                                .into(guestImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

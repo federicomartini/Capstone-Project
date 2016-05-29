@@ -28,7 +28,9 @@
             android:layout_height="wrap_content"
             app:layout_row="0"
             app:layout_column="3"
-            app:layout_gravity="center_horizontal"
+            app:layout_gravity="top|end"
+            android:paddingStart="52dp"
+            android:paddingEnd="52dp"
             android:text="@string/image_label_event_edit_view"
             android:padding="@dimen/medium_margin_material_design" />
 
@@ -41,6 +43,7 @@
             app:layout_row="1"
             app:layout_column="0"
             android:src="@drawable/ic_title_black_36dp"
+            android:tint="@color/colorPrimary"
             android:padding="@dimen/medium_margin_material_design" />
 
         <EditText
@@ -55,15 +58,24 @@
             android:layout_marginBottom="@dimen/medium_margin_material_design"
             app:layout_gravity="bottom"/>
 
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/image_icon_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="4dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="1"
+            app:civ_shadow_color="@color/cardview_shadow_end_color"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:contentDescription="@string/event_image_icon_content_description"
             app:layout_row="1"
             app:layout_column="3"
-            app:layout_gravity="center"
-            android:src="@drawable/ic_image_black_36dp" />
+            app:layout_rowSpan="4"
+            app:layout_gravity="top|end"
+            android:tint="@color/colorPrimary"
+            android:layout_marginStart="@dimen/large_margin_material_design"
+            android:layout_marginEnd="@dimen/large_margin_material_design"
+            android:src="@drawable/ic_photo_camera_white_48dp" />
 
         <!-- ##################### Row 2 ##################### -->
 
@@ -85,6 +97,7 @@
             android:contentDescription="@string/event_location_icon_content_description"
             app:layout_row="3"
             app:layout_column="0"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_location_on_black_36dp"
             android:padding="@dimen/medium_margin_material_design" />
 
@@ -94,7 +107,6 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             app:layout_row="3"
-            android:focusable="false"
             app:layout_column="1"
             android:background="@color/background_white"
             android:hint="@string/hint_place_button_event_edit_view"
@@ -122,6 +134,7 @@
             android:contentDescription="@string/event_meet_location_icon_content_description"
             app:layout_row="5"
             app:layout_column="0"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_map_black_36dp"
             android:padding="@dimen/medium_margin_material_design" />
 
@@ -155,6 +168,7 @@
             android:contentDescription="@string/event_date_location_icon_content_description"
             app:layout_row="7"
             app:layout_column="0"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_date_range_black_36dp"
             android:padding="@dimen/medium_margin_material_design" />
 
@@ -192,6 +206,7 @@
             android:contentDescription="@string/event_time_icon_content_description"
             app:layout_row="9"
             app:layout_column="0"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_access_time_black_36dp"
             android:padding="@dimen/medium_margin_material_design" />
 
@@ -229,6 +244,7 @@
             android:contentDescription="@string/phone_icon_content_description"
             app:layout_row="11"
             app:layout_column="0"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_phone_black_36dp"
             android:padding="@dimen/medium_margin_material_design" />
 
@@ -263,6 +279,7 @@
             android:contentDescription="@string/event_notes_icon_content_description"
             app:layout_row="13"
             app:layout_column="0"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_note_black_36dp"
             android:padding="@dimen/medium_margin_material_design" />
 

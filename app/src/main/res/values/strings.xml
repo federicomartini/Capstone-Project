@@ -23,7 +23,7 @@
     <string name="toolbar_image_protection_content_description">Toolbar Image Protection</string>
 
     <!-- ########## Event Edit View Labels ########## -->
-    <string name="image_label_event_edit_view">Image</string>
+    <string name="image_label_event_edit_view">Preview</string>
     <string name="event_title_label_event_edit_view">Event Title</string>
     <string name="event_type_label_event_edit_view">Type</string>
     <string name="location_label_event_edit_view">Location</string>
