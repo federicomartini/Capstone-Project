@@ -118,7 +118,6 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         Log.d(LOG_TAG, "onPrepareOptionsMenu");
         menu.findItem(R.id.guest_item_menu).setVisible(false);
         menu.findItem(R.id.event_edit_item_menu).setVisible(false);
-        menu.findItem(R.id.action_settings).setVisible(false);
     }
 
     @Override

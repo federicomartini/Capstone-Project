@@ -1,5 +1,7 @@
 package app.com.ttins.gettogether.common;
 
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
+
 public interface EventMVP {
 
     interface PresenterOps {

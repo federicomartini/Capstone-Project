@@ -4,12 +4,6 @@
     tools:context=".common.MainActivity">
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/event_edit_item_menu"
         android:orderInCategory="4"
         android:icon="@drawable/ic_mode_edit_white_24dp"

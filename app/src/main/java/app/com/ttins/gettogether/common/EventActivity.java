@@ -2,6 +2,7 @@ package app.com.ttins.gettogether.common;
 
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -254,8 +255,6 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.action_settings:
-                break;
             case R.id.guest_item_menu:
                 presenter.guestMenuItemClick();
                 break;
@@ -303,7 +302,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         EventEditView fragmentEventEditView = new EventEditView();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG)
-                //.addToBackStack(null)
+                .addToBackStack(null)
                 .commit();
 
     }
@@ -378,6 +377,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         fragmentEventDetailView.setArguments(args);
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
+
                 .addToBackStack(null)
                 .commit();
     }

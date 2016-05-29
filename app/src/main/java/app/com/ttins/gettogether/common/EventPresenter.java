@@ -4,6 +4,8 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
+
 public class EventPresenter implements EventMVP.PresenterOps, EventMVP.RequestedPresenterOps {
 
     private static final String LOG_TAG = EventPresenter.class.getSimpleName();

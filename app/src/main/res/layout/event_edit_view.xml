@@ -153,8 +153,7 @@
         <EditText
             android:id="@+id/date_start_text_view_event_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:focusable="false"
-            android:inputType="datetime"
+            android:inputType="none"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             app:layout_row="7"
@@ -187,12 +186,11 @@
         <EditText
             android:id="@+id/time_start_text_view_event_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:inputType="datetime"
+            android:inputType="none"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             app:layout_row="9"
             app:layout_column="1"
-            android:focusable="false"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design"
             android:layout_marginBottom="@dimen/medium_margin_material_design"

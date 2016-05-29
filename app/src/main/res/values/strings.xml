@@ -46,6 +46,7 @@
     <string name="null_field">-</string>
     <string name="no_guests">No Guests</string>
     <string name="notes_label_detail_text_view">Notes</string>
+    <string name="transition_image">transition_image</string>
 
     <!-- ########## Map ########## -->
     <string name="default_map_address">Mountain View</string>

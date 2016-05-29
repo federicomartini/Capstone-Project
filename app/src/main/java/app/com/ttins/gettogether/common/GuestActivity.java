@@ -67,8 +67,6 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.action_settings:
-                break;
             case R.id.guest_item_menu:
                 //presenter.guestMenuItemClick();
                 break;
