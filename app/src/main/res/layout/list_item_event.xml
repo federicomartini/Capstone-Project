@@ -23,12 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:transitionName="@string/transition_image"
+            android:contentDescription="@string/toolbar_image_content_description"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/toolbar_image_protection_content_description"
             android:background="@drawable/photo_background_protection"/>
 
         <LinearLayout

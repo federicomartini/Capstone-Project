@@ -18,6 +18,10 @@
 
     <!-- ########## Event List Overflow Menu ########## -->
 
+    <!-- ########## Event Activity ########## -->
+    <string name="toolbar_image_content_description">Toolbar Image</string>
+    <string name="toolbar_image_protection_content_description">Toolbar Image Protection</string>
+
     <!-- ########## Event Edit View Labels ########## -->
     <string name="image_label_event_edit_view">Image</string>
     <string name="event_title_label_event_edit_view">Event Title</string>
@@ -31,12 +35,22 @@
     <string name="phone_label_event_edit_view">Phone</string>
     <string name="note_label_event_edit_view">Note</string>
     <string name="empty_note_text_event_edit_view">No details</string>
+    <string name="map_icon_content_description">Map Icon</string>
+    <string name="event_time_icon_content_description">Event Time Icon</string>
+    <string name="event_date_location_icon_content_description">Event Date Icon</string>
+    <string name="event_meet_location_icon_content_description">Event Meet Location Icon</string>
+    <string name="phone_icon_content_description">Phone Number Icon</string>
+    <string name="guest_list_icon_content_description">Guest List Icon</string>
+    <string name="event_notes_icon_content_description">Event Notes Icon</string>
 
     <!-- ########## Event Edit View Labels ########## -->
     <string name="guest_name_label_guest_edit_view">Guest name</string>
     <string name="gender_label_guest_edit_view">Gender</string>
     <string name="phone_label_guest_edit_view">Phone Number</string>
     <string name="address_label_guest_edit_view">Address</string>
+    <string name="event_title_icon_content_description">Event Title Icon</string>
+    <string name="event_image_icon_content_description">Event Image Selection Icon</string>
+    <string name="event_location_icon_content_description">Event Location Icon</string>
 
     <!-- ########## Transitions ########## -->
     <string name="event_transition_image">Event Transition Image</string>
@@ -47,6 +61,12 @@
     <string name="no_guests">No Guests</string>
     <string name="notes_label_detail_text_view">Notes</string>
     <string name="transition_image">transition_image</string>
+
+    <!-- ########## Guest Details ########## -->
+    <string name="guest_phone_icon_content_description">Guest Phone Number Icon</string>
+    <string name="guest_address_icon_content_description">Guest Address Icon</string>
+    <string name="guest_google_map_icon_content_description">Guest Google Map Position Icon</string>
+    <string name="guest_photo_icon_content_description">Guest Photo Icon</string>
 
     <!-- ########## Map ########## -->
     <string name="default_map_address">Mountain View</string>
