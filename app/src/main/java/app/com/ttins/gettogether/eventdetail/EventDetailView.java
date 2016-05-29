@@ -24,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mikhaellopez.circularimageview.CircularImageView;
+
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.gson.Guest;
 import app.com.ttins.gettogether.common.gson.Guests;
@@ -56,7 +58,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout itemLayout;
-        public ThreeTwoImageView guestPhoto;
+        public CircularImageView guestPhoto;
         public TextView guestName;
         public TextView note;
 
@@ -66,7 +68,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
             itemLayout = (LinearLayout) view.findViewById(R.id.guest_list_item_event_detail_view);
             guestName = (TextView) view.findViewById(R.id.guest_list_name_text_view_event_detail_view);
             note = (TextView) view.findViewById(R.id.guest_note_list_text_view_event_detail_view);
-            guestPhoto = (ThreeTwoImageView) view.findViewById(R.id.event_guest_item_event_detail_view);
+            guestPhoto = (CircularImageView) view.findViewById(R.id.event_guest_item_event_detail_view);
         }
     }
 

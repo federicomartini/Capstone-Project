@@ -21,6 +21,7 @@
                 android:contentDescription="@string/map_icon_content_description"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
+                android:tint="@color/colorPrimary"
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
@@ -51,6 +52,7 @@
                 android:src="@drawable/ic_date_range_black_36dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
+                android:tint="@color/colorPrimary"
                 android:padding="@dimen/medium_margin_material_design"/>
 
         </RelativeLayout>
@@ -68,6 +70,7 @@
                 android:src="@drawable/ic_location_on_black_36dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
+                android:tint="@color/colorPrimary"
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
@@ -98,6 +101,7 @@
                 android:src="@drawable/ic_access_time_black_36dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
+                android:tint="@color/colorPrimary"
                 android:padding="@dimen/medium_margin_material_design"/>
 
         </RelativeLayout>
@@ -115,6 +119,7 @@
                 android:contentDescription="@string/phone_icon_content_description"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
+                android:tint="@color/colorPrimary"
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
@@ -146,51 +151,41 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/guest_list_icon_content_description"
                 android:src="@drawable/ic_person_black_36dp"
-                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
+                android:tint="@color/colorPrimary"
                 android:padding="@dimen/medium_margin_material_design"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/SingleLineTextView"
-                android:text="@string/guest_list_item_menu"
-                android:layout_toEndOf="@+id/guest_book_image_event_detail_view"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/medium_margin_material_design"/>
-
-        </RelativeLayout>
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@id/guest_book_image_event_detail_view">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view_guests_event_detail_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:paddingLeft="@dimen/medium_margin_material_design"
-                    android:paddingRight="@dimen/medium_margin_material_design"
+                    android:layout_gravity="bottom"
+                    android:paddingEnd="@dimen/medium_margin_material_design"
                     android:scrollbarStyle="insideOverlay" />
 
                 <TextView
                     android:id="@+id/empty_guest_list_text_view_event_detail_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:visibility="gone"
-                    android:text="@string/no_data_available" />
+                    android:layout_gravity="center_vertical"
+                    android:paddingTop="@dimen/large_margin_material_design"
+                    android:paddingStart="@dimen/medium_margin_material_design"
+                    android:paddingEnd="@dimen/large_margin_material_design"
+                    android:text="@string/no_guests" />
 
             </FrameLayout>
 
-        </android.support.v4.widget.NestedScrollView>
-
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -203,34 +198,23 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/event_notes_icon_content_description"
                 android:src="@drawable/ic_note_black_36dp"
-                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
+                android:tint="@color/colorPrimary"
                 android:padding="@dimen/medium_margin_material_design"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notes_label_detail_text_view"
-                android:layout_toEndOf="@+id/note_image_event_detail_view"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/medium_margin_material_design"/>
-
-        </RelativeLayout>
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2">
 
             <TextView
                 android:id="@+id/note_text_view_event_detail_view"
-                style="@style/SingleLineTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/medium_margin_material_design"/>
+                android:text="Prova"
+                android:paddingTop="@dimen/medium_margin_material_design"
+                android:layout_margin="@dimen/medium_margin_material_design"
+                android:paddingStart="@dimen/start_margin_notes_detail_view"
+                android:paddingEnd="@dimen/medium_margin_material_design"/>
 
+        </RelativeLayout>
 
-        </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
 

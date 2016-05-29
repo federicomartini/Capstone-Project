@@ -28,4 +28,8 @@
     <integer name="event_list_column_count">2</integer>
     <integer name="guest_list_column_count">2</integer>
 
+    <dimen name="icon_size_18dp">18dp</dimen>
+    <dimen name="icon_size_36dp">50dp</dimen>
+    <dimen name="start_margin_notes_detail_view">52dp</dimen>
+
 </resources>

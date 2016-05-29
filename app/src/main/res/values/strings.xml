@@ -51,6 +51,9 @@
     <string name="event_title_icon_content_description">Event Title Icon</string>
     <string name="event_image_icon_content_description">Event Image Selection Icon</string>
     <string name="event_location_icon_content_description">Event Location Icon</string>
+    <string name="hint_date_button_event_edit_view">Click to select a date</string>
+    <string name="hint_time_button_event_edit_view">Click to select a time</string>
+    <string name="hint_place_button_event_edit_view">Click to select a place</string>
 
     <!-- ########## Transitions ########## -->
     <string name="event_transition_image">Event Transition Image</string>

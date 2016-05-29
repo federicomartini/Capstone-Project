@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -49,11 +50,11 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     private static final int SELECT_IMAGE_REQ_CODE = 1;
 
     @BindView(R.id.event_title_edit_text_event_edit_view) EditText eventTitle;
-    @BindView(R.id.location_edit_text_event_edit_view) EditText location;
+    @BindView(R.id.location_edit_text_event_edit_view) Button location;
     @BindView(R.id.meeting_location_edit_text_event_edit_view) EditText meetingLocation;
     @BindView(R.id.phone_edit_text_event_edit_view) EditText phone;
-    @BindView(R.id.start_time_text_view_event_detail_view) EditText startTime;
-    @BindView(R.id.date_start_text_view_event_edit_view) EditText startDate;
+    @BindView(R.id.start_time_text_view_event_detail_view) Button startTime;
+    @BindView(R.id.date_start_text_view_event_edit_view) Button startDate;
     @BindView(R.id.note_text_view_event_edit_view) EditText note;
     @BindView(R.id.image_icon_image_view) ImageView eventPhoto;
     @BindView(R.id.square_image_view_event_view)
