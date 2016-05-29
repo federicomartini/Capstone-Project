@@ -17,7 +17,7 @@ public interface EventDetailMVP {
         void onPopulateDetailView(long id);
         void initLoader();
         void onEditItemClick();
-        void onEventAddGuestReceived(long id);
+        void onEventAddGuestReceived(long id, String name, String photoPath);
         void onEventRemoveGuestReceived(long id);
         void onAttachContext(Context context);
         void onDetachContext();

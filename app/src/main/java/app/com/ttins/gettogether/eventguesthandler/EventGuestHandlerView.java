@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import app.com.ttins.gettogether.R;
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
 import app.com.ttins.gettogether.eventguesthandler.adapter.EventGuestHandlerRecyclerViewAdapter;
 
 public class EventGuestHandlerView extends Fragment implements EventGuestHandlerMVP.RequestedViewOps {
@@ -36,16 +37,17 @@ public class EventGuestHandlerView extends Fragment implements EventGuestHandler
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout itemLayout;
-        public ImageView guestPhoto;
+        public ThreeTwoImageView guestPhoto;
         public TextView guestName;
         public long id;
+        public String photoPath;
 
 
         public ViewHolder(View view) {
             super(view);
 
             itemLayout = (LinearLayout) view.findViewById(R.id.guest_item_event_guest_handler);
-            guestPhoto = (ImageView) view.findViewById(R.id.photo_image_view_event_guest_handler);
+            guestPhoto = (ThreeTwoImageView) view.findViewById(R.id.photo_image_view_event_guest_handler);
             guestName = (TextView) view.findViewById(R.id.guest_name_text_view_event_guest_handler);
         }
     }
@@ -120,12 +122,14 @@ public class EventGuestHandlerView extends Fragment implements EventGuestHandler
     @Override
     public void onLoadResults(Cursor cursor) {
         if (eventGuestHandlerRecyclerViewAdapter == null) {
-            eventGuestHandlerRecyclerViewAdapter = new EventGuestHandlerRecyclerViewAdapter(cursor,
+            eventGuestHandlerRecyclerViewAdapter = new EventGuestHandlerRecyclerViewAdapter(
+                    getActivity(),
+                    cursor,
                     new EventGuestHandlerRecyclerViewAdapter.OnItemClickListener() {
                                 @Override
-                                public void onItemClick(long id) {
+                                public void onItemClick(long id, String name, String photoPath) {
                                     Log.d(LOG_TAG, "onItemClick Received by View");
-                                    callback.onEventGuestHandlerAddRequest(id);
+                                    callback.onEventGuestHandlerAddRequest(id, name, photoPath);
                                 }
                             });
         }
@@ -158,6 +162,6 @@ public class EventGuestHandlerView extends Fragment implements EventGuestHandler
 
     public interface Callback {
         void onEventGuestHandlerResumed();
-        void onEventGuestHandlerAddRequest(long id);
+        void onEventGuestHandlerAddRequest(long id, String name, String photoPath);
     }
 }

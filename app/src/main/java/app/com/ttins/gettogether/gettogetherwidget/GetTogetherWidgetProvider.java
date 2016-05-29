@@ -68,7 +68,7 @@ public class GetTogetherWidgetProvider extends AppWidgetProvider {
             eventDetailsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(eventDetailsIntent);
             Log.d(LOG_TAG, "Widget CLICK_ACTION");
-        } else if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE) &&
+        } else if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE) ||
                 intent.getAction().equals(EXTRA_REFRESH)) {
             Log.d(LOG_TAG, "Widget ACTION_APPWIDGET_UPDATE");
             final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

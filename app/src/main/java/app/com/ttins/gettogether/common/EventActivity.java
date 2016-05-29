@@ -22,6 +22,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -176,8 +177,11 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             throws InstantiationException, IllegalAccessException{
         presenter = new EventPresenter(view);
         EventListView fragmentEventListView = new EventListView();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
         stateMaintainer.put(EventMVP.PresenterOps.class.getSimpleName(), presenter);
     }
 
@@ -300,8 +304,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         Log.d(LOG_TAG, "onShowEventEditView");
         collapsingToolbarLayout.setTitle("Edit Event");
         EventEditView fragmentEventEditView = new EventEditView();
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG)
+        getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG)
                 .addToBackStack(null)
                 .commit();
 
@@ -315,7 +320,11 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         for (Fragment fragment:fragments) {
             if (fragment != null) {
                 Log.d(LOG_TAG, "Fragment " + fragment.getTag() + " removed");
-                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .remove(fragment)
+                        .commit();
             }
         }
 
@@ -324,8 +333,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
         EventListView fragmentEventListView = new EventListView();
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG)
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG)
                 .commit();
 
         Log.d(LOG_TAG, "Setting toolbar Image to null");
@@ -394,8 +405,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         args.putLong("FRAG_EVENT_DETAIL_EVENT_ID", id);
 
         fragmentEventDetailView.setArguments(args);
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
+        getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
                 .commit();
     }
 
@@ -422,8 +434,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         args.putLong(EventEditView.FRAG_EVENT_EDIT_DETAIL_VIEW_ID_ARG, id);
         EventEditView fragmentEventEditView = new EventEditView ();
         fragmentEventEditView.setArguments(args);
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventEditView , FRAGMENT_EDIT_VIEW_TAG)
+        getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment_content, fragmentEventEditView , FRAGMENT_EDIT_VIEW_TAG)
                 .addToBackStack(null)
                 .commit();
 
@@ -445,8 +458,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
             Log.d(LOG_TAG, "onShowGuestHandlerView");
             EventGuestHandlerView fragmentEventGuestHandlerView = new EventGuestHandlerView();
 
-            getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_content, fragmentEventGuestHandlerView,
+            getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .replace(R.id.fragment_content, fragmentEventGuestHandlerView,
                             FRAGMENT_GUEST_HANDLER_VIEW_TAG)
                     .addToBackStack(null)
                     .commit();
@@ -469,14 +483,14 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     }
 
     @Override
-    public void onEventGuestHandlerAddRequest(long id) {
+    public void onEventGuestHandlerAddRequest(long id, String name, String photoPath) {
         Log.d(LOG_TAG, "onEventGuestHandlerAddRequest");
         EventDetailView fragmentEventDetailView = (EventDetailView) getSupportFragmentManager()
                 .findFragmentByTag(FRAGMENT_DETAIL_VIEW_TAG);
 
         getSupportFragmentManager().popBackStack();
 
-        fragmentEventDetailView.setGuestIdToAddOnList(id);
+        fragmentEventDetailView.setGuestIdToAddOnList(id, name, photoPath);
     }
 
 
@@ -530,6 +544,7 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         }
 
         getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_content, eventSetPlaceView, FRAGMENT_PLACE_VIEW_TAG)
                 .addToBackStack(null)
                 .commit();
@@ -584,7 +599,9 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                 .findFragmentByTag(FRAGMENT_PLACE_VIEW_TAG);
 
         if (eventSetPlaceView != null) {
-            getSupportFragmentManager().beginTransaction().remove(eventSetPlaceView).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .remove(eventSetPlaceView).commit();
         }
 
     }

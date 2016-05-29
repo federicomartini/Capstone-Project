@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="4"
         android:background="@color/colorPrimary"
         android:textColor="@color/colorTextIcons"
         android:text="@string/app_name"
@@ -21,14 +21,14 @@
         android:id="@+id/events_list_view_widget"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="14"
         android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/empty_events_list_view_widget"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="14"
         android:text="@string/no_data_available"/>
 
 </LinearLayout>

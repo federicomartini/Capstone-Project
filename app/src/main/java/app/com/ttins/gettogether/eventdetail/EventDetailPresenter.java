@@ -43,6 +43,7 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     LoaderManager.LoaderCallbacks<Cursor> loader;
     int loaderId;
     long addGuestId;
+    String addGuestname, addGuestPhotoPath;
     boolean pendingShowView = false;
     HashMap<Integer, String> pendingEventDetailMap;
     Guests pendingGuests;
@@ -189,10 +190,12 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     }
 
     @Override
-    public void onEventAddGuestReceived(long id) {
-        Log.d(LOG_TAG, "onEventAddGuestReceived: ID = " + id);
+    public void onEventAddGuestReceived(long id, String name, String photoPath) {
+        Log.d(LOG_TAG, "onEventAddGuestReceived: ID = " + id + " - name = " + name + " - photoPath = " + photoPath);
         model.onEventAddGuestReceived(id);
         addGuestId = id;
+        addGuestname = name;
+        addGuestPhotoPath = photoPath;
     }
 
     @Override
@@ -338,7 +341,13 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
                 if (listOfGuest == null) {
                     listOfGuest = new ArrayList<>();
                 }
-                listOfGuest.add(new Guest(addGuestId, ""));
+
+                Guest guest = new Guest();
+                guest.setId(addGuestId);
+                guest.setName(addGuestname);
+                guest.setPhotoPath(addGuestPhotoPath);
+
+                listOfGuest.add(guest);
                 String idJsonList = gson.toJson(listOfGuest);
 
                 model.onUpdateGuestList(idJsonList);
@@ -354,8 +363,6 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
             model.onGetDataForView(guests);
             localGuestList = guests;
         }
-
-
 
         addGuestId = GUEST_ID_NULL;
     }

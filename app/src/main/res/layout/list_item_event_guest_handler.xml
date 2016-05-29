@@ -6,12 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="80dp">
 
-    <ImageView
+    <app.com.ttins.gettogether.common.ui.ThreeTwoImageView
         android:id="@+id/photo_image_view_event_guest_handler"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_access_time_black_36dp"/>
+        android:layout_gravity="center_vertical" />
 
     <TextView
         android:id="@+id/guest_name_text_view_event_guest_handler"

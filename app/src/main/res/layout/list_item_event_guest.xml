@@ -6,20 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="150dp">
 
+    <app.com.ttins.gettogether.common.ui.ThreeTwoImageView
+        android:id="@+id/event_guest_item_event_detail_view"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" />
+
     <TextView
         android:id="@+id/guest_list_name_text_view_event_detail_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textSize="26sp"
-        android:text="Example Text"/>
+        style="@style/SingleLineTextView"
+        android:textSize="26sp" />
 
     <TextView
         android:id="@+id/guest_note_list_text_view_event_detail_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="Example Text"/>
+        android:layout_gravity="center_vertical|end" />
 
 
 </LinearLayout>

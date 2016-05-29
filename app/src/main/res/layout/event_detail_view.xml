@@ -34,21 +34,21 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
-                android:id="@+id/start_time_text_view_event_detail_view"
+                android:id="@+id/event_date_text_view_event_detail_view"
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/null_field"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/start_time_event_detail_view"
+                android:layout_toStartOf="@+id/event_date_image_event_detail_view"
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <ImageView
-                android:id="@+id/start_time_event_detail_view"
+                android:id="@+id/event_date_image_event_detail_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/event_time_icon_content_description"
-                android:src="@drawable/ic_access_time_black_36dp"
+                android:contentDescription="@string/event_date_location_icon_content_description"
+                android:src="@drawable/ic_date_range_black_36dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/medium_margin_material_design"/>
@@ -81,21 +81,21 @@
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <TextView
-                android:id="@+id/event_date_text_view_event_detail_view"
+                android:id="@+id/start_time_text_view_event_detail_view"
                 style="@style/SingleLineTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/null_field"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/event_date_image_event_detail_view"
+                android:layout_toStartOf="@+id/start_time_event_detail_view"
                 android:padding="@dimen/medium_margin_material_design"/>
 
             <ImageView
-                android:id="@+id/event_date_image_event_detail_view"
+                android:id="@+id/start_time_event_detail_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/event_date_location_icon_content_description"
-                android:src="@drawable/ic_timelapse_black_36dp"
+                android:contentDescription="@string/event_time_icon_content_description"
+                android:src="@drawable/ic_access_time_black_36dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/medium_margin_material_design"/>

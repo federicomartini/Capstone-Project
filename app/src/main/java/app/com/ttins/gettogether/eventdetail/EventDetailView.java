@@ -27,6 +27,7 @@ import android.widget.TextView;
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.gson.Guest;
 import app.com.ttins.gettogether.common.gson.Guests;
+import app.com.ttins.gettogether.common.ui.ThreeTwoImageView;
 import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventdetail.adapter.EventDetailAdapter;
 
@@ -55,7 +56,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout itemLayout;
-        public String photoUri;
+        public ThreeTwoImageView guestPhoto;
         public TextView guestName;
         public TextView note;
 
@@ -65,6 +66,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
             itemLayout = (LinearLayout) view.findViewById(R.id.guest_list_item_event_detail_view);
             guestName = (TextView) view.findViewById(R.id.guest_list_name_text_view_event_detail_view);
             note = (TextView) view.findViewById(R.id.guest_note_list_text_view_event_detail_view);
+            guestPhoto = (ThreeTwoImageView) view.findViewById(R.id.event_guest_item_event_detail_view);
         }
     }
 
@@ -253,9 +255,9 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         return getContext();
     }
 
-    public void setGuestIdToAddOnList(long id) {
+    public void setGuestIdToAddOnList(long id, String name, String photoPath) {
         Log.d(LOG_TAG, "setGuestIdToAddOnList");
-        presenter.onEventAddGuestReceived(id);
+        presenter.onEventAddGuestReceived(id, name, photoPath);
     }
 
     @Override
@@ -305,7 +307,7 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     @Override
     public void onLoadFinished(Guests guests) {
         if (eventDetailAdapter == null) {
-            eventDetailAdapter = new EventDetailAdapter(guests, new EventDetailAdapter.OnItemClickListener() {
+            eventDetailAdapter = new EventDetailAdapter(getActivity(), guests, new EventDetailAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(long id) {
                     Log.d(LOG_TAG, "onItemClick Received by View");

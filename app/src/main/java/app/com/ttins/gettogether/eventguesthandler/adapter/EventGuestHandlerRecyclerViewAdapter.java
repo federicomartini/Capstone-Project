@@ -1,11 +1,15 @@
 package app.com.ttins.gettogether.eventguesthandler.adapter;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.eventguesthandler.EventGuestHandlerView;
@@ -17,10 +21,13 @@ public class EventGuestHandlerRecyclerViewAdapter extends RecyclerView.Adapter<E
 
     Cursor cursor;
     EventGuestHandlerRecyclerViewAdapter.OnItemClickListener listener;
+    Context context;
 
-    public EventGuestHandlerRecyclerViewAdapter(Cursor cursor, EventGuestHandlerRecyclerViewAdapter.OnItemClickListener listener) {
+    public EventGuestHandlerRecyclerViewAdapter(Context context, Cursor cursor,
+                                                EventGuestHandlerRecyclerViewAdapter.OnItemClickListener listener) {
         this.cursor = cursor;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -51,8 +58,11 @@ public class EventGuestHandlerRecyclerViewAdapter extends RecyclerView.Adapter<E
         if (cursor != null) {
             cursor.moveToPosition(position);
             holder.guestName.setText(cursor.getString(EventGuestHandlerLoader.Query.NAME));
-            //cursor.getString(EventGuestHandlerLoader.Query.PHOTO_PATH);
+            Glide.with(context).load(cursor.getString(EventGuestHandlerLoader.Query.PHOTO_PATH))
+                    .into(holder.guestPhoto);
+
             holder.id = getItemId(position);
+            holder.photoPath = cursor.getString(EventGuestHandlerLoader.Query.PHOTO_PATH);
             holder.itemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -61,7 +71,8 @@ public class EventGuestHandlerRecyclerViewAdapter extends RecyclerView.Adapter<E
                         Log.d(LOG_TAG, "Listener is null");
                     } else {
                         Log.d(LOG_TAG, "Item id = " + holder.id);
-                        listener.onItemClick(holder.id);
+                        listener.onItemClick(holder.id, holder.guestName.getText().toString(),
+                                holder.photoPath);
                     }
                 }
             });
@@ -69,6 +80,6 @@ public class EventGuestHandlerRecyclerViewAdapter extends RecyclerView.Adapter<E
     }
 
     public interface OnItemClickListener {
-        void onItemClick(long id);
+        void onItemClick(long id, String guestName, String photoPath);
     }
 }
