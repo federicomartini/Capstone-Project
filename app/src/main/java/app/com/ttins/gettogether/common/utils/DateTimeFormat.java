@@ -1,5 +1,8 @@
 package app.com.ttins.gettogether.common.utils;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class DateTimeFormat {
@@ -79,7 +82,7 @@ public class DateTimeFormat {
 
     public static String convertDate(int day, int month, int year) {
         String date;
-        date = String.format(Locale.getDefault(), "%02d/%02d/%d", year, month, day);
+        date = String.format(Locale.getDefault(), "%d/%02d/%02d", year, month, day);
         return date;
     }
 
@@ -90,7 +93,8 @@ public class DateTimeFormat {
             return null;
         }
 
-        return String.format(Locale.getDefault(), "%s/%s/%s", year, month, day);
+        return String.format(Locale.getDefault(), "%s/%02d/%02d",
+                year, Integer.parseInt(month), Integer.parseInt(day));
     }
 
     public static int getDayFromDate(String date) {
@@ -162,5 +166,10 @@ public class DateTimeFormat {
         }
 
         return year;
+    }
+
+    public static String getCurrentTime(String timeformat){
+        Format formatter = new SimpleDateFormat(timeformat);
+        return formatter.format(new Date());
     }
 }

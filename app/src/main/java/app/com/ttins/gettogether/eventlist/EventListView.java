@@ -2,6 +2,8 @@ package app.com.ttins.gettogether.eventlist;
 
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -33,6 +35,7 @@ import app.com.ttins.gettogether.common.utils.Permissions;
 import app.com.ttins.gettogether.data.GetTogetherContract;
 import app.com.ttins.gettogether.eventlist.adapter.EventRecyclerViewAdapter;
 import app.com.ttins.gettogether.eventlist.loader.EventLoader;
+import app.com.ttins.gettogether.gettogetherwidget.GetTogetherWidgetProvider;
 import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -172,6 +175,8 @@ public class EventListView extends Fragment implements LoaderManager.LoaderCallb
             }
             eventRecyclerViewAdapter.swapEvents(cursor);
             recyclerView.setAdapter(eventRecyclerViewAdapter);
+
+            GetTogetherWidgetProvider.updateWidget(getActivity());
 
             StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
                     columnCount,

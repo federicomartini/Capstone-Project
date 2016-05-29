@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -52,9 +53,7 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @BindView(R.id.meeting_location_edit_text_event_edit_view) EditText meetingLocation;
     @BindView(R.id.phone_edit_text_event_edit_view) EditText phone;
     @BindView(R.id.start_time_text_view_event_detail_view) EditText startTime;
-    @BindView(R.id.time_end_text_view_event_edit_view) EditText endTime;
     @BindView(R.id.date_start_text_view_event_edit_view) EditText startDate;
-    @BindView(R.id.date_end_text_view_event_edit_view) EditText endDate;
     @BindView(R.id.note_text_view_event_edit_view) EditText note;
     @BindView(R.id.image_icon_image_view) ImageView eventPhoto;
     @BindView(R.id.square_image_view_event_view)
@@ -146,12 +145,23 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         meetingLocation = ButterKnife.findById(root, R.id.meeting_location_edit_text_event_edit_view);
         phone = ButterKnife.findById(root, R.id.phone_edit_text_event_edit_view);
         startTime = ButterKnife.findById(root, R.id.time_start_text_view_event_edit_view);
-        endTime = ButterKnife.findById(root, R.id.time_end_text_view_event_edit_view);
         startDate = ButterKnife.findById(root, R.id.date_start_text_view_event_edit_view);
-        endDate = ButterKnife.findById(root, R.id.date_end_text_view_event_edit_view);
         note = ButterKnife.findById(root, R.id.note_text_view_event_edit_view);
         eventPhoto = ButterKnife.findById(root, R.id.image_icon_image_view);
         toolBarImage = ButterKnife.findById(root, R.id.square_image_view_event_view);
+
+        Configuration config = getResources().getConfiguration();
+        if(config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            Log.d(LOG_TAG, "Configuration RTL");
+            eventTitle.setTextDirection(View.TEXT_DIRECTION_RTL);
+            note.setTextDirection(View.TEXT_DIRECTION_RTL);
+            meetingLocation.setTextDirection(View.TEXT_DIRECTION_RTL);
+            phone.setTextDirection(View.TEXT_DIRECTION_RTL);
+            location.setTextDirection(View.TEXT_DIRECTION_RTL);
+            startTime.setTextDirection(View.TEXT_DIRECTION_RTL);
+            startDate.setTextDirection(View.TEXT_DIRECTION_RTL);
+        }
+
 
         location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,27 +178,11 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
             }
         });
 
-        endTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(LOG_TAG, "endTime click");
-                presenter.onEndTimeTextClick();
-            }
-        });
-
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(LOG_TAG, "startDate click");
                 presenter.onStartDateTextClick();
-            }
-        });
-
-        endDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(LOG_TAG, "endDate click");
-                presenter.onEndDateTextClick();
             }
         });
 
@@ -223,8 +217,6 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         //dataMap.put(EventEditLoader.Query.LOCATION, endDate.getText().toString());
         dataMap.put(EventEditLoader.Query.START_TIME_HOUR, DateTimeFormat.getStringHoursFromTime(startTime.getText().toString()));
         dataMap.put(EventEditLoader.Query.START_TIME_MINUTE, DateTimeFormat.getStringMinutesFromTime(startTime.getText().toString()));
-        dataMap.put(EventEditLoader.Query.END_TIME_HOUR, DateTimeFormat.getStringHoursFromTime(endTime.getText().toString()));
-        dataMap.put(EventEditLoader.Query.END_TIME_MINUTE, DateTimeFormat.getStringMinutesFromTime(endTime.getText().toString()));
         dataMap.put(EventEditLoader.Query.PLACE_PHONE_NUMBER, phone.getText().toString());
         dataMap.put(EventEditLoader.Query.NOTES, note.getText().toString());
 
@@ -352,21 +344,9 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     }
 
     @Override
-    public void onSetEndTime(String time) {
-        Log.d(LOG_TAG, "onSetStartTime - " + time);
-        endTime.setText(time);
-    }
-
-    @Override
     public void onSetStartDate(String date) {
         Log.d(LOG_TAG, "onSetStartDate - " + date);
         startDate.setText(date);
-    }
-
-    @Override
-    public void onSetEndDate(String date) {
-        Log.d(LOG_TAG, "onSetEndDate - " + date);
-        endDate.setText(date);
     }
 
     public void onUpdateDateTimeFromDialog(String dialogTag, String message) {

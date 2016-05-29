@@ -1,5 +1,6 @@
 package app.com.ttins.gettogether.gettogetherwidget;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -9,9 +10,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import app.com.ttins.gettogether.R;
 import app.com.ttins.gettogether.common.EventActivity;
+import app.com.ttins.gettogether.gettogetherwidget.alarm.AlarmManagerBroadcastReceiver;
 
 public class GetTogetherWidgetProvider extends AppWidgetProvider {
 
@@ -21,10 +24,40 @@ public class GetTogetherWidgetProvider extends AppWidgetProvider {
     public static final String CLICK_ACTION = "app.com.ttins.gettogether.gettogetherwidget.CLICK_ACTION";
     public static final String EXTRA_REFRESH = "app.com.ttins.gettogether.gettogetherwidget.EXTRA_REFRESH";
 
+    static AlarmManager alarmManager;
+    static PendingIntent alarmPendingIntent;
+
+    public static void saveAlarmManager(AlarmManager am, PendingIntent pi) {
+        alarmManager = am;
+        alarmPendingIntent = pi;
+    }
+
+    public static void updateWidget(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, GetTogetherWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.events_list_view_widget);
+    }
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        Toast.makeText(context, "TimeWidgetRemoved id(s):" + appWidgetIds, Toast.LENGTH_SHORT).show();
+        super.onDeleted(context, appWidgetIds);
+    }
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
+        //After after 3 seconds
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+ 1000 * 3, 1000 , pi);
+    }
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
 
         if(intent.getAction().equals(GetTogetherWidgetProvider.CLICK_ACTION)) {
             long eventId = intent.getLongExtra(EXTRA_ITEM, 0);
@@ -32,15 +65,24 @@ public class GetTogetherWidgetProvider extends AppWidgetProvider {
             eventDetailsIntent.putExtra(EventActivity.EVENT_DETAIL, eventId);
             eventDetailsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(eventDetailsIntent);
-
-        } else if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE) &&
-                intent.hasExtra(EXTRA_REFRESH)) {
-
+            Log.d(LOG_TAG, "Widget CLICK_ACTION");
+        } else if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE) ||
+                intent.getAction().equals(EXTRA_REFRESH)) {
+            Log.d(LOG_TAG, "Widget ACTION_APPWIDGET_UPDATE");
             final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             final ComponentName cn = new ComponentName(context, GetTogetherWidgetProvider.class);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(cn),
                     R.id.events_list_view_widget);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.gettogether_widget_layout);
         }
+
+        final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        final ComponentName cn = new ComponentName(context, GetTogetherWidgetProvider.class);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(cn),
+                R.id.events_list_view_widget);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(cn);
+
+        onUpdate(context, appWidgetManager, appWidgetIds);
 
         Log.d(LOG_TAG, "onReceive");
     }
@@ -78,5 +120,20 @@ public class GetTogetherWidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, views);
             Log.d(LOG_TAG, "updateAppWidget: " + appWidgetId);
         }
+
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
+
+
+    @Override
+    public void onDisabled(Context context) {
+        Toast.makeText(context, "onDisabled():last widget instance removed", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(sender);
+        super.onDisabled(context);
+    }
+
+
 }

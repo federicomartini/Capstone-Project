@@ -184,11 +184,6 @@ public class EventDetailPresenter implements EventDetailMVP.PresenterOps,
     }
 
     @Override
-    public void onConfirmButtonClick() {
-
-    }
-
-    @Override
     public void onEditItemClick() {
         view.get().onSendDataForEditDetailsView();
     }

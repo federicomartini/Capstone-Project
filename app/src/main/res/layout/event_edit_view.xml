@@ -50,7 +50,9 @@
             app:layout_row="1"
             app:layout_column="1"
             android:paddingStart="@dimen/medium_margin_material_design"
-            android:paddingEnd="@dimen/medium_margin_material_design" />
+            android:paddingEnd="@dimen/medium_margin_material_design"
+            android:layout_marginBottom="@dimen/medium_margin_material_design"
+            app:layout_gravity="bottom"/>
 
         <ImageView
             android:id="@+id/image_icon_image_view"
@@ -73,16 +75,6 @@
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design" />
 
-        <TextView
-            android:id="@+id/event_type_label_text_view"
-            android:text="@string/event_type_label_event_edit_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="2"
-            app:layout_column="3"
-            app:layout_gravity="center_horizontal"
-            android:padding="@dimen/medium_margin_material_design" />
-
 
         <!-- ##################### Row 3 ##################### -->
         <ImageView
@@ -102,16 +94,9 @@
             android:focusable="false"
             app:layout_column="1"
             android:paddingStart="@dimen/medium_margin_material_design"
-            android:paddingEnd="@dimen/medium_margin_material_design" />
-
-        <ImageView
-            android:id="@+id/event_type_icon_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="3"
-            app:layout_column="3"
-            app:layout_gravity="center"
-            android:src="@drawable/ic_local_pizza_black_36dp" />
+            android:paddingEnd="@dimen/medium_margin_material_design"
+            android:layout_marginBottom="@dimen/medium_margin_material_design"
+            app:layout_gravity="bottom" />
 
         <!-- ##################### Row 4 ##################### -->
         <TextView
@@ -141,7 +126,9 @@
             app:layout_row="5"
             app:layout_column="1"
             android:paddingStart="@dimen/medium_margin_material_design"
-            android:paddingEnd="@dimen/medium_margin_material_design" />
+            android:paddingEnd="@dimen/medium_margin_material_design"
+            android:layout_marginBottom="@dimen/medium_margin_material_design"
+            app:layout_gravity="bottom" />
 
         <!-- ##################### Row 6 ##################### -->
         <TextView
@@ -153,15 +140,6 @@
             app:layout_column="1"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design" />
-
-        <TextView
-            android:id="@+id/end_date_label_event_edit_view"
-            android:text="@string/end_date_label_event_edit_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="6"
-            app:layout_column="3"
-            android:padding="@dimen/medium_margin_material_design" />
 
         <!-- ##################### Row 7 ##################### -->
         <ImageView
@@ -182,18 +160,9 @@
             app:layout_row="7"
             app:layout_column="1"
             android:paddingStart="@dimen/medium_margin_material_design"
-            android:paddingEnd="@dimen/medium_margin_material_design" />
-
-        <EditText
-            android:id="@+id/date_end_text_view_event_edit_view"
-            android:theme="@style/SingleLineEditText"
-            android:focusable="false"
-            android:inputType="datetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="7"
-            app:layout_column="3"
-            android:padding="@dimen/medium_margin_material_design" />
+            android:paddingEnd="@dimen/medium_margin_material_design"
+            android:layout_marginBottom="@dimen/medium_margin_material_design"
+            app:layout_gravity="bottom" />
 
         <!-- ##################### Row 8 ##################### -->
         <TextView
@@ -205,15 +174,6 @@
             app:layout_column="1"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design" />
-
-        <TextView
-            android:id="@+id/end_time_label_event_edit_view"
-            android:text="@string/end_time_label_event_edit_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="8"
-            app:layout_column="3"
-            android:padding="@dimen/medium_margin_material_design" />
 
         <!-- ##################### Row 9 ##################### -->
         <ImageView
@@ -234,18 +194,9 @@
             app:layout_column="1"
             android:focusable="false"
             android:paddingStart="@dimen/medium_margin_material_design"
-            android:paddingEnd="@dimen/medium_margin_material_design" />
-
-        <EditText
-            android:id="@+id/time_end_text_view_event_edit_view"
-            android:theme="@style/SingleLineEditText"
-            android:inputType="datetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="9"
-            app:layout_column="3"
-            android:focusable="false"
-            android:padding="@dimen/medium_margin_material_design" />
+            android:paddingEnd="@dimen/medium_margin_material_design"
+            android:layout_marginBottom="@dimen/medium_margin_material_design"
+            app:layout_gravity="bottom" />
 
         <!-- ##################### Row 10 ##################### -->
         <TextView
@@ -276,7 +227,9 @@
             app:layout_row="11"
             app:layout_column="1"
             android:paddingStart="@dimen/medium_margin_material_design"
-            android:paddingEnd="@dimen/medium_margin_material_design" />
+            android:paddingEnd="@dimen/medium_margin_material_design"
+            android:layout_marginBottom="@dimen/medium_margin_material_design"
+            app:layout_gravity="bottom" />
 
         <!-- ##################### Row 12 ##################### -->
         <TextView
@@ -305,11 +258,11 @@
             android:layout_height="wrap_content"
             app:layout_row="13"
             app:layout_column="1"
-            app:layout_gravity="bottom"
             android:maxWidth="200dp"
-            android:layout_marginBottom="@dimen/large_margin_material_design"
             android:paddingStart="@dimen/medium_margin_material_design"
-            android:paddingEnd="@dimen/medium_margin_material_design" />
+            android:paddingEnd="@dimen/medium_margin_material_design"
+            android:layout_marginBottom="@dimen/medium_margin_material_design"
+            app:layout_gravity="bottom" />
 
     </android.support.v7.widget.GridLayout>
 

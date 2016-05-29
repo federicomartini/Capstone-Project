@@ -223,13 +223,9 @@ public class EventEditPresenter implements EventEditMVP.PresenterOps, EventEditM
     public void onUpdateDateTimeFromDialog(String dialogTag, String message) {
         if (dialogTag.compareTo(START_TIME_DIALOG_TAG) == 0) {
             view.get().onSetStartTime(message);
-        } else if (dialogTag.compareTo(END_TIME_DIALOG_TAG) == 0) {
-            view.get().onSetEndTime(message);
         } else if (dialogTag.compareTo(START_DATE_DIALOG_TAG) == 0) {
             view.get().onSetStartDate(message);
-        } else if (dialogTag.compareTo(END_DATE_DIALOG_TAG) == 0) {
-            view.get().onSetEndDate(message);
-        } else {
+        }  else {
             Log.d(LOG_TAG, "Update Date Time - Unknown tag");
         }
     }

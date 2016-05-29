@@ -58,9 +58,7 @@ public interface EventEditMVP {
         void onShowSetTimeDialog(String dialogTag);
         void onShowSetDateDialog(String dialogTag);
         void onSetStartTime(String message);
-        void onSetEndTime(String message);
         void onSetStartDate(String message);
-        void onSetEndDate(String message);
         void onShowPlaceView();
         void onShowLocation(String placeName);
         void onShowGalleryForPicture();

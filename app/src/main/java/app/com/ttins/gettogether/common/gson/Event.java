@@ -6,6 +6,7 @@ public class Event {
     private String eventTitle;
     private String eventDate;
     private String eventTime;
+    private String eventPhotoPath;
 
 
     public Event() {}
@@ -41,5 +42,13 @@ public class Event {
 
     public String getEventTime() {
         return this.eventTime;
+    }
+
+    public String getEventPhotoPath() {
+        return this.eventPhotoPath;
+    }
+
+    public void setEventPhotoPath(String photoPath) {
+        this.eventPhotoPath = photoPath;
     }
 }

@@ -2,6 +2,8 @@ package app.com.ttins.gettogether.common;
 
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -41,6 +43,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.List;
 
 import app.com.ttins.gettogether.R;
@@ -54,6 +57,7 @@ import app.com.ttins.gettogether.eventedit.EventEditView;
 import app.com.ttins.gettogether.eventguesthandler.EventGuestHandlerView;
 import app.com.ttins.gettogether.eventlist.EventListView;
 import app.com.ttins.gettogether.eventsetplace.EventSetPlaceView;
+import app.com.ttins.gettogether.gettogetherwidget.GetTogetherWidgetProvider;
 import app.com.ttins.gettogether.timepickerdialog.TimePickerDialogView;
 import butterknife.ButterKnife;
 
@@ -136,10 +140,6 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                         MY_MANAGE_DOCUMENTS);
             }
 
-
-
-
-
         } else {
             Log.d(LOG_TAG, "FAB setOnClickListener failed: FAB is null");
         }
@@ -215,6 +215,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
             onShowEventDetailView(eventId);
         }
+
+        GetTogetherWidgetProvider.updateWidget(this);
     }
 
     @Override
@@ -341,11 +343,13 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
     @Override
     public void onEventSaved() {
+        GetTogetherWidgetProvider.updateWidget(this);
         presenter.onEventDataSaved();
     }
 
     @Override
     public void onEventEdited(long id) {
+        GetTogetherWidgetProvider.updateWidget(this);
         presenter.onEventDataEdited(id);
     }
 

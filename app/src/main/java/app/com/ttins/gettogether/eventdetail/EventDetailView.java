@@ -41,17 +41,14 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     long eventId;
     Callback callback;
 
-    TextView eventTitle;
     TextView startTime;
     TextView location;
     TextView meetLocation;
     TextView eventDate;
     TextView phoneNumber;
-    TextView confirmStatus;
     TextView emptyGuestList;
     TextView notes;
     ListView guestsList;
-    ImageButton confirmButton;
     RecyclerView recyclerView;
     EventDetailAdapter eventDetailAdapter;
 
@@ -141,18 +138,21 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
         meetLocation = (TextView) root.findViewById(R.id.meet_loc_text_view_event_detail_view);
         eventDate = (TextView) root.findViewById(R.id.event_date_text_view_event_detail_view);
         phoneNumber = (TextView) root.findViewById(R.id.phone_text_view_event_detail_view);
-        confirmStatus = (TextView) root.findViewById(R.id.confirm_status_text_view_event_detail_view);
         emptyGuestList = (TextView) root.findViewById(R.id.empty_guest_list_text_view_event_detail_view);
         notes = (TextView) root.findViewById(R.id.note_text_view_event_detail_view);
-        confirmButton = (ImageButton) root.findViewById(R.id.confirm_image_button_event_detail_view);
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view_guests_event_detail_view);
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onConfirmButtonClick();
-            }
-        });
+        Configuration config = getResources().getConfiguration();
+        if(config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            Log.d(LOG_TAG, "Configuration RTL");
+            notes.setTextDirection(View.TEXT_DIRECTION_RTL);
+            meetLocation.setTextDirection(View.TEXT_DIRECTION_RTL);
+            phoneNumber.setTextDirection(View.TEXT_DIRECTION_RTL);
+            location.setTextDirection(View.TEXT_DIRECTION_RTL);
+            startTime.setTextDirection(View.TEXT_DIRECTION_RTL);
+            eventDate.setTextDirection(View.TEXT_DIRECTION_RTL);
+            emptyGuestList.setTextDirection(View.TEXT_DIRECTION_RTL);
+        }
 
         return root;
     }
@@ -177,17 +177,6 @@ public class EventDetailView extends Fragment implements EventDetailMVP.Required
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    @Override
-    public void onChangeConfirmStatus(String confirmStatus) {
-        if (confirmStatus != null && !confirmStatus.isEmpty()) {
-            this.confirmStatus.setText(confirmStatus);
-        } else {
-            this.confirmStatus.setText(getResources().getString(R.string.null_field));
-        }
-
-
     }
 
     @Override

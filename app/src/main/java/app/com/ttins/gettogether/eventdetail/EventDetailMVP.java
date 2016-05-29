@@ -16,7 +16,6 @@ public interface EventDetailMVP {
         void onDetachView();
         void onPopulateDetailView(long id);
         void initLoader();
-        void onConfirmButtonClick();
         void onEditItemClick();
         void onEventAddGuestReceived(long id);
         void onEventRemoveGuestReceived(long id);
@@ -58,7 +57,6 @@ public interface EventDetailMVP {
         void onChangeEventDate(String eventDate);
         void onChangePhoneNumber(String phoneNumber);
         void onChangeLocation(String location);
-        void onChangeConfirmStatus(String confirmStatus);
         void onChangeEmptyGuestList();
         void onChangeNotes(String notes);
         void onLoaderInitCompleted(LoaderManager.LoaderCallbacks<Cursor> loaderClass);

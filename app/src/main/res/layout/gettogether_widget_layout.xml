@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorTextIcons">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorTextIcons"
+        android:text="@string/app_name"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/main_card_title_text_size"
+        android:paddingStart="@dimen/medium_margin_material_design"/>
 
     <ListView
         android:id="@+id/events_list_view_widget"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/empty_events_list_view_widget"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         android:text="@string/no_data_available"/>
 
-</FrameLayout>
+</LinearLayout>
