@@ -5,20 +5,15 @@
     android:layout_height="80dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--app.com.ttins.gettogether.common.ui.ThreeTwoImageView
-        android:id="@+id/photo_image_view_event_guest_handler"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_vertical" /-->
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/photo_image_view_event_guest_handler"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/circular_image_medium"
+        android:layout_height="@dimen/circular_image_medium"
         app:civ_border_color="@color/colorPrimary"
-        app:civ_border_width="4dp"
+        app:civ_border_width="@dimen/circular_image_border"
         app:civ_shadow="true"
-        app:civ_shadow_radius="10"
+        app:civ_shadow_radius="@integer/circular_image_shadow_radius_large"
         app:civ_shadow_color="@color/cardview_shadow_end_color"
         android:layout_marginStart="@dimen/large_margin_material_design"
         android:layout_marginEnd="@dimen/large_margin_material_design"
@@ -30,10 +25,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textSize="20sp"
+        android:textSize="@dimen/guest_list_handler_item_text_size"
         android:layout_toEndOf="@+id/photo_image_view_event_guest_handler"
-        android:layout_centerVertical="true"
-        android:text="Example Text"/>
+        android:layout_centerVertical="true"/>
 
     <View
         android:layout_width="match_parent"

@@ -88,6 +88,10 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar_guest_activity);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout_guest_activity);
         fab = (FloatingActionButton) findViewById(R.id.fab_guest_add_guest_activity);

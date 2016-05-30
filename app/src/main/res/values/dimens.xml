@@ -32,4 +32,31 @@
     <dimen name="icon_size_36dp">50dp</dimen>
     <dimen name="start_margin_notes_detail_view">52dp</dimen>
 
+    <dimen name="image_background_protection_height">100dp</dimen>
+    <item name="event_title_space_line_multiplier" format="float" type="dimen">0.9</item>
+
+    <integer name="event_edit_grid_rows">14</integer>
+    <integer name="event_edit_grid_columns">4</integer>
+
+    <integer name="guest_edit_grid_rows">6</integer>
+    <integer name="guest_edit_grid_columns">3</integer>
+
+    <dimen name="text_view_width">200dp</dimen>
+
+    <dimen name="circular_image_large">120dp</dimen>
+    <dimen name="circular_image_medium">60dp</dimen>
+    <dimen name="circular_image_small">44dp</dimen>
+    <dimen name="circular_image_border">5dp</dimen>
+    <integer name="circular_image_shadow_radius">3</integer>
+    <integer name="circular_image_shadow_radius_large">10</integer>
+
+    <dimen name="widget_title_text_size">22sp</dimen>
+    <dimen name="widget_secondary_text_size">12sp</dimen>
+    <dimen name="widget_list_item_height">50dp</dimen>
+    <dimen name="guest_list_handler_item_text_size">20sp</dimen>
+
+    <dimen name="list_item_event_guest_height">80dp</dimen>
+    <dimen name="max_single_line_text_width_view">100dp</dimen>
+    <dimen name="max_single_line_extended_text_width_view">150dp</dimen>
+
 </resources>

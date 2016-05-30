@@ -54,6 +54,7 @@
     <string name="hint_date_button_event_edit_view">Click to select a date</string>
     <string name="hint_time_button_event_edit_view">Click to select a time</string>
     <string name="hint_place_button_event_edit_view">Click to select a place</string>
+    <string name="note_hint_text_event_edit_view">Insert Note here</string>
 
     <!-- ########## Transitions ########## -->
     <string name="event_transition_image">Event Transition Image</string>
@@ -70,6 +71,10 @@
     <string name="guest_address_icon_content_description">Guest Address Icon</string>
     <string name="guest_google_map_icon_content_description">Guest Google Map Position Icon</string>
     <string name="guest_photo_icon_content_description">Guest Photo Icon</string>
+
+    <!-- ########## Guest Edit ########## -->
+    <string name="guest_name_text_hint_guest_edit_layout">Insert Guest Name</string>
+    <string name="guest_address_text_hint_guest_edit_layout">Insert Guest Address</string>
 
     <!-- ########## Map ########## -->
     <string name="default_map_address">Mountain View</string>

@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-condensed"
                         android:textStyle="bold"
-                        android:lineSpacingMultiplier="0.9" />
+                        android:lineSpacingMultiplier="@dimen/event_title_space_line_multiplier" />
 
                 </LinearLayout>
 

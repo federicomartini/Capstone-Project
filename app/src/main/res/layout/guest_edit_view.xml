@@ -7,8 +7,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:rowCount="6"
-        app:columnCount="3"
+        app:rowCount="@integer/guest_edit_grid_rows"
+        app:columnCount="@integer/guest_edit_grid_columns"
         android:layout_margin="@dimen/medium_margin_material_design">
 
         <!-- ##################### Row 0 ##################### -->
@@ -34,25 +34,15 @@
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design" />
 
-        <!--TextView
-            android:id="@+id/gender_label_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:layout_column="2"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/gender_label_guest_edit_view"
-            android:padding="@dimen/medium_margin_material_design" /-->
-
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/image_view_guest_edit_view"
             app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="8dp"
+            app:civ_border_width="@dimen/circular_image_border"
             app:civ_shadow="true"
-            app:civ_shadow_radius="1"
+            app:civ_shadow_radius="@integer/circular_image_shadow_radius"
             app:civ_shadow_color="@color/cardview_shadow_end_color"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="@dimen/circular_image_large"
+            android:layout_height="@dimen/circular_image_large"
             android:contentDescription="@string/guest_photo_icon_content_description"
             app:layout_row="0"
             app:layout_rowSpan="6"
@@ -69,22 +59,15 @@
         <EditText
             android:id="@+id/guest_name_edit_text_guest_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="1"
             app:layout_column="1"
+            android:hint="@string/guest_name_text_hint_guest_edit_layout"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design"
             android:layout_marginBottom="@dimen/large_margin_material_design"/>
 
-        <!--ImageView
-            android:id="@+id/image_icon_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="1"
-            android:layout_column="2"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_image_black_36dp" /-->
 
         <!-- ##################### Row 2 ##################### -->
 
@@ -94,6 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_row="2"
+            android:labelFor="@+id/phone_edit_text_guest_edit_view"
             app:layout_column="1"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design" />
@@ -114,7 +98,7 @@
         <EditText
             android:id="@+id/phone_edit_text_guest_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="3"
             app:layout_column="1"
@@ -148,10 +132,11 @@
         <EditText
             android:id="@+id/address_edit_text_guest_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="5"
             app:layout_column="1"
+            android:hint="@string/guest_address_text_hint_guest_edit_layout"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design"
             android:layout_marginBottom="@dimen/large_margin_material_design"/>

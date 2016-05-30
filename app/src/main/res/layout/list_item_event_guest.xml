@@ -3,23 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="@dimen/list_item_event_guest_height"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--app.com.ttins.gettogether.common.ui.ThreeTwoImageView
-        android:id="@+id/event_guest_item_event_detail_view"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical" /-->
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/event_guest_item_event_detail_view"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="@dimen/circular_image_medium"
+        android:layout_height="@dimen/circular_image_medium"
         app:civ_border_color="@color/colorPrimary"
-        app:civ_border_width="4dp"
+        app:civ_border_width="@dimen/circular_image_border"
         app:civ_shadow="true"
-        app:civ_shadow_radius="10"
+        app:civ_shadow_radius="@integer/circular_image_shadow_radius_large"
         android:layout_gravity="center"
         app:civ_shadow_color="@color/cardview_shadow_end_color" />
 

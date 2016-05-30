@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingLeft="@dimen/medium_margin_material_design"
-        android:paddingRight="@dimen/medium_margin_material_design"
+        android:paddingStart="@dimen/medium_margin_material_design"
+        android:paddingEnd="@dimen/medium_margin_material_design"
         android:scrollbarStyle="insideOverlay"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 

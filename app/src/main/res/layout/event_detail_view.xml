@@ -1,6 +1,5 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -26,7 +25,7 @@
 
             <TextView
                 android:id="@+id/location_text_view_event_detail_view"
-                style="@style/SingleLineTextView"
+                style="@style/SingleLineTextViewExtended"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/null_field"
@@ -75,7 +74,7 @@
 
             <TextView
                 android:id="@+id/meet_loc_text_view_event_detail_view"
-                style="@style/SingleLineTextView"
+                style="@style/SingleLineTextViewExtended"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/null_field"
@@ -124,7 +123,7 @@
 
             <TextView
                 android:id="@+id/phone_text_view_event_detail_view"
-                style="@style/SingleLineTextView"
+                style="@style/SingleLineTextViewExtended"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/null_field"
@@ -168,6 +167,7 @@
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
                     android:layout_gravity="bottom"
+                    android:paddingStart="@dimen/medium_margin_material_design"
                     android:paddingEnd="@dimen/medium_margin_material_design"
                     android:scrollbarStyle="insideOverlay" />
 
@@ -207,7 +207,6 @@
                 android:id="@+id/note_text_view_event_detail_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Prova"
                 android:paddingTop="@dimen/medium_margin_material_design"
                 android:layout_margin="@dimen/medium_margin_material_design"
                 android:paddingStart="@dimen/start_margin_notes_detail_view"

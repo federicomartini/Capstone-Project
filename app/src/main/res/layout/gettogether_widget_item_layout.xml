@@ -1,48 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
     android:id="@+id/item_widget_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/widget_list_item_height"
     android:background="@color/colorTextIcons">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/event_title_text_view_widget_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorPrimaryText"
+            style="@style/SingleLineTextViewExtended"
+            android:textSize="@dimen/widget_title_text_size"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:paddingStart="@dimen/medium_margin_material_design"
+            android:paddingEnd="@dimen/medium_margin_material_design"
+            />
+
+
+        <TextView
+            android:id="@+id/date_text_view_widget_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorSecondaryText"
+            style="@style/SingleLineTextView"
+            android:textSize="@dimen/widget_secondary_text_size"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:paddingStart="@dimen/medium_margin_material_design"
+            android:paddingEnd="@dimen/medium_margin_material_design"/>
+
+        <TextView
+            android:id="@+id/time_title_text_view_widget_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorSecondaryText"
+            style="@style/SingleLineTextView"
+            android:textSize="@dimen/widget_secondary_text_size"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/date_text_view_widget_item_layout"
+            android:paddingStart="@dimen/medium_margin_material_design"
+            android:paddingEnd="@dimen/medium_margin_material_design"/>
+
+    </RelativeLayout>
+
     <TextView
-        android:id="@+id/event_title_text_view_widget_item_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/line"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:paddingTop="5dip"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
-        android:gravity="center"
-        android:textColor="@color/colorPrimaryText"
-        style="@style/SingleLineTextView"
-        android:text="Event Example Event Example Event Example"
-        android:textSize="26sp"
-        android:paddingStart="@dimen/medium_margin_material_design"
-        android:paddingEnd="@dimen/medium_margin_material_design"
-         />
+</FrameLayout>
 
-    <TextView
-        android:id="@+id/date_text_view_widget_item_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_alignParentBottom="true"
-        style="@style/SingleLineTextView"
-        android:textSize="16sp"
-        android:text="10/10/1010"
-        android:paddingStart="@dimen/medium_margin_material_design"
-        android:paddingEnd="@dimen/medium_margin_material_design"/>
-
-    <TextView
-        android:id="@+id/time_title_text_view_widget_item_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/colorPrimaryText"
-        style="@style/SingleLineTextView"
-        android:textSize="16sp"
-        android:text="18:30"
-        android:paddingStart="@dimen/medium_margin_material_design"
-        android:paddingEnd="@dimen/medium_margin_material_design"/>
-
-</RelativeLayout>

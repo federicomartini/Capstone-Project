@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import app.com.ttins.gettogether.R;
@@ -29,7 +30,7 @@ public class EventGuestRemoveView extends Fragment implements EventGuestRemoveMV
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public LinearLayout itemLayout;
+        public RelativeLayout itemLayout;
         public ImageView guestPhoto;
         public TextView guestName;
         public long id;
@@ -38,7 +39,7 @@ public class EventGuestRemoveView extends Fragment implements EventGuestRemoveMV
         public ViewHolder(View view) {
             super(view);
 
-            itemLayout = (LinearLayout) view.findViewById(R.id.guest_item_event_guest_handler);
+            itemLayout = (RelativeLayout) view.findViewById(R.id.guest_item_event_guest_handler);
             guestPhoto = (ImageView) view.findViewById(R.id.photo_image_view_event_guest_handler);
             guestName = (TextView) view.findViewById(R.id.guest_name_text_view_event_guest_handler);
         }

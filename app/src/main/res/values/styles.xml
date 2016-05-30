@@ -53,8 +53,16 @@
     </style>
 
     <style name="SingleLineTextView" parent="TextViewBase">
-        <item name="android:maxLines">2</item>
+        <item name="android:maxLines">1</item>
         <item name="android:maxLength">18</item>
+        <item name="android:maxWidth">@dimen/max_single_line_text_width_view</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="SingleLineTextViewExtended" parent="TextViewBase">
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">50</item>
+        <item name="android:maxWidth">@dimen/max_single_line_extended_text_width_view</item>
         <item name="android:ellipsize">end</item>
     </style>
 

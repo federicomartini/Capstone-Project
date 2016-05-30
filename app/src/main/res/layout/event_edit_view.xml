@@ -8,8 +8,8 @@
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:rowCount="14"
-        app:columnCount="4">
+        app:rowCount="@integer/event_edit_grid_rows"
+        app:columnCount="@integer/event_edit_grid_columns">
 
         <!-- ##################### Row 0 ##################### -->
         <TextView
@@ -29,8 +29,8 @@
             app:layout_row="0"
             app:layout_column="3"
             app:layout_gravity="top|end"
-            android:paddingStart="52dp"
-            android:paddingEnd="52dp"
+            android:paddingStart="@dimen/start_margin_notes_detail_view"
+            android:paddingEnd="@dimen/start_margin_notes_detail_view"
             android:text="@string/image_label_event_edit_view"
             android:padding="@dimen/medium_margin_material_design" />
 
@@ -49,7 +49,7 @@
         <EditText
             android:id="@+id/event_title_edit_text_event_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="1"
             app:layout_column="1"
@@ -61,12 +61,12 @@
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/image_icon_image_view"
             app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="4dp"
+            app:civ_border_width="@dimen/circular_image_border"
             app:civ_shadow="true"
-            app:civ_shadow_radius="1"
+            app:civ_shadow_radius="@integer/circular_image_shadow_radius"
             app:civ_shadow_color="@color/cardview_shadow_end_color"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="@dimen/circular_image_large"
+            android:layout_height="@dimen/circular_image_large"
             android:contentDescription="@string/event_image_icon_content_description"
             app:layout_row="1"
             app:layout_column="3"
@@ -104,7 +104,7 @@
         <Button
             android:id="@+id/location_edit_text_event_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="3"
             app:layout_column="1"
@@ -141,7 +141,7 @@
         <EditText
             android:id="@+id/meeting_location_edit_text_event_edit_view"
             android:theme="@style/SingleLineEditText"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="5"
             app:layout_column="1"
@@ -176,7 +176,7 @@
             android:id="@+id/date_start_text_view_event_edit_view"
             android:theme="@style/SingleLineEditText"
             android:inputType="none"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="7"
             app:layout_column="1"
@@ -214,7 +214,7 @@
             android:id="@+id/time_start_text_view_event_edit_view"
             android:theme="@style/SingleLineEditText"
             android:inputType="none"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="9"
             app:layout_column="1"
@@ -252,7 +252,7 @@
             android:id="@+id/phone_edit_text_event_edit_view"
             android:theme="@style/SingleLineEditText"
             android:inputType="phone"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
             app:layout_row="11"
             app:layout_column="1"
@@ -285,14 +285,14 @@
 
         <EditText
             android:id="@+id/note_text_view_event_edit_view"
-            android:text="@string/empty_note_text_event_edit_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_row="13"
             app:layout_column="1"
-            android:maxWidth="200dp"
+            android:maxWidth="@dimen/text_view_width"
             android:paddingStart="@dimen/medium_margin_material_design"
             android:paddingEnd="@dimen/medium_margin_material_design"
+            android:hint="@string/note_hint_text_event_edit_view"
             android:layout_marginBottom="@dimen/medium_margin_material_design"
             app:layout_gravity="bottom" />
 

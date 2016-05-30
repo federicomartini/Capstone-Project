@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
 
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/debug_map_api_key"/>
+            android:value="@string/release_map_api_key"/>
 
         <activity
             android:name=".common.EventActivity"
@@ -30,7 +30,11 @@
         </activity>
 
         <activity android:name=".common.GuestActivity"
-            android:label="@string/guest_activity">
+            android:label="@string/guest_activity"
+            android:parentActivityName=".common.EventActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".common.EventActivity" />
             <intent-filter>
                 <action android:name="@string/guest_list_open_action_intent"/>
                 <category android:name="android.intent.category.DEFAULT"/>

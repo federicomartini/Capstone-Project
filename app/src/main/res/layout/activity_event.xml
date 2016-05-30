@@ -40,7 +40,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="@dimen/image_background_protection_height"
                     android:layout_gravity="bottom"
                     android:contentDescription="@string/toolbar_image_protection_content_description"
                     android:background="@drawable/photo_background_protection"/>
@@ -63,7 +63,7 @@
                         android:shadowDx="@integer/event_title_shadow_dx"
                         android:shadowDy="@integer/event_title_shadow_dy"
                         android:shadowRadius="@integer/event_title_shadow_radius"
-                        android:lineSpacingMultiplier="0.9" />
+                        android:lineSpacingMultiplier="@dimen/event_title_space_line_multiplier"/>
 
                     <TextView
                         android:id="@+id/event_date"

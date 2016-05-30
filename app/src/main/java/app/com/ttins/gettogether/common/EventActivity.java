@@ -99,6 +99,11 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar_event_activity);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout_event_activity);
         fab_guest_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_guest_open);
