@@ -104,13 +104,20 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
         }
 
         if (photoSrc != null) {
+            Log.d(LOG_TAG, "onChangeEventPhoto pending photoSrc: " + photoSrc);
             callback.onShowPictureEditViewToolbar(photoSrc);
             Glide.with(this).load(photoSrc).into(eventPhoto);
+            if (eventPhoto == null) {
+                Log.d(LOG_TAG, "eventPhoto is null");
+            }
         } else if (toolbarPhotoPending != null) {
             Log.d(LOG_TAG, "onChangeEventPhoto call pending photo for Toolbar: " + toolbarPhotoPending);
             Log.d(LOG_TAG, "onChangeEventPhoto photoSrc: " + photoSrc);
             callback.onShowPictureEditViewToolbar(toolbarPhotoPending);
             Glide.with(this).load(toolbarPhotoPending).into(eventPhoto);
+            if (eventPhoto == null) {
+                Log.d(LOG_TAG, "eventPhoto is null");
+            }
             toolbarPhotoPending = null;
         }
 
@@ -455,7 +462,8 @@ public class EventEditView extends Fragment implements EventEditMVP.RequiredView
     @Override
     public void onChangeEventPhoto(String photoUri) {
         Log.d(LOG_TAG, "onChangeEventPhoto");
-        if (toolBarImage != null) {
+
+        if (toolBarImage != null && eventPhoto != null) {
             Log.d(LOG_TAG, "onChangeEventPhoto photo: " + photoUri);
             callback.onShowPictureEditViewToolbar(photoUri);
             Glide.with(this).load(toolbarPhotoPending).into(eventPhoto);

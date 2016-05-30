@@ -40,7 +40,8 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="bottom"
                     android:contentDescription="@string/toolbar_image_protection_content_description"
                     android:background="@drawable/photo_background_protection"/>
 
@@ -53,10 +54,15 @@
 
                     <TextView
                         android:id="@+id/event_title"
+                        style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-condensed"
                         android:textStyle="bold"
+                        android:elevation="@dimen/app_bar_layout_elevation"
+                        android:shadowDx="@integer/event_title_shadow_dx"
+                        android:shadowDy="@integer/event_title_shadow_dy"
+                        android:shadowRadius="@integer/event_title_shadow_radius"
                         android:lineSpacingMultiplier="0.9" />
 
                     <TextView

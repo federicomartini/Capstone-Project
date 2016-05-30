@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="app_bar_layout_height">200dp</dimen>
+    <dimen name="app_bar_layout_height">220dp</dimen>
     <dimen name="app_bar_layout_elevation">4dp</dimen>
     <dimen name="collapsing_toolbar_layout_expanded_title_margin_start">16dp</dimen>
 

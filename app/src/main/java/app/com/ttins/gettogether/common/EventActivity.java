@@ -20,6 +20,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -210,7 +211,6 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
         if (toolbarPhotoUriPending != null) {
             Log.d(LOG_TAG, "setting pending Toolbar Photo " + toolbarPhotoUriPending);
-            Glide
             toolbarPhotoUriPending = null;
         }
 
@@ -253,7 +253,8 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
     public void onOpenGuestActivity() {
         Intent guestActivityIntent = new Intent(EventActivity.this, GuestActivity.class);
         //guestActivityIntent.setAction(getResources().getString(R.string.guest_list_open_action_intent));
-        startActivity(guestActivityIntent);
+        startActivity(guestActivityIntent,
+                ActivityOptionsCompat.makeSceneTransitionAnimation(EventActivity.this).toBundle());
     }
 
     @Override
@@ -305,6 +306,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         collapsingToolbarLayout.setTitle("Edit Event");
         EventEditView fragmentEventEditView = new EventEditView();
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                                    R.anim.fragment_slide_left_exit,
+                                    R.anim.fragment_slide_right_enter,
+                                    R.anim.fragment_slide_right_exit)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_content, fragmentEventEditView, FRAGMENT_EDIT_VIEW_TAG)
                 .addToBackStack(null)
@@ -322,6 +327,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
                 Log.d(LOG_TAG, "Fragment " + fragment.getTag() + " removed");
                 getSupportFragmentManager()
                         .beginTransaction()
+                        .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                                            R.anim.fragment_slide_left_exit,
+                                            R.anim.fragment_slide_right_enter,
+                                            R.anim.fragment_slide_right_exit)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .remove(fragment)
                         .commit();
@@ -335,6 +344,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         EventListView fragmentEventListView = new EventListView();
         getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_content, fragmentEventListView, FRAGMENT_LIST_VIEW_TAG)
                 .commit();
@@ -386,9 +399,12 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         args.putLong("FRAG_EVENT_DETAIL_EVENT_ID", id);
 
         fragmentEventDetailView.setArguments(args);
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
-
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
+                .replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
                 .addToBackStack(null)
                 .commit();
     }
@@ -406,6 +422,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
         fragmentEventDetailView.setArguments(args);
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_content, fragmentEventDetailView, FRAGMENT_DETAIL_VIEW_TAG)
                 .commit();
@@ -435,6 +455,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         EventEditView fragmentEventEditView = new EventEditView ();
         fragmentEventEditView.setArguments(args);
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_content, fragmentEventEditView , FRAGMENT_EDIT_VIEW_TAG)
                 .addToBackStack(null)
@@ -460,6 +484,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
 
             getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                            R.anim.fragment_slide_left_exit,
+                            R.anim.fragment_slide_right_enter,
+                            R.anim.fragment_slide_right_exit)
                     .replace(R.id.fragment_content, fragmentEventGuestHandlerView,
                             FRAGMENT_GUEST_HANDLER_VIEW_TAG)
                     .addToBackStack(null)
@@ -544,6 +572,10 @@ public class EventActivity extends AppCompatActivity implements EventMVP.Request
         }
 
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_content, eventSetPlaceView, FRAGMENT_PLACE_VIEW_TAG)
                 .addToBackStack(null)

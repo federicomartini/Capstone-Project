@@ -184,8 +184,12 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
     public void onShowGuestEditView() {
         collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
         GuestEditView fragmentGuestAddView = new GuestEditView();
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
+                .replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG).addToBackStack(null).commit();
     }
 
     @Override
@@ -223,8 +227,12 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         guestImage.setImageBitmap(null);
         GuestListView fragmentGuestListView = new GuestListView();
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentGuestListView, FRAGMENT_GUEST_ADD_VIEW_TAG).commit();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
+                .replace(R.id.fragment_content, fragmentGuestListView, FRAGMENT_GUEST_ADD_VIEW_TAG).commit();
     }
 
     @Override
@@ -237,8 +245,12 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         args.putLong("FRAG_GUEST_DETAIL_EVENT_ID", id);
 
         fragmentGuestDetailView.setArguments(args);
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_content, fragmentGuestDetailView, FRAGMENT_DETAIL_VIEW_TAG)
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
+                .replace(R.id.fragment_content, fragmentGuestDetailView, FRAGMENT_DETAIL_VIEW_TAG)
                 .addToBackStack(null)
                 .commit();
     }
@@ -265,8 +277,12 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
             collapsingToolbarLayout.setTitle(getResources().getString(R.string.guest_edit_menu));
             GuestEditView fragmentGuestAddView = new GuestEditView();
             fragmentGuestAddView.setArguments(args);
-            getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG)
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                            R.anim.fragment_slide_left_exit,
+                            R.anim.fragment_slide_right_enter,
+                            R.anim.fragment_slide_right_exit)
+                    .replace(R.id.fragment_content, fragmentGuestAddView , FRAGMENT_GUEST_ADD_VIEW_TAG)
                     .addToBackStack(null)
                     .commit();
         }
@@ -301,6 +317,10 @@ public class GuestActivity extends AppCompatActivity implements GuestMVP.Request
         }
 
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit)
                 .replace(R.id.fragment_content, fragmentMapView, FRAGMENT_MAP_VIEW_TAG)
                 .addToBackStack(null)
                 .commit();
